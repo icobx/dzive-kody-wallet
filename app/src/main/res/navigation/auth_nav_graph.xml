@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/auth_nav_graph"
+    app:startDestination="@id/auth_fragment">
+
+    <fragment
+        android:id="@+id/auth_fragment"
+        android:name="com.example.dzivekodywallet.AuthFragment"
+        android:label="AuthFragment" >
+        <action
+            android:id="@+id/action_auth_fragment_to_wallet_man_nav_graph"
+            app:destination="@id/walletManagementActivity" />
+        <action
+            android:id="@+id/action_auth_fragment_to_placeholder"
+            app:destination="@id/placeholder" />
+    </fragment>
+    <fragment android:id="@+id/placeholder" >
+        <action
+            android:id="@+id/action_placeholder_to_auth_fragment"
+            app:destination="@id/auth_fragment" />
+    </fragment>
+    <activity
+        android:id="@+id/walletManagementActivity"
+        android:name="com.example.dzivekodywallet.WalletManagementActivity"
+        android:label="WalletManagementActivity" />
+</navigation>
