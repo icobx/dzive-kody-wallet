@@ -5,9 +5,12 @@ import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.lifecycle.lifecycleScope
+import android.view.MenuItem
+import androidx.activity.OnBackPressedCallback
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.work.*
-import kotlinx.coroutines.*
 import retrofit2.http.GET
 import retrofit2.http.Path
 import org.stellar.sdk.responses.AccountResponse
@@ -21,80 +24,24 @@ class WalletActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wallet)
 
-        /* Creates an instance of the UserService using a simple Retrofit builder using Moshi
-         * as a JSON converter, this will append the endpoints set on the UserService interface
-         * (for example '/api', '/api?results=2') with the base URL set here, resulting on the
-//         * full URL that will be called: 'https://randomuser.me/api' */
-//        val service = Retrofit.Builder()
-//            .baseUrl("https://horizon-testnet.stellar.org/")
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//            .create(UserService::class.java)
+        // showing the back button in action bar
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        /* Uses the lifecycle scope to trigger the coroutine. It's important to call this
-         * using a scope to follow the structured concurrency principle.
-         * https://medium.com/@elizarov/structured-concurrency-722d765aa952
-         * https://developer.android.com/topic/libraries/architecture/coroutines */
-//        lifecycleScope.launch {
-//            Log.d("TEST", "PRED")
-//            var pubK = "GDMUYFD7G3TUG7MJD5NZQ2Q7J3K6XYEDUEUYYENHHOMUZSEVMPQLF3NP"
-//            val acc = service.getAccount(pubK)
-//            /* This will print the result of the network call to the Logcat. This runs on the
-//             * main thread */
-//            Log.d("ACCOUNT LML:", acc.toString())
-//        }
 
-//        val uploadWorkRequest: WorkRequest =
-//            OneTimeWorkRequestBuilder<UploadWorker>()
-//                .build()
-//
-//        WorkManager
-//            .getInstance(this.applicationContext)
-//            .enqueue(uploadWorkRequest)
-
-//        Test.execute()
-
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        lifecycleScope.executeAsyncTask(onPreExecute = {
-            // ...
-        }, doInBackground = {
-            val accId = "GDMUYFD7G3TUG7MJD5NZQ2Q7J3K6XYEDUEUYYENHHOMUZSEVMPQLF3NP"
-            val server = Server("https://horizon-testnet.stellar.org")
-            val account: AccountResponse = server.accounts().account(accId)
-
-            Log.d("RESPONSE" , "Balances for account $accId")
-            for (balance in account.balances) {
-                System.out.printf(
-                    "Type: %s, Code: %s, Balance: %s%n",
-                    balance.assetType,
-                    balance.assetCode,
-                    balance.balance
-                )
-                Log.d(
-                    "RESPONSE",
-                    "type: ${balance.assetType}, code: ${balance.assetCode}, balance: ${balance.balance}"
-                )
-            }
-
-        }, onPostExecute = {
-            // ... here "it" is a data returned from "doInBackground"
-        })
-    }
-
-    fun <R> CoroutineScope.executeAsyncTask(
-        onPreExecute: () -> Unit,
-        doInBackground: () -> R,
-        onPostExecute: (R) -> Unit
-    ) = launch {
-        onPreExecute()
-        val result = withContext(Dispatchers.IO) { // runs in background thread without blocking the Main Thread
-            doInBackground()
+        if (savedInstanceState == null) {
+            val fragment = BalanceFragment()
+            supportFragmentManager
+                .beginTransaction()
+                .add(R.id.wallet_activity, fragment)
+                .commit()
         }
-        onPostExecute(result)
+
+    }
+    override fun onSupportNavigateUp(): Boolean {
+        Navigation
+            .findNavController(this, R.id.wallet_fragment_container)
+            .navigate(R.id.action_balance_fragment_to_walletManagementActivity)
+        return true
     }
 
 }

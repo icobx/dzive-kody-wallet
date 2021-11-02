@@ -10,7 +10,7 @@
         android:label="AuthFragment" >
         <action
             android:id="@+id/action_auth_fragment_to_wallet_man_nav_graph"
-            app:destination="@id/walletManagementActivity" />
+            app:destination="@id/wallet_man_activity" />
         <action
             android:id="@+id/action_auth_fragment_to_placeholder"
             app:destination="@id/placeholder" />
@@ -21,7 +21,7 @@
             app:destination="@id/auth_fragment" />
     </fragment>
     <activity
-        android:id="@+id/walletManagementActivity"
+        android:id="@+id/wallet_man_activity"
         android:name="com.example.dzivekodywallet.WalletManagementActivity"
         android:label="WalletManagementActivity" />
 </navigation>

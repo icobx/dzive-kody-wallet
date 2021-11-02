@@ -7,5 +7,13 @@
     <fragment
         android:id="@+id/wallets_fragment"
         android:name="com.example.dzivekodywallet.WalletsFragment"
-        android:label="WalletsFragment" />
+        android:label="WalletsFragment" >
+        <action
+            android:id="@+id/action_wallets_fragment_to_wallet_activity"
+            app:destination="@id/wallet_activity" />
+    </fragment>
+    <activity
+        android:id="@+id/wallet_activity"
+        android:name="com.example.dzivekodywallet.WalletActivity"
+        android:label="WalletActivity" />
 </navigation>

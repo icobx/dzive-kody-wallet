@@ -10,31 +10,21 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/wallets_fragment"
-        tools:context=".WalletsFragment">
+        android:id="@+id/balance_fragment"
+        tools:context=".BalanceFragment">
 
 
 
         <!-- TODO: Update blank fragment layout -->
         <TextView
-            android:id="@+id/wallets_text_view"
+            android:id="@+id/balance_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="tu bude zoznam penazeniek"
+            android:text="tu bude zostatok v penazenke"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/choose_wallet_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="choose wallet"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/wallets_text_view" />
-
 
 
 
