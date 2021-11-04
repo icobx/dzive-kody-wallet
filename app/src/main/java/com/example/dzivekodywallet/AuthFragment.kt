@@ -28,32 +28,27 @@ class AuthFragment : Fragment() {
             container,
             false
         )
+//        val binding = DataBindingUtil.inflate<FragmentTitleBinding>(inflater,
+//            R.layout.fragment_title,container,false)
+
+        binding.correctPinButton.setOnClickListener { view : View ->
+            view.findNavController().navigate(R.id.action_authFragment_to_walletsFragment)
+        }
         return binding.root
     }
 
     // Post view initialization logic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.textView = "data premenna"
+        binding.textView = "tu sa bude davat pin"
 
-//        val navHostFragment =
-//            view.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = findNavController()
-        val button = view.findViewById<Button>(R.id.correct_pin_button)
+//        val navController = activity?.findNavController(R.id.main_fragment_container)
+//        val button = binding.correctPinButton
+//
+//        button.setOnClickListener {
+//            navController?.navigate(R.id.action_authFragment_to_walletsFragment)
+////            navController?.popBackStack(R.layout.)
+//        }
 
-        button.setOnClickListener {
-            navController.navigate(R.id.action_auth_fragment_to_wallet_man_nav_graph)
-        }
-        // Connect adapters
-//        productAdapter = ProductAdapter(productClickCallback)
-//        binding.productsList.setAdapter(productAdapter)
-//
-//        // Initialize view properties, set click listeners, etc.
-//        binding.productsSearchBtn.setOnClickListener {...}
-//
-//        // Subscribe to state
-//        viewModel.products.observe(this, Observer { myProducts ->
-//            ...
-//        })
         Log.d("onViewCreated", "ANO")
         // ...and so on
     }

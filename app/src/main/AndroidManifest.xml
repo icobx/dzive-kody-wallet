@@ -13,10 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DziveKodyWallet">
         <activity
-            android:name=".WalletManagementActivity"
-            android:exported="true" />
-        <activity
-            android:name=".AuthActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,9 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".WalletActivity"
-            android:exported="true"></activity>
     </application>
 
 </manifest>

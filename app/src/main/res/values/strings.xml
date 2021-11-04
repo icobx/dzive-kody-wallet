@@ -2,4 +2,7 @@
     <string name="app_name">DziveKodyWallet</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="balance">Balance</string>
+    <string name="transactions">Transactions</string>
+    <string name="send_receive">Send/Receive</string>
 </resources>
