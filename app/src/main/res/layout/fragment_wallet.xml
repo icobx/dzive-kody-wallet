@@ -13,20 +13,28 @@
         android:id="@+id/wallet_fragment"
         tools:context=".WalletFragment">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/wallet_toolbar"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/wallet_appbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            app:title="@{toolbar_text}"/>
-<!--            android="@{toolbar_text}" />-->
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/wallet_appbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="nadpis"
+                app:navigationIcon="@drawable/ic_arrow_back_24"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                />
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/wallet_fragment_container"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/wallet_toolbar"
+            android:layout_below="@+id/wallet_appbar_layout"
             android:layout_above="@+id/wallet_bottom_nav"
             app:navGraph="@navigation/wallet_nav_graph"
             tools:layout="@layout/fragment_balance" />

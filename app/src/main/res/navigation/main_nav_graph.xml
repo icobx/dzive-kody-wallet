@@ -22,5 +22,9 @@
     <fragment
         android:id="@+id/walletFragment"
         android:name="com.example.dzivekodywallet.WalletFragment"
-        android:label="WalletFragment" />
+        android:label="WalletFragment" >
+        <action
+            android:id="@+id/action_walletFragment_to_walletsFragment"
+            app:destination="@id/walletsFragment" />
+    </fragment>
 </navigation>

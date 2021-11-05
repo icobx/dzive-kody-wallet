@@ -10,6 +10,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -29,6 +30,16 @@ class WalletFragment : Fragment() {
             container,
             false
         )
+        // back button nav
+        // TODO: no anim on button press atm
+        binding.walletAppbar.setNavigationOnClickListener { view: View ->
+            view.findNavController().navigate(R.id.action_walletFragment_to_walletsFragment)
+        }
+
+        // bottom nav functionality
+        val navHostFragment = childFragmentManager
+            .findFragmentById(R.id.wallet_fragment_container) as NavHostFragment
+        binding.walletBottomNav.setupWithNavController(navHostFragment.findNavController())
 
         return binding.root
     }
@@ -36,11 +47,9 @@ class WalletFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val navHostFragment = childFragmentManager
-            .findFragmentById(R.id.wallet_fragment_container) as NavHostFragment
-        val navController = navHostFragment.findNavController()
 
-        binding.walletBottomNav.setupWithNavController(navController)
+
+
 //        binding.walletBottomNav.setOnItemSelectedListener {
 //            when (it.itemId) {
 //                R.id.wallet_menu_balance -> {
