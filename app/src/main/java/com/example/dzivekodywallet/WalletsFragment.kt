@@ -5,16 +5,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.dzivekodywallet.data.database.model.Wallet
+import com.example.dzivekodywallet.data.util.Injection
 import com.example.dzivekodywallet.databinding.FragmentWalletsBinding
 
 class WalletsFragment : Fragment() {
     private lateinit var binding: FragmentWalletsBinding
+    private lateinit var viewModel: WalletsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,14 +28,40 @@ class WalletsFragment : Fragment() {
             false
         )
 
+        viewModel = ViewModelProvider(
+            requireActivity(),//this,
+            Injection.provideWalletsViewModelFactory(requireContext())
+        ).get(WalletsViewModel::class.java)
+
+
+        viewModel.getWallets().observe(viewLifecycleOwner, Observer { wallets ->
+            val stringBuilder = StringBuilder()
+            wallets.forEach { wallet ->
+                stringBuilder.append("${wallet.name}\n\n")
+            }
+            binding.textViewWallets.text = stringBuilder.toString()
+//            textView_wallets.text = stringBuilder.toString()
+        })
+
         binding.walletsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         val data = ArrayList<WalletItemViewModel>()
 
-        for (i in 1..20) {
-            data.add(WalletItemViewModel("Wallet " + i))
-        }
+//        for (i in 1..20) {
+//            data.add(WalletItemViewModel("Wallet " + i))
+//        }
 
-        binding.walletsRecyclerView.adapter = WalletItemAdapter(data)
+//        data.add(WalletItemViewModel("Wallet 1"))
+//        viewModel.getWallets().observe(viewLifecycleOwner, Observer {
+//                wallets ->
+//            wallets.forEach { wallet -> {}
+//                data.add(WalletItemViewModel(wallet.name))
+//            }
+//        })
+
+//        val adapter = WalletItemAdapter(data)
+//        binding.walletsRecyclerView.adapter = adapter
+
+
 //        binding.chooseWalletButton.setOnClickListener { view: View ->
 //            view.findNavController().navigate(R.id.action_walletsFragment_to_walletFragment)
 //        }
@@ -52,5 +79,15 @@ class WalletsFragment : Fragment() {
 //        button.setOnClickListener {
 //            nc?.navigate(R.id.action_walletsFragment_to_wallet_nav_graph)
 //        }
+
+        val button = binding.addWalletImageButton
+        var couter = 1
+        button.setOnClickListener {
+            Log.d("onViewCreated", "add wallet click")
+            val wallet = Wallet()
+            wallet.name = "wallet ${couter++}"
+            wallet.balance = 121.5
+            viewModel.insertWallet(wallet)
+        }
     }
 }

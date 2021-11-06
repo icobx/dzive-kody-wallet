@@ -2,15 +2,18 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@id/authFragment">
-    <fragment
-        android:id="@+id/authFragment"
-        android:name="com.example.dzivekodywallet.AuthFragment"
-        android:label="AuthFragment" >
-        <action
-            android:id="@+id/action_authFragment_to_walletsFragment"
-            app:destination="@id/walletsFragment" />
-    </fragment>
+    app:startDestination="@id/walletsFragment"
+    >
+<!--    TODO: fix this-->
+<!--    app:startDestination="@id/authFragment"-->
+<!--    <fragment-->
+<!--        android:id="@+id/authFragment"-->
+<!--        android:name="com.example.dzivekodywallet.AuthFragment"-->
+<!--        android:label="AuthFragment" >-->
+<!--        <action-->
+<!--            android:id="@+id/action_authFragment_to_walletsFragment"-->
+<!--            app:destination="@id/walletsFragment" />-->
+<!--    </fragment>-->
     <fragment
         android:id="@+id/walletsFragment"
         android:name="com.example.dzivekodywallet.WalletsFragment"
