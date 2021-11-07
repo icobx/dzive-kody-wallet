@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dzivekodywallet.R
+import com.example.dzivekodywallet.data.WalletRepository
+import com.example.dzivekodywallet.data.database.AppDatabase
 import com.example.dzivekodywallet.data.database.model.Wallet
 import com.example.dzivekodywallet.viewmodel.WalletItemViewModel
 import com.example.dzivekodywallet.databinding.ItemWalletBinding
@@ -60,7 +62,7 @@ class WalletItemDiffCallback : DiffUtil.ItemCallback<Wallet>() {
     }
 }
 
-class WalletItemListener(val clickListener: (walletId: Long) -> Unit ) {
+class WalletItemListener(val clickListener: (walletId: Long) -> Unit, val deleteClickListener: (wallet: Wallet) -> Unit ) {
 
     fun onWalletItemClick(wallet: Wallet) {
         Log.d("FANCYCLICKLISTENER", wallet.name)
@@ -69,5 +71,6 @@ class WalletItemListener(val clickListener: (walletId: Long) -> Unit ) {
 
     fun onWalletItemDeleteClick(wallet: Wallet) {
         Log.d("FANCYCLICKLISTENER", "Delete: ${wallet.name}")
+        wallet?.let { deleteClickListener(it) }
     }
 }

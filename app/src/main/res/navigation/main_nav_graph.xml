@@ -28,5 +28,8 @@
         <action
             android:id="@+id/action_walletFragment_to_walletsFragment"
             app:destination="@id/walletsFragment" />
+        <argument
+            android:name="walletId"
+            app:argType="long" />
     </fragment>
 </navigation>

@@ -36,14 +36,19 @@ class WalletsFragment : Fragment() {
         viewModel = ViewModelProvider(
             requireActivity(),
             Injection.provideWalletsViewModelFactory(requireContext())
-        ).get(WalletsViewModel::class.java)
+        )[WalletsViewModel::class.java]
 
         binding.walletsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.getWallets().observe(viewLifecycleOwner, Observer { wallets ->
-            binding.walletsRecyclerView.adapter = WalletItemAdapter(wallets, WalletItemListener {
-                Log.d("XXXXXXXX", wallets?.size.toString())
-            })
+            binding.walletsRecyclerView.adapter = WalletItemAdapter(wallets, WalletItemListener(
+                { walletId ->
+                    findNavController().navigate(WalletsFragmentDirections.actionWalletsFragmentToWalletFragment(walletId))
+                },
+                { wallet ->
+                    viewModel.deleteWallet(wallet)
+                })
+            )
         })
 
 //        binding.chooseWalletButton.setOnClickListener { view: View ->
@@ -72,7 +77,7 @@ class WalletsFragment : Fragment() {
             wallet.name = "wallet ${counter++}"
             wallet.balance = 121.5
             viewModel.insertWallet(wallet)
-            findNavController().navigate(R.id.action_walletsFragment_to_walletFragment)
+//            findNavController().navigate(R.id.action_walletsFragment_to_walletFragment)
         }
     }
 }

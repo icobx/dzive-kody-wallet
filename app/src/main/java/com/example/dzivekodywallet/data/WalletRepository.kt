@@ -18,12 +18,16 @@ class WalletRepository private constructor(private val walletDao: WalletDao) {
         walletDao.updateWallet(wallet)
     }
 
+    fun deleteWallet(wallet: Wallet) {
+        walletDao.deleteWallet(wallet)
+    }
+
     fun getWallet(key: Long): Wallet? {
         return walletDao.getWallet(key)
     }
 
     fun getAllWallets(): LiveData<List<Wallet>> {
-            return walletDao.getAllWallets()
+        return walletDao.getAllWallets()
     }
 
     companion object {

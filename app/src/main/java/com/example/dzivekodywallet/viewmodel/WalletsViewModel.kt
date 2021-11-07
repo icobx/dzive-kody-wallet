@@ -42,6 +42,12 @@ data class WalletsViewModel(private val walletRepository: WalletRepository): Vie
         }
     }
 
+    fun deleteWallet(wallet: Wallet) {
+        viewModelScope.launch(Dispatchers.IO) {
+            walletRepository.deleteWallet(wallet)
+        }
+    }
+
     private suspend fun getBalanceAsync() {
         return coroutineScope {
 

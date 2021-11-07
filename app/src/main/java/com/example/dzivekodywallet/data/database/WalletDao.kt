@@ -12,6 +12,9 @@ interface WalletDao {
     @Update
     fun updateWallet(wallet: Wallet)
 
+    @Delete
+    fun deleteWallet(wallet: Wallet)
+
     @Query("SELECT * from wallet_table WHERE walletId = :key")
     fun getWallet(key: Long): Wallet?
 

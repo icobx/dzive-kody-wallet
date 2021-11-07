@@ -1,6 +1,7 @@
 package com.example.dzivekodywallet.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +36,9 @@ class WalletFragment : Fragment() {
         val navHostFragment = childFragmentManager
             .findFragmentById(R.id.wallet_fragment_container) as NavHostFragment
         binding.walletBottomNav.setupWithNavController(navHostFragment.findNavController())
+
+        val args = WalletFragmentArgs.fromBundle(requireArguments())
+        Log.d("FANCYLOG", args.walletId.toString())
 
         return binding.root
     }
