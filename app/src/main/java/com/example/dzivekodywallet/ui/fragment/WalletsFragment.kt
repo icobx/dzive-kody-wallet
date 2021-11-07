@@ -16,6 +16,7 @@ import com.example.dzivekodywallet.data.database.model.Wallet
 import com.example.dzivekodywallet.data.util.Injection
 import com.example.dzivekodywallet.databinding.FragmentWalletsBinding
 import com.example.dzivekodywallet.ui.adapter.WalletItemAdapter
+import com.example.dzivekodywallet.ui.adapter.WalletItemListener
 
 class WalletsFragment : Fragment() {
     private lateinit var binding: FragmentWalletsBinding
@@ -39,8 +40,10 @@ class WalletsFragment : Fragment() {
 
         binding.walletsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        viewModel.getWallets().observe(viewLifecycleOwner, Observer {
-                wallets -> binding.walletsRecyclerView.adapter = WalletItemAdapter(wallets)
+        viewModel.getWallets().observe(viewLifecycleOwner, Observer { wallets ->
+            binding.walletsRecyclerView.adapter = WalletItemAdapter(wallets, WalletItemListener {
+                Log.d("XXXXXXXX", wallets?.size.toString())
+            })
         })
 
 //        binding.chooseWalletButton.setOnClickListener { view: View ->

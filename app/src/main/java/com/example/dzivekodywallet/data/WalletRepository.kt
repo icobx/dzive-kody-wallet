@@ -18,7 +18,7 @@ class WalletRepository private constructor(private val walletDao: WalletDao) {
         walletDao.updateWallet(wallet)
     }
 
-    fun getWallet(key: Long): Wallet {
+    fun getWallet(key: Long): Wallet? {
         return walletDao.getWallet(key)
     }
 
