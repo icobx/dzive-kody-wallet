@@ -13,7 +13,7 @@ interface WalletDao {
     fun updateWallet(wallet: Wallet)
 
     @Query("SELECT * from wallet_table WHERE walletId = :key")
-    fun getWallet(key: Long): Wallet
+    fun getWallet(key: Long): Wallet?
 
     @Query("SELECT * FROM wallet_table ORDER BY walletId DESC")
     fun getAllWallets(): LiveData<List<Wallet>>
