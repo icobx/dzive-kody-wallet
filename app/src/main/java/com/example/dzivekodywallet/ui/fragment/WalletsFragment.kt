@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.dzivekodywallet.R
 import com.example.dzivekodywallet.viewmodel.WalletItemViewModel
 import com.example.dzivekodywallet.viewmodel.WalletsViewModel
 import com.example.dzivekodywallet.data.database.model.Wallet
@@ -83,13 +85,14 @@ class WalletsFragment : Fragment() {
 //        }
 
         val button = binding.addWalletImageButton
-        var couter = 1
+        var counter = 1
         button.setOnClickListener {
             Log.d("onViewCreated", "add wallet click")
             val wallet = Wallet()
-            wallet.name = "wallet ${couter++}"
+            wallet.name = "wallet ${counter++}"
             wallet.balance = 121.5
             viewModel.insertWallet(wallet)
+            findNavController().navigate(R.id.action_walletsFragment_to_walletFragment)
         }
     }
 }
