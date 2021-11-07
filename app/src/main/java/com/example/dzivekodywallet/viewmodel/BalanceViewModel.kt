@@ -25,6 +25,7 @@ class BalanceViewModel(walletId: Long, private var walletRepository: WalletRepos
         return withContext(Dispatchers.IO) {
             val acc = transactions.getAccountInformation("GAVYM6ZIKHGBOVR3QJA7WWY3ANU5Z5PWAHMTM7F33SRZZZONP3Q5US6W")
             val balanceFromBlockchain = transactions.getBalance(acc)
+            Log.d("BalanceViewModel", balanceFromBlockchain.toString())
             return@withContext balanceFromBlockchain!!
         }
     }

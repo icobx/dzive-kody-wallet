@@ -43,8 +43,6 @@ class WalletFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-
-
 //        binding.walletBottomNav.setOnItemSelectedListener {
 //            when (it.itemId) {
 //                R.id.wallet_menu_balance -> {

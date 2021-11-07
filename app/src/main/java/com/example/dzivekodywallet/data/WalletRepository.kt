@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.dzivekodywallet.data.database.model.Wallet
 import com.example.dzivekodywallet.data.database.WalletDao
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class WalletRepository private constructor(private val walletDao: WalletDao) {
 
@@ -16,13 +18,12 @@ class WalletRepository private constructor(private val walletDao: WalletDao) {
         walletDao.updateWallet(wallet)
     }
 
-    fun getWallet(key: Long): Wallet? {
+    fun getWallet(key: Long): Wallet {
         return walletDao.getWallet(key)
     }
 
     fun getAllWallets(): LiveData<List<Wallet>> {
-        Log.d("wallet repository", "get all wallets")
-        return walletDao.getAllWallets()
+            return walletDao.getAllWallets()
     }
 
     companion object {

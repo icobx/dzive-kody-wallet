@@ -11,11 +11,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dzivekodywallet.R
-import com.example.dzivekodywallet.viewmodel.WalletItemViewModel
 import com.example.dzivekodywallet.viewmodel.WalletsViewModel
 import com.example.dzivekodywallet.data.database.model.Wallet
 import com.example.dzivekodywallet.data.util.Injection
 import com.example.dzivekodywallet.databinding.FragmentWalletsBinding
+import com.example.dzivekodywallet.ui.adapter.WalletItemAdapter
 
 class WalletsFragment : Fragment() {
     private lateinit var binding: FragmentWalletsBinding
@@ -33,38 +33,15 @@ class WalletsFragment : Fragment() {
         )
 
         viewModel = ViewModelProvider(
-            requireActivity(),//this,
+            requireActivity(),
             Injection.provideWalletsViewModelFactory(requireContext())
         ).get(WalletsViewModel::class.java)
 
-
-        viewModel.getWallets().observe(viewLifecycleOwner, Observer { wallets ->
-            val stringBuilder = StringBuilder()
-            wallets.forEach { wallet ->
-                stringBuilder.append("${wallet.name}\n\n")
-            }
-            binding.textViewWallets.text = stringBuilder.toString()
-//            textView_wallets.text = stringBuilder.toString()
-        })
-
         binding.walletsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val data = ArrayList<WalletItemViewModel>()
 
-//        for (i in 1..20) {
-//            data.add(WalletItemViewModel("Wallet " + i))
-//        }
-
-//        data.add(WalletItemViewModel("Wallet 1"))
-//        viewModel.getWallets().observe(viewLifecycleOwner, Observer {
-//                wallets ->
-//            wallets.forEach { wallet -> {}
-//                data.add(WalletItemViewModel(wallet.name))
-//            }
-//        })
-
-//        val adapter = WalletItemAdapter(data)
-//        binding.walletsRecyclerView.adapter = adapter
-
+        viewModel.getWallets().observe(viewLifecycleOwner, Observer {
+                wallets -> binding.walletsRecyclerView.adapter = WalletItemAdapter(wallets)
+        })
 
 //        binding.chooseWalletButton.setOnClickListener { view: View ->
 //            view.findNavController().navigate(R.id.action_walletsFragment_to_walletFragment)
@@ -85,7 +62,7 @@ class WalletsFragment : Fragment() {
 //        }
 
         val button = binding.addWalletImageButton
-        var counter = 1
+        var counter = 2
         button.setOnClickListener {
             Log.d("onViewCreated", "add wallet click")
             val wallet = Wallet()

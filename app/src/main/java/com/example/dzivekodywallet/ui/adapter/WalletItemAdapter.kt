@@ -6,9 +6,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dzivekodywallet.R
+import com.example.dzivekodywallet.data.database.model.Wallet
 import com.example.dzivekodywallet.viewmodel.WalletItemViewModel
 
-class WalletItemAdapter(private val mList: List<WalletItemViewModel>) : RecyclerView.Adapter<WalletItemAdapter.ViewHolder>() {
+class WalletItemAdapter(private val mList: List<Wallet>?) : RecyclerView.Adapter<WalletItemAdapter.ViewHolder>() {
+//    interface WalletClick {
+//        fun onClick(wallet: Wallet) {}
+//    }
+
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflates the card_view_design view
@@ -21,23 +26,26 @@ class WalletItemAdapter(private val mList: List<WalletItemViewModel>) : Recycler
 
     // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        val ItemsViewModel = mList[position]
-
+        val wallet = mList?.get(position)
         // sets the image to the imageview from our itemHolder class
 
         // sets the text to the textview from our itemHolder class
-        holder.textView.text = ItemsViewModel.text
+        if (wallet != null) {
+            holder.textView.text = wallet.name
+        }
 
     }
 
     // return the number of the items in the list
     override fun getItemCount(): Int {
-        return mList.size
+        if (mList != null) {
+            return mList.size
+        }
+        return 0
     }
 
     // Holds the views for adding it to image and text
-    class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textView: TextView = itemView.findViewById(R.id.wallet_item_text_view)
     }
 }

@@ -2,14 +2,12 @@ package com.example.dzivekodywallet.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dzivekodywallet.data.WalletRepository
 import com.example.dzivekodywallet.data.database.model.Wallet
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.stellar.sdk.Server
 import org.stellar.sdk.xdr.AssetType
 import java.util.*
@@ -18,17 +16,29 @@ data class WalletsViewModel(private val walletRepository: WalletRepository): Vie
 
     private var blockchainServer: Server = Server("https://horizon-testnet.stellar.org")
 
+    private var _allWallets = MutableLiveData<List<Wallet>>()
+    val allWallets: LiveData<List<Wallet>>
+        get() = _allWallets
+
+//    fun getWallets() {
+//        (viewModelScope as CoroutineScope).launch {
+//            _allWallets.value = walletRepository.getAllWallets().value
+//        }
+//    }
     fun getWallets(): LiveData<List<Wallet>> {
         return walletRepository.getAllWallets()
+//        viewModelScope.launch {
+//            _allWallets.value = walletRepository.getAllWallets()?.value
+//        }
     }
 
     fun insertWallet(wallet: Wallet) {
-        walletRepository.insertWallet(wallet)
+        viewModelScope.launch(Dispatchers.IO) {
+            walletRepository.insertWallet(wallet)
 
-        viewModelScope.launch {
-            withContext(Dispatchers.Default) {
+//            withContext(Dispatchers.Default) {
                 getBalanceAsync()
-            }
+//            }
         }
     }
 

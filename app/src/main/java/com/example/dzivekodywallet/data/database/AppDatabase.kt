@@ -32,7 +32,7 @@ abstract class AppDatabase : RoomDatabase() {
                         AppDatabase::class.java,
                         "app_database.sql"
                     )
-                        .allowMainThreadQueries() // TODO remove
+//                        .allowMainThreadQueries() // TODO remove
                         .fallbackToDestructiveMigration()
 //                        .addCallback(prepopulateDatabase())
                         .build()
