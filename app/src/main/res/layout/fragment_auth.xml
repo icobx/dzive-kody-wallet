@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:id="@+id/auth_fragment"
         android:background="@android:color/holo_red_light"
-        tools:context=".AuthFragment">
+        tools:context=".ui.fragment.AuthFragment">
 
 
 

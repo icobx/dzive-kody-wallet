@@ -1,4 +1,4 @@
-package com.example.dzivekodywallet
+package com.example.dzivekodywallet.viewmodel
 
 data class WalletItemViewModel(val text: String) {
 

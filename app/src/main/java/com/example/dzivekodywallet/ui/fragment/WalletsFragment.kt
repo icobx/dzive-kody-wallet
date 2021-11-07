@@ -1,4 +1,4 @@
-package com.example.dzivekodywallet
+package com.example.dzivekodywallet.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.dzivekodywallet.viewmodel.WalletItemViewModel
+import com.example.dzivekodywallet.viewmodel.WalletsViewModel
 import com.example.dzivekodywallet.data.database.model.Wallet
 import com.example.dzivekodywallet.data.util.Injection
 import com.example.dzivekodywallet.databinding.FragmentWalletsBinding

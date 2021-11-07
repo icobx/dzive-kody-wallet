@@ -1,7 +1,7 @@
 package com.example.dzivekodywallet.data.util
 
 import android.content.Context
-import com.example.dzivekodywallet.WalletsViewModelFactory
+import com.example.dzivekodywallet.viewmodel.WalletsViewModelFactory
 import com.example.dzivekodywallet.data.WalletRepository
 import com.example.dzivekodywallet.data.database.AppDatabase
 

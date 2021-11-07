@@ -8,7 +8,7 @@
 <!--    app:startDestination="@id/authFragment"-->
 <!--    <fragment-->
 <!--        android:id="@+id/authFragment"-->
-<!--        android:name="com.example.dzivekodywallet.AuthFragment"-->
+<!--        android:name="com.example.dzivekodywallet.ui.fragments.AuthFragment"-->
 <!--        android:label="AuthFragment" >-->
 <!--        <action-->
 <!--            android:id="@+id/action_authFragment_to_walletsFragment"-->
@@ -16,7 +16,7 @@
 <!--    </fragment>-->
     <fragment
         android:id="@+id/walletsFragment"
-        android:name="com.example.dzivekodywallet.WalletsFragment"
+        android:name="com.example.dzivekodywallet.ui.fragment.WalletsFragment"
         android:label="WalletsFragment" >
         <action
             android:id="@+id/action_walletsFragment_to_walletFragment"
@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/walletFragment"
-        android:name="com.example.dzivekodywallet.WalletFragment"
+        android:name="com.example.dzivekodywallet.ui.fragment.WalletFragment"
         android:label="WalletFragment" >
         <action
             android:id="@+id/action_walletFragment_to_walletsFragment"

@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:id="@+id/balance_fragment"
         android:background="@android:color/holo_orange_light"
-        tools:context=".SendReceiveFragment">
+        tools:context=".ui.fragment.SendReceiveFragment">
 
 
 

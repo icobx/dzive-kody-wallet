@@ -1,10 +1,12 @@
-package com.example.dzivekodywallet
+package com.example.dzivekodywallet.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dzivekodywallet.R
+import com.example.dzivekodywallet.viewmodel.WalletItemViewModel
 
 class WalletItemAdapter(private val mList: List<WalletItemViewModel>) : RecyclerView.Adapter<WalletItemAdapter.ViewHolder>() {
     // create new views

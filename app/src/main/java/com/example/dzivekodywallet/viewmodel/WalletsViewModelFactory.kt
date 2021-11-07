@@ -1,4 +1,4 @@
-package com.example.dzivekodywallet
+package com.example.dzivekodywallet.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
