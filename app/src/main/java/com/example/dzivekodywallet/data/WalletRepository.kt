@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import com.example.dzivekodywallet.data.blockchain.StellarService
 import com.example.dzivekodywallet.data.database.model.Wallet
 import com.example.dzivekodywallet.data.database.WalletDao
+import com.example.dzivekodywallet.data.util.Encryption
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.lang.Math.random
@@ -32,18 +33,16 @@ class WalletRepository private constructor(private val walletDao: WalletDao, pri
         return walletDao.getAllWallets()
     }
 
-    suspend fun generateNewWallet(walletName: String) {
+    suspend fun generateNewWallet(walletName: String, secretPhrase: String) {
         withContext(Dispatchers.IO) {
-//            val nextWalletNumber = walletDao.getAllWallets().value?.size
-//            Log.d("KOKOT", nextWalletNumber.toString())
             val generatedKeyPair = stellarService.generateAccount()
             val wallet = Wallet()
             wallet.name = walletName + (1..80).random()
             wallet.balance = 0.0
-            // TODO:
-            // zasifrovat
-            wallet.privateKey = generatedKeyPair.secretSeed.toString()
-            wallet.publicKey = generatedKeyPair.publicKey.toString()
+            wallet.privateKey = Encryption
+                .encrypt(String(generatedKeyPair.secretSeed), secretPhrase)
+                .toString()
+            wallet.publicKey = generatedKeyPair.accountId
             insertWallet(wallet)
         }
     }

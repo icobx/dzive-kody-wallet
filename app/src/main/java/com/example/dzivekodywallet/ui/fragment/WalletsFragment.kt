@@ -65,7 +65,7 @@ class WalletsFragment : Fragment() {
     private fun generateNewWallet() {
         // TODO:
         // get name of a wallet from UI
-        viewModel.generateNewWallet("walletka")
+        viewModel.generateNewWallet("walletka", "testovacia fraza")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

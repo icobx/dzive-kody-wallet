@@ -39,9 +39,9 @@ data class WalletsViewModel(private val walletRepository: WalletRepository): Vie
         }
     }
 
-    fun generateNewWallet(walletName: String) {
+    fun generateNewWallet(walletName: String, secretPhrase: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            walletRepository.generateNewWallet(walletName)
+            walletRepository.generateNewWallet(walletName, secretPhrase)
         }
     }
 }
