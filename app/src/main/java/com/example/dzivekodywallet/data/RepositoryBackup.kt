@@ -1,4 +1,4 @@
-package com.example.dzivekodywallet
+package com.example.dzivekodywallet.data
 //
 //import android.util.Log
 ////import com.github.kittinunf.fuel.Fuel

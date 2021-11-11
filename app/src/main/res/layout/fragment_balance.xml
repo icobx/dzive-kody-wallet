@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:id="@+id/balance_fragment"
         android:background="@android:color/holo_blue_light"
-        tools:context=".BalanceFragment">
+        tools:context=".ui.fragment.BalanceFragment">
 
 
 

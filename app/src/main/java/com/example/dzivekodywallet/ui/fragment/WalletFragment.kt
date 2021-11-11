@@ -1,21 +1,17 @@
-package com.example.dzivekodywallet
+package com.example.dzivekodywallet.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.dzivekodywallet.R
 import com.example.dzivekodywallet.databinding.FragmentWalletBinding
-import com.google.android.material.navigation.NavigationBarView
 
 class WalletFragment : Fragment() {
     private lateinit var binding: FragmentWalletBinding
@@ -41,13 +37,14 @@ class WalletFragment : Fragment() {
             .findFragmentById(R.id.wallet_fragment_container) as NavHostFragment
         binding.walletBottomNav.setupWithNavController(navHostFragment.findNavController())
 
+        val args = WalletFragmentArgs.fromBundle(requireArguments())
+        Log.d("FANCYLOG", args.walletId.toString())
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
 
 
 //        binding.walletBottomNav.setOnItemSelectedListener {

@@ -1,17 +1,26 @@
-package com.example.dzivekodywallet
+package com.example.dzivekodywallet.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.example.dzivekodywallet.data.WalletRepository
+import com.example.dzivekodywallet.data.database.AppDatabase
+import com.example.dzivekodywallet.data.util.Injection
 import com.example.dzivekodywallet.databinding.FragmentBalanceBinding
+import com.example.dzivekodywallet.viewmodel.BalanceViewModel
+import com.example.dzivekodywallet.viewmodel.BalanceViewModelFactory
+import com.example.dzivekodywallet.viewmodel.WalletsViewModel
 
 class BalanceFragment : Fragment() {
     private lateinit var binding: FragmentBalanceBinding
+
+    private lateinit var viewModel: BalanceViewModel
+    private lateinit var viewModelFactory: BalanceViewModelFactory
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,6 +33,11 @@ class BalanceFragment : Fragment() {
             false
         )
 
+        viewModel = ViewModelProvider(
+            requireActivity(),
+            Injection.provideBalanceViewModelFactory(requireContext())
+        )[BalanceViewModel::class.java]
+
 //        requireActivity().onBackPressedDispatcher.addCallback(
 //            object : OnBackPressedCallback(true) {
 //                override fun handleOnBackPressed() {
@@ -33,6 +47,14 @@ class BalanceFragment : Fragment() {
 //                }
 //            }
 //        )
+
+
+        viewModel.balance.observe(viewLifecycleOwner, Observer { balance ->
+            binding.balanceTextView.text = balance.toString()
+        })
+
+        viewModel.updateBalance()
+
         return binding.root
     }
 

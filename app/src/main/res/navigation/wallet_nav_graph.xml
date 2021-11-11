@@ -6,15 +6,15 @@
 
     <fragment
         android:id="@+id/wallet_nav_balance"
-        android:name="com.example.dzivekodywallet.BalanceFragment"
+        android:name="com.example.dzivekodywallet.ui.fragment.BalanceFragment"
         android:label="BalanceFragment" />
     <fragment
         android:id="@+id/wallet_nav_transactions"
-        android:name="com.example.dzivekodywallet.TransactionsFragment"
+        android:name="com.example.dzivekodywallet.ui.fragment.TransactionsFragment"
         android:label="TransactionsFragment" />
     <fragment
         android:id="@+id/wallet_nav_send_rec"
-        android:name="com.example.dzivekodywallet.SendReceiveFragment"
+        android:name="com.example.dzivekodywallet.ui.fragment.SendReceiveFragment"
         android:label="SendReceiveFragment" />
 
 </navigation>
