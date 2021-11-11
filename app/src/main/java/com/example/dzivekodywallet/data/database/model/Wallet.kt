@@ -13,6 +13,13 @@ data class Wallet (
     var name: String = "",
 
     @ColumnInfo(name = "balance")
-    var balance: Double = 0.0
+    var balance: Double = 0.0,
+
+    @ColumnInfo(name = "public_key")
+    var publicKey: String = "",
+
+    @ColumnInfo(name = "private_key")
+    var privateKey: String = "",
+
 )
 

@@ -58,6 +58,16 @@ class WalletsFragment : Fragment() {
         return binding.root
     }
 
+    private fun addExistingWallet() {
+
+    }
+
+    private fun generateNewWallet() {
+        // TODO:
+        // get name of a wallet from UI
+        viewModel.generateNewWallet("walletka")
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("onViewCreated", "in wallets fragment")
@@ -69,15 +79,21 @@ class WalletsFragment : Fragment() {
 //            nc?.navigate(R.id.action_walletsFragment_to_wallet_nav_graph)
 //        }
 
-        val button = binding.addWalletImageButton
-        var counter = 2
-        button.setOnClickListener {
-            Log.d("onViewCreated", "add wallet click")
-            val wallet = Wallet()
-            wallet.name = "wallet ${counter++}"
-            wallet.balance = 121.5
-            viewModel.insertWallet(wallet)
-//            findNavController().navigate(R.id.action_walletsFragment_to_walletFragment)
+        val generateNewButton = binding.generateWalletImageButton
+        val addExistingButton =binding.addWalletImageButton
+
+        addExistingButton.setOnClickListener {
+            addExistingWallet()
         }
+
+        generateNewButton.setOnClickListener {
+            generateNewWallet()
+        }
+
+//        button.setOnClickListener {
+//            val numWallets = viewModel.getWallets().value?.size ?: 0
+
+//            findNavController().navigate(R.id.action_walletsFragment_to_walletFragment)
+//        }
     }
 }

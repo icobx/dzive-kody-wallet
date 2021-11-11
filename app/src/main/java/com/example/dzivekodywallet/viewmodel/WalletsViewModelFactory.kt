@@ -2,6 +2,7 @@ package com.example.dzivekodywallet.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.dzivekodywallet.data.blockchain.StellarService
 import com.example.dzivekodywallet.data.WalletRepository
 
 class WalletsViewModelFactory(private val walletRepository: WalletRepository)
