@@ -18,7 +18,7 @@ object Injection {
     fun provideBalanceViewModelFactory(context: Context): BalanceViewModelFactory {
         val walletRepository = WalletRepository.getInstance(AppDatabase.getInstance(context).walletDao, StellarService.getInstance())
 
-        return BalanceViewModelFactory(1L, walletRepository, StellarService.getInstance())
+        return BalanceViewModelFactory(1L, walletRepository)
     }
 
     fun provideAddWalletViewModelFactory(context: Context): AddWalletViewModelFactory {

@@ -38,10 +38,4 @@ data class WalletsViewModel(private val walletRepository: WalletRepository): Vie
             walletRepository.deleteWallet(wallet)
         }
     }
-
-    fun generateNewWallet(walletName: String, secretPhrase: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            walletRepository.generateNewWallet(walletName, secretPhrase)
-        }
-    }
 }

@@ -8,6 +8,7 @@ import com.example.dzivekodywallet.data.database.WalletDao
 import com.example.dzivekodywallet.data.util.Encryption
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.stellar.sdk.KeyPair
 import java.lang.Math.random
 
 class WalletRepository private constructor(private val walletDao: WalletDao, private val stellarService: StellarService) {
@@ -33,28 +34,38 @@ class WalletRepository private constructor(private val walletDao: WalletDao, pri
         return walletDao.getAllWallets()
     }
 
-    fun synchronizeWallet(wallet: Wallet): Wallet? {
-        // TODO:
-        // rework
-        val accountInfo = stellarService.getAccountInformation(wallet.publicKey)
-        if (accountInfo != null) {
-            wallet.balance = accountInfo.balances[0].balance?.toDouble()!!
-            return wallet
-        }
+    private fun pairWallet(secretSeed: String): Wallet {
+        val keyPair = KeyPair.fromSecretSeed(secretSeed)
 
-        return null
+        val accountInfo = stellarService.getAccountInformation(keyPair.accountId)
+        val wallet = Wallet()
+        wallet.publicKey = keyPair.accountId
+        wallet.balance = accountInfo?.balances?.get(0)?.balance?.toDouble()!!
+
+        return wallet
     }
 
     suspend fun generateNewWallet(walletName: String, secretPhrase: String) {
         withContext(Dispatchers.IO) {
             val generatedKeyPair = stellarService.generateAccount()
             val wallet = Wallet()
-            wallet.name = walletName + (1..80).random()
+            wallet.name = walletName
             wallet.balance = 0.0
             wallet.privateKey = Encryption
                 .encrypt(String(generatedKeyPair.secretSeed), secretPhrase)
                 .toString()
             wallet.publicKey = generatedKeyPair.accountId
+            insertWallet(wallet)
+        }
+    }
+
+    suspend fun addExistingWallet(walletName: String, walletSecretSeed: String, secretPhrase: String) {
+        withContext(Dispatchers.IO) {
+            val wallet = pairWallet(walletSecretSeed)
+            wallet.name = walletName
+            wallet.privateKey = Encryption
+                .encrypt(walletSecretSeed, secretPhrase)
+                .toString()
             insertWallet(wallet)
         }
     }

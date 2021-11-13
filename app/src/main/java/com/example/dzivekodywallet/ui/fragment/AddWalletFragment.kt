@@ -1,17 +1,16 @@
 package com.example.dzivekodywallet.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.dzivekodywallet.data.util.Injection
 import com.example.dzivekodywallet.databinding.FragmentAddWalletBinding
 import com.example.dzivekodywallet.viewmodel.AddWalletViewModel
-import com.example.dzivekodywallet.viewmodel.BalanceViewModel
 
 class AddWalletFragment : Fragment() {
     private lateinit var binding: FragmentAddWalletBinding
@@ -37,15 +36,22 @@ class AddWalletFragment : Fragment() {
             Injection.provideAddWalletViewModelFactory(requireContext())
         )[AddWalletViewModel::class.java]
 
-        binding.buttonAddExistingWallet.setOnClickListener {
-            addExistingWallet()
+        binding.buttonAddWallet.setOnClickListener {
+            addWallet()
         }
+
+        binding.isGeneratingEnabled = binding.checkBoxGenerateNew.isChecked
+
+        binding.checkBoxGenerateNew.setOnClickListener { view ->
+            val checkBox = (view as CheckBox)
+            binding.isGeneratingEnabled = checkBox.isChecked
+        }
+
         return binding.root
     }
 
-    private fun addExistingWallet() {
-        viewModel.addExistingWallet(binding.walletName, binding.walletAccountId, binding.walletSecretSeed)
-
+    private fun addWallet() {
+        viewModel.addWallet(binding.walletName.toString(), binding.walletSecretSeed.toString(), "1234", binding.isGeneratingEnabled as Boolean)
         // TODO
         // check if addition succeeded
         findNavController().navigate(AddWalletFragmentDirections.actionAddWalletFragment2ToWalletsFragment())

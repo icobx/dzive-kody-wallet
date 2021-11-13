@@ -13,6 +13,9 @@
         <variable
             name="walletSecretSeed"
             type="String" />
+        <variable
+            name="isGeneratingEnabled"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,48 +30,49 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
             android:hint="New Wallet name"
-            android:text="@={walletName}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/text_input_account_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:ems="10"
             android:inputType="textPersonName"
-            android:hint="Wallet's account id"
-            android:text="@={walletAccountId}"
-            app:layout_constraintEnd_toEndOf="@+id/text_input_wallet_name"
-            app:layout_constraintStart_toStartOf="@+id/text_input_wallet_name"
-            app:layout_constraintTop_toBottomOf="@+id/text_input_wallet_name" />
+            android:minHeight="48dp"
+            android:text="@={walletName}"
+            app:layout_constraintBottom_toTopOf="@+id/text_input_secret_seed"
+            app:layout_constraintEnd_toEndOf="@+id/checkBox_generate_new"
+            app:layout_constraintStart_toStartOf="@+id/checkBox_generate_new"
+            app:layout_constraintTop_toBottomOf="@+id/checkBox_generate_new" />
 
         <EditText
             android:id="@+id/text_input_secret_seed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:enabled="@{!isGeneratingEnabled}"
             android:hint="Wallet's secret key"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
             android:text="@={walletSecretSeed}"
-            app:layout_constraintEnd_toEndOf="@+id/text_input_account_id"
-            app:layout_constraintStart_toStartOf="@+id/text_input_account_id"
-            app:layout_constraintTop_toBottomOf="@+id/text_input_account_id" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/text_input_wallet_name"
+            app:layout_constraintStart_toStartOf="@+id/text_input_wallet_name"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/button_add_existing_wallet"
+            android:id="@+id/button_add_wallet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Wallet"
+            android:text="@string/add_wallet_title_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/text_input_secret_seed"
             app:layout_constraintStart_toStartOf="@+id/text_input_secret_seed"
             app:layout_constraintTop_toBottomOf="@+id/text_input_secret_seed" />
+
+        <CheckBox
+            android:id="@+id/checkBox_generate_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/generate_wallet_title_checkbox"
+            app:layout_constraintBottom_toTopOf="@+id/text_input_secret_seed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

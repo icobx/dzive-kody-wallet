@@ -73,39 +73,27 @@
             android:layout_marginBottom="30dp"
         >
 
-            <TextView
-                android:id="@+id/add_wallet_text_view"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/add_wallet_linear_layout"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:padding="5dp"
-                android:text="Add Wallet" />
+                android:orientation="vertical"
+                android:layout_centerHorizontal="true" >
+                <TextView
+                    android:id="@+id/add_wallet_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textAlignment="center"
+                    android:text="Add Wallet" />
 
-            <ImageButton
-                android:id="@+id/add_wallet_image_button"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@null"
-                android:src="@drawable/ic_add_48" />
-
-            <TextView
-                android:id="@+id/generate_wallet_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:padding="5dp"
-                android:text="Generate Wallet"
-                android:layout_toRightOf="@id/add_wallet_text_view"
-                />
-
-            <ImageButton
-                android:id="@+id/generate_wallet_image_button"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_toRightOf="@+id/add_wallet_image_button"
-                android:background="@null"
-                android:src="@drawable/ic_add_48" />
-
+                <ImageButton
+                    android:id="@+id/add_wallet_image_button"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_add_48" />
+            </LinearLayout>
         </RelativeLayout>
 
 

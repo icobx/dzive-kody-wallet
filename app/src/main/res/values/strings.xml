@@ -7,4 +7,6 @@
     <string name="send_receive">Send/Receive</string>
     <string name="your_wallets">Your wallets</string>
     <string name="input_wallet_name_title">New wallet name</string>
+    <string name="add_wallet_title_button">Add Wallet</string>
+    <string name="generate_wallet_title_checkbox">Generate a new wallet</string>
 </resources>
