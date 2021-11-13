@@ -10,9 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.dzivekodywallet.R
 import com.example.dzivekodywallet.viewmodel.WalletsViewModel
-import com.example.dzivekodywallet.data.database.model.Wallet
 import com.example.dzivekodywallet.data.util.Injection
 import com.example.dzivekodywallet.databinding.FragmentWalletsBinding
 import com.example.dzivekodywallet.ui.adapter.WalletItemAdapter
@@ -59,7 +57,7 @@ class WalletsFragment : Fragment() {
     }
 
     private fun addExistingWallet() {
-
+        findNavController().navigate(WalletsFragmentDirections.actionWalletsFragmentToAddWalletFragment2())
     }
 
     private fun generateNewWallet() {

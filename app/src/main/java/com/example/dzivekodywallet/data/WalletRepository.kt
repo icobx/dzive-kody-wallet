@@ -33,6 +33,18 @@ class WalletRepository private constructor(private val walletDao: WalletDao, pri
         return walletDao.getAllWallets()
     }
 
+    fun synchronizeWallet(wallet: Wallet): Wallet? {
+        // TODO:
+        // rework
+        val accountInfo = stellarService.getAccountInformation(wallet.publicKey)
+        if (accountInfo != null) {
+            wallet.balance = accountInfo.balances[0].balance?.toDouble()!!
+            return wallet
+        }
+
+        return null
+    }
+
     suspend fun generateNewWallet(walletName: String, secretPhrase: String) {
         withContext(Dispatchers.IO) {
             val generatedKeyPair = stellarService.generateAccount()

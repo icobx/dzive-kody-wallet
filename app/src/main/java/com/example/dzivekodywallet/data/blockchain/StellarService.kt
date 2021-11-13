@@ -12,8 +12,12 @@ import org.stellar.sdk.responses.AccountResponse
 class StellarService private constructor() {
     private var blockchainServer: Server = Server("https://horizon-testnet.stellar.org")
 
-    fun getAccountInformation(accountId: String) : AccountResponse {
-        return blockchainServer.accounts().account(accountId)
+    fun getAccountInformation(accountId: String) : AccountResponse? {
+        return try {
+            blockchainServer.accounts().account(accountId)
+        } catch(e: Exception) {
+            null
+        }
     }
 
     fun generateAccount(): KeyPair {

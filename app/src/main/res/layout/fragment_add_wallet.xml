@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="walletName"
+            type="String" />
+        <variable
+            name="walletAccountId"
+            type="String" />
+        <variable
+            name="walletSecretSeed"
+            type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/wallets_fragment"
+        android:background="@android:color/holo_green_dark"
+        tools:context=".ui.fragment.WalletsFragment">
+
+        <EditText
+            android:id="@+id/text_input_wallet_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="New Wallet name"
+            android:text="@={walletName}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/text_input_account_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="Wallet's account id"
+            android:text="@={walletAccountId}"
+            app:layout_constraintEnd_toEndOf="@+id/text_input_wallet_name"
+            app:layout_constraintStart_toStartOf="@+id/text_input_wallet_name"
+            app:layout_constraintTop_toBottomOf="@+id/text_input_wallet_name" />
+
+        <EditText
+            android:id="@+id/text_input_secret_seed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="Wallet's secret key"
+            android:text="@={walletSecretSeed}"
+            app:layout_constraintEnd_toEndOf="@+id/text_input_account_id"
+            app:layout_constraintStart_toStartOf="@+id/text_input_account_id"
+            app:layout_constraintTop_toBottomOf="@+id/text_input_account_id" />
+
+        <Button
+            android:id="@+id/button_add_existing_wallet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Wallet"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/text_input_secret_seed"
+            app:layout_constraintStart_toStartOf="@+id/text_input_secret_seed"
+            app:layout_constraintTop_toBottomOf="@+id/text_input_secret_seed" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
