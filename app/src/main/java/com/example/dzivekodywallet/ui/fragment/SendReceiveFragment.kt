@@ -25,11 +25,17 @@ import com.example.dzivekodywallet.ui.adapter.ContactItemListener
 import com.example.dzivekodywallet.viewmodel.ContactsViewModel
 import com.example.dzivekodywallet.viewmodel.SendReceiveViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import android.graphics.Bitmap
+import com.journeyapps.barcodescanner.BarcodeEncoder
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.common.BitMatrix
+import com.google.zxing.MultiFormatWriter
+import java.lang.Exception
+
 
 class SendReceiveFragment : Fragment() {
     private lateinit var binding: FragmentSendReceiveBinding
     private lateinit var viewModel: SendReceiveViewModel
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,6 +62,23 @@ class SendReceiveFragment : Fragment() {
 //                }
 //            }
 //        )
+
+        val imageView = binding.qrCode
+        val multiFormatWriter = MultiFormatWriter()
+        try {
+            val bitMatrix = multiFormatWriter.encode(
+                "Public key placeholder",
+                BarcodeFormat.QR_CODE,
+                500,
+                500
+            )
+            val barcodeEncoder = BarcodeEncoder()
+            val bitmap = barcodeEncoder.createBitmap(bitMatrix)
+            imageView.setImageBitmap(bitmap)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
 
 
         return binding.root
@@ -86,7 +109,6 @@ class SendReceiveFragment : Fragment() {
             dialog.setContentView(dialogView)
             dialog.show()
         }
-
 
         Log.d("onViewCreated", "in send/receive fragment")
     }

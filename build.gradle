@@ -4,6 +4,8 @@ buildscript {
     ext {
         room_version = '2.4.0-alpha03'
         navigationVersion = '2.3.1'
+        zxingCoreVersion = '3.2.1'
+        zxingVersion = '3.2.0@aar'
     }
 
 

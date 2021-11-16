@@ -73,6 +73,10 @@ dependencies {
     //auth
     implementation 'androidx.biometric:biometric:1.2.0-alpha03'
 
+    // QR Code
+    implementation "com.google.zxing:core:$zxingCoreVersion"
+    implementation "com.journeyapps:zxing-android-embedded:$zxingVersion"
+
     // fuel
 //    def fuel_version = '2.3.1'
 //    //dependencies {

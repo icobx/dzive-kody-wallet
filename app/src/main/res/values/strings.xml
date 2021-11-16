@@ -7,4 +7,6 @@
     <string name="send_receive">Send/Receive</string>
     <string name="your_wallets">Your wallets</string>
     <string name="your_contacts">Your contacts</string>
+    <string name="send_payment">Send payment</string>
+    <string name="receive_payment">Receive payment</string>
 </resources>
