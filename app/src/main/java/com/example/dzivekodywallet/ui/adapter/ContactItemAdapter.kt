@@ -57,14 +57,14 @@ class ContactItemDiffCallback : DiffUtil.ItemCallback<Contact>() {
     }
 }
 
-class ContactItemListener(val clickListener: (contactId: Long) -> Unit, val deleteClickListener: (contact: Contact) -> Unit ) {
+class ContactItemListener(val editClickListener: (contact: Contact) -> Unit, val deleteClickListener: (contact: Contact) -> Unit ) {
     fun onContactItemDeleteClick(contact: Contact) {
         Log.d("FANCYCLICKLISTENER", "Delete: ${contact.name}")
         contact?.let { deleteClickListener(it) }
     }
 
     fun onContactItemEditClick(contact: Contact) {
-
-//        contact?.let( editClickListener(it) )
+        Log.d("FANCYCLICKLISTENER", "Edit: ${contact.name}")
+        contact?.let { editClickListener(it) }
     }
 }

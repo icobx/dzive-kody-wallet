@@ -27,6 +27,12 @@ data class ContactsViewModel(private val contactRepository: ContactRepository): 
         }
     }
 
+    fun editContact(contact: Contact) {
+        viewModelScope.launch(Dispatchers.IO) {
+            contactRepository.updateContact(contact)
+        }
+    }
+
     fun deleteContact(contact: Contact) {
         viewModelScope.launch(Dispatchers.IO) {
             contactRepository.deleteContact(contact)

@@ -33,6 +33,7 @@ class ChooseContactItemAdapter(private val mList: List<Contact>, private val cli
         {
             binding.contact = contact
             binding.contactItemTextView.text = contact.name
+            binding.contactItemTextViewPubKey.text = contact.pubKey
             binding.clickListener = clickListener
             binding.executePendingBindings()
         }
