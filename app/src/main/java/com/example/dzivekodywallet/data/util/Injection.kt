@@ -5,22 +5,29 @@ import com.example.dzivekodywallet.data.ContactRepository
 import com.example.dzivekodywallet.viewmodel.WalletsViewModelFactory
 import com.example.dzivekodywallet.viewmodel.ContactsViewModelFactory
 import com.example.dzivekodywallet.data.WalletRepository
-import com.example.dzivekodywallet.data.blockchain.Transactions
+import com.example.dzivekodywallet.data.blockchain.StellarService
 import com.example.dzivekodywallet.data.database.AppDatabase
-import com.example.dzivekodywallet.viewmodel.BalanceViewModelFactory
+import com.example.dzivekodywallet.viewmodel.AddWalletViewModelFactory
+import com.example.dzivekodywallet.viewmodel.WalletViewModelFactory
 import com.example.dzivekodywallet.viewmodel.SendReceiveViewModelFactory
 
 object Injection {
    fun provideWalletsViewModelFactory(context: Context): WalletsViewModelFactory {
-       val walletRepository = WalletRepository.getInstance(AppDatabase.getInstance(context).walletDao)
+       val walletRepository = WalletRepository.getInstance(AppDatabase.getInstance(context).walletDao, StellarService.getInstance())
 
        return WalletsViewModelFactory(walletRepository)
    }
 
-    fun provideBalanceViewModelFactory(context: Context): BalanceViewModelFactory {
-        val walletRepository = WalletRepository.getInstance(AppDatabase.getInstance(context).walletDao)
+    fun provideAddWalletViewModelFactory(context: Context): AddWalletViewModelFactory {
+        val walletRepository = WalletRepository.getInstance(AppDatabase.getInstance(context).walletDao, StellarService.getInstance())
 
-        return BalanceViewModelFactory(1L, walletRepository, Transactions.getInstance())
+        return AddWalletViewModelFactory(walletRepository)
+    }
+
+    fun provideWalletViewModelFactory(context: Context): WalletViewModelFactory {
+        val walletRepository = WalletRepository.getInstance(AppDatabase.getInstance(context).walletDao, StellarService.getInstance())
+
+        return WalletViewModelFactory(walletRepository)
     }
 
     fun provideContactsViewModelFactory(context: Context): ContactsViewModelFactory {

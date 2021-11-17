@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_walletsFragment_to_walletFragment"
             app:destination="@id/walletFragment" />
+        <action
+            android:id="@+id/action_walletsFragment_to_addWalletFragment2"
+            app:destination="@id/addWalletFragment2" />
     </fragment>
     <fragment
         android:id="@+id/walletFragment"
@@ -31,6 +34,14 @@
         <argument
             android:name="walletId"
             app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/addWalletFragment2"
+        android:name="com.example.dzivekodywallet.ui.fragment.AddWalletFragment"
+        android:label="AddWalletFragment" >
+        <action
+            android:id="@+id/action_addWalletFragment2_to_walletsFragment"
+            app:destination="@id/walletsFragment" />
     </fragment>
 <!--    <fragment-->
 <!--        android:id="@+id/contactsFragment"-->

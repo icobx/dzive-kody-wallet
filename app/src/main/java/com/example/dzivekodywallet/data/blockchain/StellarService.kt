@@ -5,18 +5,23 @@ import org.stellar.sdk.KeyPair
 import org.stellar.sdk.Server
 import org.stellar.sdk.responses.AccountResponse
 
-class Transactions private constructor() {
+// TODO:
+// rename to:
+//      TransactionService
+//      StellarService
+class StellarService private constructor() {
     private var blockchainServer: Server = Server("https://horizon-testnet.stellar.org")
 
-    fun getAccountInformation(accountId: String) : AccountResponse {
-        return blockchainServer.accounts().account(accountId)
+    fun getAccountInformation(accountId: String) : AccountResponse? {
+        return try {
+            blockchainServer.accounts().account(accountId)
+        } catch(e: Exception) {
+            null
+        }
     }
 
-    fun generateAccount() : AccountResponse
-    {
-        val keyPair = KeyPair.random()
-
-        return getAccountInformation(keyPair.accountId)
+    fun generateAccount(): KeyPair {
+        return KeyPair.random()
     }
 
     fun getBalance(account: AccountResponse) : Double? {
@@ -30,14 +35,14 @@ class Transactions private constructor() {
 
     companion object {
         @Volatile
-        private var INSTANCE: Transactions? = null
+        private var INSTANCE: StellarService? = null
 
-        fun getInstance(): Transactions {
+        fun getInstance(): StellarService {
             synchronized(this) {
                 var instance = INSTANCE
 
                 if (instance == null) {
-                    instance = Transactions()
+                    instance = StellarService()
 
                     INSTANCE = instance
                 }
