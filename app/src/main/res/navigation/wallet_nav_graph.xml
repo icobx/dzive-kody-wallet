@@ -16,5 +16,9 @@
         android:id="@+id/wallet_nav_send_rec"
         android:name="com.example.dzivekodywallet.ui.fragment.SendReceiveFragment"
         android:label="SendReceiveFragment" />
+    <fragment
+        android:id="@+id/wallet_nav_contacts"
+        android:name="com.example.dzivekodywallet.ui.fragment.ContactsFragment"
+        android:label="ContactsFragment" />
 
 </navigation>

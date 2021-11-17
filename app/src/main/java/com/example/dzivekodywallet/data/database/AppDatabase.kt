@@ -10,13 +10,15 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.dzivekodywallet.data.database.model.Transaction
 import com.example.dzivekodywallet.data.database.model.Wallet
+import com.example.dzivekodywallet.data.database.model.Contact
 
-@Database(entities = [Transaction::class, Wallet::class], version = 7, exportSchema = false)
+@Database(entities = [Transaction::class, Wallet::class, Contact::class], version = 8, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
 //    abstract val appDatabaseDao: AppDatabaseDao
     abstract val transactionDao: TransactionDao
     abstract val walletDao: WalletDao
+    abstract val contactDao: ContactDao
 
     companion object {
         @Volatile
