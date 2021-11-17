@@ -9,4 +9,7 @@
     <string name="input_wallet_name_title">New wallet name</string>
     <string name="add_wallet_title_button">Add Wallet</string>
     <string name="generate_wallet_title_checkbox">Generate a new wallet</string>
+    <string name="your_contacts">Your contacts</string>
+    <string name="send_payment">Send payment</string>
+    <string name="receive_payment">Receive payment</string>
 </resources>
