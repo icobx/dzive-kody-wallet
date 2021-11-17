@@ -26,13 +26,16 @@ class WalletRepository private constructor(private val walletDao: WalletDao, pri
         walletDao.deleteWallet(wallet)
     }
 
-    fun getWallet(key: Long): Wallet? {
-        return walletDao.getWallet(key)
+    suspend fun getWallet(key: Long): Wallet? {
+        return withContext(Dispatchers.IO) {
+            return@withContext walletDao.getWallet(key)
+        }
     }
 
     fun getAllWallets(): LiveData<List<Wallet>> {
         return walletDao.getAllWallets()
     }
+
 
     private fun pairWallet(secretSeed: String): Wallet {
         val keyPair = KeyPair.fromSecretSeed(secretSeed)
@@ -45,6 +48,17 @@ class WalletRepository private constructor(private val walletDao: WalletDao, pri
         return wallet
     }
 
+    suspend fun makeTransaction(srcId: Long, destId: String, amount: String) {
+        withContext(Dispatchers.IO) {
+        // TODO: FIX SECRET PHrase
+            val srcPk = Encryption.decrypt(getWallet(srcId)!!.privateKey, "1234")
+            stellarService.makeTransaction(srcPk!!, destId, amount)
+        }
+    }
+
+
+    // TODO: opytat sa ako na toto
+    // tahat z db wallet alebo takto po jednom attrib
     suspend fun getBalance(walletId: Long): Double {
         return withContext(Dispatchers.IO) {
             val wallet = getWallet(walletId)

@@ -31,16 +31,6 @@ class WalletFragment : Fragment() {
             container,
             false
         )
-        // back button nav
-        // TODO: no anim on button press atm
-        binding.walletAppbar.setNavigationOnClickListener { view: View ->
-            view.findNavController().navigate(R.id.action_walletFragment_to_walletsFragment)
-        }
-
-        // bottom nav functionality
-        val navHostFragment = childFragmentManager
-            .findFragmentById(R.id.wallet_fragment_container) as NavHostFragment
-        binding.walletBottomNav.setupWithNavController(navHostFragment.findNavController())
 
         val args = WalletFragmentArgs.fromBundle(requireArguments())
 
@@ -50,9 +40,25 @@ class WalletFragment : Fragment() {
         )[WalletViewModel::class.java]
 
         viewModel.setWalletId(args.walletId)
+        viewModel.walletName.observe(viewLifecycleOwner, { name ->
+            binding.walletAppbar.title = name
+        })
 
+        viewModel.updateName()
         viewModel.updateBalance()
+        // back button nav
+        // TODO: no anim on button press atm
+        binding.walletAppbar.setNavigationOnClickListener { view: View ->
+            view.findNavController().navigate(R.id.action_walletFragment_to_walletsFragment)
+        }
+
+
+        // bottom nav functionality
+        val navHostFragment = childFragmentManager
+            .findFragmentById(R.id.wallet_fragment_container) as NavHostFragment
+        binding.walletBottomNav.setupWithNavController(navHostFragment.findNavController())
 
         return binding.root
     }
+
 }
