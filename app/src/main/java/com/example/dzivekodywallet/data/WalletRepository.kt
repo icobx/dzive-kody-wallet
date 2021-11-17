@@ -45,6 +45,20 @@ class WalletRepository private constructor(private val walletDao: WalletDao, pri
         return wallet
     }
 
+    suspend fun getBalance(walletId: Long): Double {
+        return withContext(Dispatchers.IO) {
+            val wallet = getWallet(walletId)
+            val accId = wallet?.publicKey
+            val acc = stellarService.getAccountInformation(accId!!)
+            val newBalance = acc?.let { stellarService.getBalance(it) }
+            if (newBalance != null) {
+                wallet.balance = newBalance
+                updateWallet(wallet)
+            }
+            return@withContext wallet.balance
+        }
+    }
+
     suspend fun generateNewWallet(walletName: String, secretPhrase: String) {
         withContext(Dispatchers.IO) {
             val generatedKeyPair = stellarService.generateAccount()

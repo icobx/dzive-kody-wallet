@@ -6,7 +6,7 @@ import com.example.dzivekodywallet.data.WalletRepository
 import com.example.dzivekodywallet.data.blockchain.StellarService
 import com.example.dzivekodywallet.data.database.AppDatabase
 import com.example.dzivekodywallet.viewmodel.AddWalletViewModelFactory
-import com.example.dzivekodywallet.viewmodel.BalanceViewModelFactory
+import com.example.dzivekodywallet.viewmodel.WalletViewModelFactory
 
 object Injection {
    fun provideWalletsViewModelFactory(context: Context): WalletsViewModelFactory {
@@ -15,15 +15,15 @@ object Injection {
        return WalletsViewModelFactory(walletRepository)
    }
 
-    fun provideBalanceViewModelFactory(context: Context): BalanceViewModelFactory {
-        val walletRepository = WalletRepository.getInstance(AppDatabase.getInstance(context).walletDao, StellarService.getInstance())
-
-        return BalanceViewModelFactory(1L, walletRepository)
-    }
-
     fun provideAddWalletViewModelFactory(context: Context): AddWalletViewModelFactory {
         val walletRepository = WalletRepository.getInstance(AppDatabase.getInstance(context).walletDao, StellarService.getInstance())
 
         return AddWalletViewModelFactory(walletRepository)
+    }
+
+    fun provideWalletViewModelFactory(context: Context): WalletViewModelFactory {
+        val walletRepository = WalletRepository.getInstance(AppDatabase.getInstance(context).walletDao, StellarService.getInstance())
+
+        return WalletViewModelFactory(walletRepository)
     }
 }
