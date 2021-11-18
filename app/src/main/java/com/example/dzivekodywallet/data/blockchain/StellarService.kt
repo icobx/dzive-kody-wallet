@@ -6,10 +6,6 @@ import org.stellar.sdk.responses.AccountResponse
 import org.stellar.sdk.responses.SubmitTransactionResponse
 
 
-// TODO:
-// rename to:
-//      TransactionService
-//      StellarService
 class StellarService private constructor() {
     private var blockchainServer: Server = Server("https://horizon-testnet.stellar.org")
 
@@ -25,15 +21,10 @@ class StellarService private constructor() {
         return KeyPair.random()
     }
 
-    fun getBalance(account: AccountResponse) : Double? {
-        for (balance in account.balances) {
-            if (balance.assetType.equals("native")) {
-                return balance.balance.toDouble()
-            }
-        }
-        return null
+    fun getBalance(accountId: String) : Array<out AccountResponse.Balance>? {
+        return getAccountInformation(accountId)?.balances
     }
-    
+
     fun makeTransaction(srcId: String, destId: String, amount: String) {
         val source = KeyPair.fromSecretSeed(srcId)
         val destination = KeyPair.fromAccountId(destId)

@@ -1,13 +1,17 @@
 package com.example.dzivekodywallet.ui.fragment
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dzivekodywallet.databinding.FragmentBalanceBinding
+import com.example.dzivekodywallet.ui.adapter.BalancesAdapter
 import com.example.dzivekodywallet.viewmodel.WalletViewModel
 
 class BalanceFragment : Fragment() {
@@ -38,12 +42,19 @@ class BalanceFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[WalletViewModel::class.java]
 
-        viewModel.balance.observe(viewLifecycleOwner, Observer { balance ->
-            binding.balanceTextView.text = balance.toString()
+        binding.balancesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        viewModel.balances.observe(viewLifecycleOwner, { walletBalances ->
+            binding.balancesRecyclerView.adapter = BalancesAdapter(walletBalances)
         })
 
         viewModel.updateBalance()
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateBalance()
     }
 }

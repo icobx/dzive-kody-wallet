@@ -5,13 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dzivekodywallet.data.WalletRepository
+import com.example.dzivekodywallet.data.database.model.Balance
 import com.example.dzivekodywallet.data.database.model.Wallet
 import kotlinx.coroutines.launch
 
 class WalletViewModel(private val walletRepository: WalletRepository) : ViewModel() {
-    private var _balance = MutableLiveData<Double>()
-    val balance: LiveData<Double>
-        get() = _balance
+    private var _balances = MutableLiveData<List<Balance>>()
+    val balances: LiveData<List<Balance>>
+        get() = _balances
 
     private var _walletId = MutableLiveData<Long>()
     val walletId: LiveData<Long>
@@ -26,7 +27,7 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
         get() = _wallet
 
     init {
-        _balance.value = 0.0
+        _balances.value = listOf()
     }
 
     fun setWalletId(walletId: Long) {
@@ -35,7 +36,7 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
 
     fun updateBalance() {
         viewModelScope.launch {
-            _balance.value = walletRepository.getBalance(_walletId.value!!)
+            _balances.value = walletRepository.getBalances(_walletId.value!!)
         }
     }
 
@@ -50,5 +51,4 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
             walletRepository.makeTransaction(walletId.value!!, destId, amount)
         }
     }
-
 }

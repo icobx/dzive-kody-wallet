@@ -33,6 +33,12 @@ data class WalletsViewModel(private val walletRepository: WalletRepository): Vie
         }
     }
 
+    fun updateWalletStatus(walletId:Long) {
+        viewModelScope.launch {
+            walletRepository.syncBalanceFromNetwork(walletId)
+        }
+    }
+
     fun deleteWallet(wallet: Wallet) {
         viewModelScope.launch(Dispatchers.IO) {
             walletRepository.deleteWallet(wallet)

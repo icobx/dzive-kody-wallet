@@ -3,19 +3,21 @@ package com.example.dzivekodywallet.data
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.dzivekodywallet.data.blockchain.StellarService
+import com.example.dzivekodywallet.data.database.BalanceDao
 import com.example.dzivekodywallet.data.database.model.Wallet
 import com.example.dzivekodywallet.data.database.WalletDao
+import com.example.dzivekodywallet.data.database.model.Balance
 import com.example.dzivekodywallet.data.util.Encryption
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.stellar.sdk.KeyPair
-import java.lang.Math.random
+import org.stellar.sdk.responses.AccountResponse
 
-class WalletRepository private constructor(private val walletDao: WalletDao, private val stellarService: StellarService) {
+class WalletRepository private constructor(private val walletDao: WalletDao, private val balanceDao: BalanceDao, private val stellarService: StellarService) {
 
-    fun insertWallet(wallet: Wallet) {
+    fun insertWallet(wallet: Wallet): Long {
         Log.d("wallet repository", "insert wallet")
-        walletDao.insertWallet(wallet)
+        return walletDao.insertWallet(wallet)
     }
 
     fun updateWallet(wallet: Wallet) {
@@ -36,16 +38,8 @@ class WalletRepository private constructor(private val walletDao: WalletDao, pri
         return walletDao.getAllWallets()
     }
 
-
-    private fun pairWallet(secretSeed: String): Wallet {
-        val keyPair = KeyPair.fromSecretSeed(secretSeed)
-
-        val accountInfo = stellarService.getAccountInformation(keyPair.accountId)
-        val wallet = Wallet()
-        wallet.publicKey = keyPair.accountId
-        wallet.balance = accountInfo?.balances?.get(0)?.balance?.toDouble()!!
-
-        return wallet
+    private fun pairSecretSeedWithPublicKey(secretSeed: String): String {
+        return KeyPair.fromSecretSeed(secretSeed).accountId
     }
 
     suspend fun makeTransaction(srcId: Long, destId: String, amount: String) {
@@ -56,21 +50,59 @@ class WalletRepository private constructor(private val walletDao: WalletDao, pri
         }
     }
 
-
-    // TODO: opytat sa ako na toto
-    // tahat z db wallet alebo takto po jednom attrib
-    suspend fun getBalance(walletId: Long): Double {
+    private suspend fun getBalanceFromDatabase(walletId: Long): List<Balance> {
         return withContext(Dispatchers.IO) {
-            val wallet = getWallet(walletId)
-            val accId = wallet?.publicKey
-            val acc = stellarService.getAccountInformation(accId!!)
-            val newBalance = acc?.let { stellarService.getBalance(it) }
-            if (newBalance != null) {
-                wallet.balance = newBalance
-                updateWallet(wallet)
-            }
-            return@withContext wallet.balance
+            return@withContext balanceDao.getBalancesForWallet(walletId)
         }
+    }
+
+    private fun getAssetName(accountBalance: AccountResponse.Balance): String {
+        return if (accountBalance.assetType.equals("native")) {
+            "XLM"
+        } else {
+            if (accountBalance.assetCode.isPresent) {
+                accountBalance.assetCode.get().toString()
+            } else {
+                "-" // TODO: rozhodnut, co s neznamym assetom
+            }
+        }
+    }
+
+    suspend fun syncBalanceFromNetwork(walletId: Long) {
+        val accountId = getAccountIdFromWalletId(walletId)
+        withContext(Dispatchers.IO) {
+            val incomingBalances = stellarService.getBalance(accountId)
+            incomingBalances?.forEach { new ->
+                val assetName = getAssetName(new)
+                Log.d("PVALOG", new.balance.toString())
+                val balance = balanceDao.findAssetForWallet(walletId, assetName)
+                if (null != balance) {
+                    balance.amount = new.balance.toDouble()
+                    balanceDao.updateBalance(balance)
+                } else {
+                    val newBalance = Balance()
+                    newBalance.amount = new.balance.toDouble()
+                    newBalance.walletId = walletId
+                    newBalance.assetName = assetName
+
+                    balanceDao.insertBalance(newBalance)
+                }
+            }
+        }
+    }
+
+    private suspend fun getAccountIdFromWalletId(walletId: Long): String {
+        return withContext(Dispatchers.Default) {
+            return@withContext getWallet(walletId)?.publicKey!!
+        }
+    }
+
+    suspend fun getBalances(walletId: Long): List<Balance> {
+        val balances = getBalanceFromDatabase(walletId)
+        if (balances.isEmpty()) {
+            syncBalanceFromNetwork(walletId)
+        }
+        return balances
     }
 
     suspend fun generateNewWallet(walletName: String, secretPhrase: String) {
@@ -78,7 +110,6 @@ class WalletRepository private constructor(private val walletDao: WalletDao, pri
             val generatedKeyPair = stellarService.generateAccount()
             val wallet = Wallet()
             wallet.name = walletName
-            wallet.balance = 0.0
             wallet.privateKey = Encryption
                 .encrypt(String(generatedKeyPair.secretSeed), secretPhrase)
                 .toString()
@@ -87,14 +118,15 @@ class WalletRepository private constructor(private val walletDao: WalletDao, pri
         }
     }
 
-    suspend fun addExistingWallet(walletName: String, walletSecretSeed: String, secretPhrase: String) {
-        withContext(Dispatchers.IO) {
-            val wallet = pairWallet(walletSecretSeed)
+    suspend fun addExistingWallet(walletName: String, walletSecretSeed: String, secretPhrase: String): Long {
+        return withContext(Dispatchers.IO) {
+            val wallet = Wallet()
             wallet.name = walletName
+            wallet.publicKey = pairSecretSeedWithPublicKey(walletSecretSeed)
             wallet.privateKey = Encryption
                 .encrypt(walletSecretSeed, secretPhrase)
                 .toString()
-            insertWallet(wallet)
+            return@withContext insertWallet(wallet)
         }
     }
 
@@ -103,12 +135,12 @@ class WalletRepository private constructor(private val walletDao: WalletDao, pri
         private var INSTANCE: WalletRepository? = null
 
 
-        fun getInstance(walletDao: WalletDao, stellarService: StellarService): WalletRepository {
+        fun getInstance(walletDao: WalletDao, balanceDao: BalanceDao, stellarService: StellarService): WalletRepository {
             synchronized(this) {
                 var instance = INSTANCE
 
                 if (instance == null) {
-                    instance = WalletRepository(walletDao, stellarService)
+                    instance = WalletRepository(walletDao, balanceDao, stellarService)
 
                     INSTANCE = instance
                 }

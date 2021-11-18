@@ -23,7 +23,7 @@ data class Balance (
     @ColumnInfo(name = "amount")
     var amount: Double = 0.0,
 
-    @ColumnInfo(name = "wallet")
-    var wallet: Long? = null,
+    @ColumnInfo(name = "walletId")
+    var walletId: Long? = null,
 
 )

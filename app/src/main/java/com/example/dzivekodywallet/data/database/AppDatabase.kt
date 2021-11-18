@@ -13,7 +13,7 @@ import com.example.dzivekodywallet.data.database.model.Transaction
 import com.example.dzivekodywallet.data.database.model.Wallet
 import com.example.dzivekodywallet.data.database.model.Contact
 
-@Database(entities = [Transaction::class, Wallet::class, Contact::class, Balance::class], version = 16, exportSchema = false)
+@Database(entities = [Transaction::class, Wallet::class, Contact::class, Balance::class], version = 22, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
 //    abstract val appDatabaseDao: AppDatabaseDao

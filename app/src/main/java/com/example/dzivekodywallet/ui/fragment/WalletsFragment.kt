@@ -41,6 +41,7 @@ class WalletsFragment : Fragment() {
         viewModel.getWallets().observe(viewLifecycleOwner, Observer { wallets ->
             binding.walletsRecyclerView.adapter = WalletItemAdapter(wallets, WalletItemListener(
                 { walletId ->
+                    viewModel.updateWalletStatus(walletId)
                     findNavController().navigate(WalletsFragmentDirections.actionWalletsFragmentToWalletFragment(walletId))
                 },
                 { wallet ->

@@ -44,11 +44,13 @@ class BalancesAdapter(private val mList: List<Balance>): ListAdapter<Balance, Ba
 
 class BalanceItemDiffCallback : DiffUtil.ItemCallback<Balance>() {
     override fun areItemsTheSame(oldItem: Balance, newItem: Balance): Boolean {
-        TODO("Not yet implemented")
+        return oldItem.balanceId == newItem.balanceId
     }
 
     override fun areContentsTheSame(oldItem: Balance, newItem: Balance): Boolean {
-        TODO("Not yet implemented")
+        return oldItem.amount == newItem.amount
+                && oldItem.assetName == newItem.assetName
+                && oldItem.walletId == newItem.walletId
     }
 
 }
