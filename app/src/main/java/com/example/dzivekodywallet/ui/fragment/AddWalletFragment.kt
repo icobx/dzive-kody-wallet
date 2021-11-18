@@ -12,14 +12,10 @@ import com.example.dzivekodywallet.data.util.Injection
 import com.example.dzivekodywallet.databinding.FragmentAddWalletBinding
 import com.example.dzivekodywallet.viewmodel.AddWalletViewModel
 
+// TODO: pri generovani novej wallet umoznit pouzivatelovi pozriet si public a secret key
 class AddWalletFragment : Fragment() {
     private lateinit var binding: FragmentAddWalletBinding
     private lateinit var viewModel: AddWalletViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,9 +47,9 @@ class AddWalletFragment : Fragment() {
     }
 
     private fun addWallet() {
+        // TODO: secretPhrase zmenit na ziskavanie PIN kodu z UI
         viewModel.addWallet(binding.walletName.toString(), binding.walletSecretSeed.toString(), "1234", binding.isGeneratingEnabled as Boolean)
-        // TODO
-        // check if addition succeeded
+        // TODO: check if addition succeeded
         findNavController().navigate(AddWalletFragmentDirections.actionAddWalletFragment2ToWalletsFragment())
     }
 }

@@ -14,20 +14,16 @@
         android:background="@android:color/holo_blue_light"
         tools:context=".ui.fragment.BalanceFragment">
 
-
-
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
-            android:id="@+id/balance_text_view"
-            android:layout_width="wrap_content"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/balances_recyclerView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="tu bude zostatok v penazenke"
-
+            android:layout_marginVertical="30dp"
+            app:layout_constrainedHeight="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
