@@ -3,6 +3,7 @@ package com.example.dzivekodywallet.ui.fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -45,11 +46,22 @@ class WalletFragment : Fragment() {
         })
 
         viewModel.updateName()
-        viewModel.updateBalance()
+//        viewModel.updateBalance()
+
         // back button nav
         // TODO: no anim on button press atm
         binding.walletAppbar.setNavigationOnClickListener { view: View ->
             view.findNavController().navigate(R.id.action_walletFragment_to_walletsFragment)
+        }
+        binding.walletAppbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.wallet_appbar_sync -> {
+                    Log.d("PVALOG", "IN onOptionsItemSelected; viewModel.synchronise()")
+                    viewModel.synchronise()
+                    true
+                }
+                else -> false
+            }
         }
 
 
@@ -60,5 +72,12 @@ class WalletFragment : Fragment() {
 
         return binding.root
     }
+
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        return when (item.itemId) {
+//
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
 
 }

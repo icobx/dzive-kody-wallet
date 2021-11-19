@@ -13,10 +13,13 @@ import kotlinx.coroutines.withContext
 import org.stellar.sdk.KeyPair
 import org.stellar.sdk.responses.AccountResponse
 
-class WalletRepository private constructor(private val walletDao: WalletDao, private val balanceDao: BalanceDao, private val stellarService: StellarService) {
+class WalletRepository private constructor(
+    private val walletDao: WalletDao,
+    private val balanceDao: BalanceDao,
+    private val stellarService: StellarService
+) {
 
     fun insertWallet(wallet: Wallet): Long {
-        Log.d("wallet repository", "insert wallet")
         return walletDao.insertWallet(wallet)
     }
 
@@ -50,17 +53,22 @@ class WalletRepository private constructor(private val walletDao: WalletDao, pri
         }
     }
 
-    private suspend fun getBalanceFromDatabase(walletId: Long): List<Balance> {
-        return withContext(Dispatchers.IO) {
-            return@withContext balanceDao.getBalancesForWallet(walletId)
-        }
+//    suspend fun getBalanceFromDatabase(walletId: Long): LiveData<List<Balance>> {
+//        return withContext(Dispatchers.IO) {
+//            return@withContext balanceDao.getBalancesForWallet(walletId)
+//        }
+//    }
+    fun getBalances(walletId: Long): LiveData<List<Balance>> {
+        return balanceDao.getBalances(walletId)
     }
 
     private fun getAssetName(accountBalance: AccountResponse.Balance): String {
         return if (accountBalance.assetType.equals("native")) {
+            Log.d("JFLOG", "NATIVE")
             "XLM"
         } else {
             if (accountBalance.assetCode.isPresent) {
+                Log.d("JFLOG", accountBalance.assetCode.get().toString())
                 accountBalance.assetCode.get().toString()
             } else {
                 "-" // TODO: rozhodnut, co s neznamym assetom
@@ -68,13 +76,13 @@ class WalletRepository private constructor(private val walletDao: WalletDao, pri
         }
     }
 
-    suspend fun syncBalanceFromNetwork(walletId: Long) {
+    suspend fun syncBalancesFromNetwork(walletId: Long) {
         val accountId = getAccountIdFromWalletId(walletId)
         withContext(Dispatchers.IO) {
             val incomingBalances = stellarService.getBalance(accountId)
             incomingBalances?.forEach { new ->
                 val assetName = getAssetName(new)
-                Log.d("PVALOG", new.balance.toString())
+                Log.d("JFLOG", "IN syncBalance; balance: ${new.balance.toString()}")
                 val balance = balanceDao.findAssetForWallet(walletId, assetName)
                 if (null != balance) {
                     balance.amount = new.balance.toDouble()
@@ -91,19 +99,26 @@ class WalletRepository private constructor(private val walletDao: WalletDao, pri
         }
     }
 
+    suspend fun synchronise(walletId: Long) {
+        // TODO: call all sync methods for given wallet here
+        // this will be called when user requests sync
+        syncBalancesFromNetwork(walletId)
+    }
+
     private suspend fun getAccountIdFromWalletId(walletId: Long): String {
         return withContext(Dispatchers.Default) {
             return@withContext getWallet(walletId)?.publicKey!!
         }
     }
 
-    suspend fun getBalances(walletId: Long): List<Balance> {
-        val balances = getBalanceFromDatabase(walletId)
-        if (balances.isEmpty()) {
-            syncBalanceFromNetwork(walletId)
-        }
-        return balances
-    }
+    // TODO: might not be needed
+//    suspend fun getBalances(walletId: Long): List<Balance> {
+//        val balances = getBalanceFromDatabase(walletId)
+//        if (balances.isEmpty()) {
+//            syncBalanceFromNetwork(walletId)
+//        }
+//        return balances
+//    }
 
     suspend fun generateNewWallet(walletName: String, secretPhrase: String) {
         withContext(Dispatchers.IO) {

@@ -1,5 +1,6 @@
 package com.example.dzivekodywallet.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,9 +11,7 @@ import com.example.dzivekodywallet.data.database.model.Wallet
 import kotlinx.coroutines.launch
 
 class WalletViewModel(private val walletRepository: WalletRepository) : ViewModel() {
-    private var _balances = MutableLiveData<List<Balance>>()
-    val balances: LiveData<List<Balance>>
-        get() = _balances
+    lateinit var balances: LiveData<List<Balance>>
 
     private var _walletId = MutableLiveData<Long>()
     val walletId: LiveData<Long>
@@ -26,29 +25,37 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
     val wallet: LiveData<Wallet>
         get() = _wallet
 
-    init {
-        _balances.value = listOf()
-    }
+    init {}
 
     fun setWalletId(walletId: Long) {
         _walletId.value = walletId
+        // when WalletFragment sets walletId, get balances for given wallet
+        balances = walletRepository.getBalances(walletId)
     }
 
     fun updateBalance() {
+        Log.d("JFLOG", "IN updateBalance()")
         viewModelScope.launch {
-            _balances.value = walletRepository.getBalances(_walletId.value!!)
+            Log.d("JFLOG", "walletRepository.syncBalancesFromNetwork(_walletId.value!!)")
+            walletRepository.syncBalancesFromNetwork(walletId.value!!)
         }
     }
 
     fun updateName() {
         viewModelScope.launch {
-            _walletName.value = walletRepository.getWallet(_walletId.value!!)?.name
+            _walletName.value = walletRepository.getWallet(walletId.value!!)?.name
         }
     }
 
     fun makeTransaction(destId: String, amount: String) {
         viewModelScope.launch {
             walletRepository.makeTransaction(walletId.value!!, destId, amount)
+        }
+    }
+
+    fun synchronise() {
+        viewModelScope.launch {
+            walletRepository.synchronise(walletId.value!!)
         }
     }
 }

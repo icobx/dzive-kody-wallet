@@ -3,6 +3,7 @@ package com.example.dzivekodywallet.ui.fragment
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,18 +44,18 @@ class BalanceFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity())[WalletViewModel::class.java]
 
         binding.balancesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.balancesRecyclerView.adapter = BalancesAdapter()
+
+        viewModel.updateBalance()
 
         viewModel.balances.observe(viewLifecycleOwner, { walletBalances ->
-            binding.balancesRecyclerView.adapter = BalancesAdapter(walletBalances)
+            if (walletBalances != null) {
+                (binding.balancesRecyclerView.adapter as BalancesAdapter)
+                    .setBalances(walletBalances)
+            }
         })
 
-        viewModel.updateBalance()
 
         return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.updateBalance()
     }
 }

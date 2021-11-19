@@ -22,6 +22,7 @@
                 android:id="@+id/wallet_appbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:elevation="4dp"
                 app:title="WalletName"
                 app:navigationIcon="@drawable/ic_arrow_back_24"
                 app:menu="@menu/wallet_appbar_menu"

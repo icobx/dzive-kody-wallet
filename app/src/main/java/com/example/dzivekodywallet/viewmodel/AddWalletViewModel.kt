@@ -18,7 +18,7 @@ class AddWalletViewModel(private val walletRepository: WalletRepository): ViewMo
                     walletSecretSeed,
                     secretPhrase
                 )
-                walletRepository.syncBalanceFromNetwork(newWalletId)
+                walletRepository.syncBalancesFromNetwork(newWalletId)
             }
         }
     }

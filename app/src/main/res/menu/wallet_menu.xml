@@ -16,5 +16,4 @@
         android:title="Your contacts"
         android:icon="@drawable/ic_round_account_circle_24"
         />
-
 </menu>

@@ -1,5 +1,6 @@
 package com.example.dzivekodywallet.data.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.dzivekodywallet.data.database.model.Balance
 
@@ -24,6 +25,9 @@ interface BalanceDao {
     fun assetExists(walletId: Long, assetName: String): Boolean
 
     @Query("SELECT * from balances_table WHERE walletId = :walletId")
-    fun getBalancesForWallet(walletId: Long): List<Balance>
+    fun getBalances(walletId: Long): LiveData<List<Balance>>
+
+    @Query("SELECT * from balances_table")
+    fun getBalances(): LiveData<List<Balance>>
 
 }
