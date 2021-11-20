@@ -4,6 +4,9 @@ import android.util.Log
 import org.stellar.sdk.*
 import org.stellar.sdk.responses.AccountResponse
 import org.stellar.sdk.responses.SubmitTransactionResponse
+import java.io.InputStream
+import java.net.URL
+import java.util.*
 
 
 class StellarService private constructor() {
@@ -17,8 +20,18 @@ class StellarService private constructor() {
         }
     }
 
-    fun generateAccount(): KeyPair {
-        return KeyPair.random()
+    fun generateAccount() : KeyPair {
+        val pair = KeyPair.random()
+
+        val friendbotUrl = String.format(
+            "https://friendbot.stellar.org/?addr=%s",
+            pair.accountId
+        )
+        val response: InputStream = URL(friendbotUrl).openStream()
+        val body: String = Scanner(response, "UTF-8").useDelimiter("\\A").next()
+        println("SUCCESS! You have a new account :)\n$body")
+
+        return pair
     }
 
     fun getBalance(accountId: String) : Array<out AccountResponse.Balance>? {
@@ -32,7 +45,12 @@ class StellarService private constructor() {
         // You could skip this, but if the account does not exist, you will be charged
         // the transaction fee when the transaction fails.
         // It will throw HttpResponseException if account does not exist or there was another error.
-        blockchainServer.accounts().account(destination.accountId)
+        try {
+            blockchainServer.accounts().account(destination.accountId)
+        } catch(e: Exception) {
+            Log.d("PVALOG", "Unable to get an account: ${e.message}")
+            return
+        }
 
         // If there was no error, load up-to-date information on your account.
         val sourceAccount: AccountResponse = blockchainServer.accounts().account(source.accountId)
