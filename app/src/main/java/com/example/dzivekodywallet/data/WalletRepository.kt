@@ -4,18 +4,22 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.dzivekodywallet.data.blockchain.StellarService
 import com.example.dzivekodywallet.data.database.BalanceDao
+import com.example.dzivekodywallet.data.database.TransactionDao
 import com.example.dzivekodywallet.data.database.model.Wallet
 import com.example.dzivekodywallet.data.database.WalletDao
 import com.example.dzivekodywallet.data.database.model.Balance
+import com.example.dzivekodywallet.data.database.model.Transaction
 import com.example.dzivekodywallet.data.util.Encryption
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.stellar.sdk.KeyPair
 import org.stellar.sdk.responses.AccountResponse
+import org.stellar.sdk.responses.TransactionResponse
 
 class WalletRepository private constructor(
     private val walletDao: WalletDao,
     private val balanceDao: BalanceDao,
+    private val transactionDao: TransactionDao,
     private val stellarService: StellarService
 ) {
 
@@ -62,6 +66,11 @@ class WalletRepository private constructor(
         return balanceDao.getBalances(walletId)
     }
 
+    suspend fun getTransactions(walletId: Long): LiveData<List<Transaction>> {
+        val sourceAccountId = getAccountIdFromWalletId(walletId)
+        return transactionDao.getTransactions(sourceAccountId)
+    }
+
     private fun getAssetName(accountBalance: AccountResponse.Balance): String {
         return if (accountBalance.assetType.equals("native")) {
             Log.d("JFLOG", "NATIVE")
@@ -78,6 +87,7 @@ class WalletRepository private constructor(
 
     suspend fun syncBalancesFromNetwork(walletId: Long) {
         val accountId = getAccountIdFromWalletId(walletId)
+
         withContext(Dispatchers.IO) {
             val incomingBalances = stellarService.getBalance(accountId)
             incomingBalances?.forEach { new ->
@@ -96,6 +106,28 @@ class WalletRepository private constructor(
                     balanceDao.insertBalance(newBalance)
                 }
             }
+        }
+    }
+
+    suspend fun syncTransactionsFromNetwork(walletId: Long) {
+        val accountId = getAccountIdFromWalletId(walletId)
+
+        withContext(Dispatchers.IO) {
+            val transactionResponses: ArrayList<TransactionResponse> = stellarService
+                .getTransactions(accountId)
+            val transactions: ArrayList<Transaction> = ArrayList()
+
+            transactionResponses.forEach { tr ->
+                val t = Transaction(tr.hash)
+                t.createdAt = tr.createdAt
+                t.operationCount = tr.operationCount
+                t.sourceAccountId = tr.sourceAccount
+                t.successful = tr.isSuccessful
+
+                transactions.add(t)
+            }
+
+            transactionDao.insertTransactions(*transactions.toTypedArray())
         }
     }
 
@@ -150,12 +182,17 @@ class WalletRepository private constructor(
         private var INSTANCE: WalletRepository? = null
 
 
-        fun getInstance(walletDao: WalletDao, balanceDao: BalanceDao, stellarService: StellarService): WalletRepository {
+        fun getInstance(
+            walletDao: WalletDao,
+            balanceDao: BalanceDao,
+            transactionDao: TransactionDao,
+            stellarService: StellarService
+        ): WalletRepository {
             synchronized(this) {
                 var instance = INSTANCE
 
                 if (instance == null) {
-                    instance = WalletRepository(walletDao, balanceDao, stellarService)
+                    instance = WalletRepository(walletDao, balanceDao, transactionDao, stellarService)
 
                     INSTANCE = instance
                 }

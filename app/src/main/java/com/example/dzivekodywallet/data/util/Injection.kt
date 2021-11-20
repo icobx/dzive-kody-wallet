@@ -13,19 +13,19 @@ import com.example.dzivekodywallet.viewmodel.SendReceiveViewModelFactory
 
 object Injection {
    fun provideWalletsViewModelFactory(context: Context): WalletsViewModelFactory {
-       val walletRepository = WalletRepository.getInstance(AppDatabase.getInstance(context).walletDao, AppDatabase.getInstance(context).balanceDao, StellarService.getInstance())
+       val walletRepository = WalletRepository.getInstance(AppDatabase.getInstance(context).walletDao, AppDatabase.getInstance(context).balanceDao, AppDatabase.getInstance(context).transactionDao, StellarService.getInstance())
 
        return WalletsViewModelFactory(walletRepository)
    }
 
     fun provideAddWalletViewModelFactory(context: Context): AddWalletViewModelFactory {
-        val walletRepository = WalletRepository.getInstance(AppDatabase.getInstance(context).walletDao, AppDatabase.getInstance(context).balanceDao, StellarService.getInstance())
+        val walletRepository = WalletRepository.getInstance(AppDatabase.getInstance(context).walletDao, AppDatabase.getInstance(context).balanceDao, AppDatabase.getInstance(context).transactionDao, StellarService.getInstance())
 
         return AddWalletViewModelFactory(walletRepository)
     }
 
     fun provideWalletViewModelFactory(context: Context): WalletViewModelFactory {
-        val walletRepository = WalletRepository.getInstance(AppDatabase.getInstance(context).walletDao, AppDatabase.getInstance(context).balanceDao, StellarService.getInstance())
+        val walletRepository = WalletRepository.getInstance(AppDatabase.getInstance(context).walletDao, AppDatabase.getInstance(context).balanceDao, AppDatabase.getInstance(context).transactionDao, StellarService.getInstance())
 
         return WalletViewModelFactory(walletRepository)
     }

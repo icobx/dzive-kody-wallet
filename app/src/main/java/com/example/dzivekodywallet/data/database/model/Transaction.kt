@@ -6,10 +6,43 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "transaction_table")
 data class Transaction (
-    @PrimaryKey(autoGenerate = true)
-    var transactionId: Long? = null,
+    @PrimaryKey(autoGenerate = false)
+    var transactionId: String,
 
-    @ColumnInfo(name = "amount")
-    var amount: Double = 0.0
-)
+    @ColumnInfo(name = "successful")
+    var successful: Boolean = false,
+
+    @ColumnInfo(name = "source_account_id")
+    var sourceAccountId: String = "",
+
+    @ColumnInfo(name = "operation_count")
+    var operationCount: Int = 0,
+
+    @ColumnInfo(name = "created_at")
+    var createdAt: String = ""
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Transaction
+
+        if (transactionId != other.transactionId) return false
+        if (successful != other.successful) return false
+        if (sourceAccountId != other.sourceAccountId) return false
+        if (operationCount != other.operationCount) return false
+        if (createdAt != other.createdAt) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = transactionId.hashCode()
+        result = 31 * result + successful.hashCode()
+        result = 31 * result + sourceAccountId.hashCode()
+        result = 31 * result + operationCount
+        result = 31 * result + createdAt.hashCode()
+        return result
+    }
+}
 

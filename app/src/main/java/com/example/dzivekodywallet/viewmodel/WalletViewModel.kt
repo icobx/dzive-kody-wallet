@@ -7,11 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dzivekodywallet.data.WalletRepository
 import com.example.dzivekodywallet.data.database.model.Balance
+import com.example.dzivekodywallet.data.database.model.Transaction
 import com.example.dzivekodywallet.data.database.model.Wallet
 import kotlinx.coroutines.launch
 
 class WalletViewModel(private val walletRepository: WalletRepository) : ViewModel() {
     lateinit var balances: LiveData<List<Balance>>
+    lateinit var transactions: LiveData<List<Transaction>>
 
     private var _walletId = MutableLiveData<Long>()
     val walletId: LiveData<Long>
@@ -31,6 +33,9 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
         _walletId.value = walletId
         // when WalletFragment sets walletId, get balances for given wallet
         balances = walletRepository.getBalances(walletId)
+        viewModelScope.launch {
+            transactions = walletRepository.getTransactions(walletId)
+        }
     }
 
     fun updateBalance() {
@@ -38,6 +43,12 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
         viewModelScope.launch {
             Log.d("JFLOG", "walletRepository.syncBalancesFromNetwork(_walletId.value!!)")
             walletRepository.syncBalancesFromNetwork(walletId.value!!)
+        }
+    }
+
+    fun updateTransactions() {
+        viewModelScope.launch {
+            walletRepository.syncTransactionsFromNetwork(walletId.value!!)
         }
     }
 

@@ -3,10 +3,14 @@ package com.example.dzivekodywallet.data.blockchain
 import android.util.Log
 import org.stellar.sdk.*
 import org.stellar.sdk.responses.AccountResponse
+import org.stellar.sdk.responses.Page
 import org.stellar.sdk.responses.SubmitTransactionResponse
+import org.stellar.sdk.responses.TransactionResponse
+import org.stellar.sdk.responses.operations.OperationResponse
 import java.io.InputStream
 import java.net.URL
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class StellarService private constructor() {
@@ -84,6 +88,16 @@ class StellarService private constructor() {
             // already built transaction:
             // SubmitTransactionResponse response = blockchainServer.submitTransaction(transaction);
         }
+    }
+
+    fun getTransactions(accountId: String) : ArrayList<TransactionResponse> {
+        val tsPage: Page<TransactionResponse> = blockchainServer
+            .transactions()
+            .forAccount(accountId)
+            .limit(5)
+            .execute()
+
+        return tsPage.records
     }
 
     companion object {

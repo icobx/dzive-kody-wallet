@@ -18,9 +18,9 @@ class TransactionRepository private constructor(private val transactionDao: Tran
         return transactionDao.getTransaction(key)
     }
 
-    fun getAllTransactions(): LiveData<List<Transaction>> {
-        return transactionDao.getAllTransactions()
-    }
+//    fun getAllTransactions(): LiveData<List<Transaction>> {
+//        return transactionDao.getAllTransactions()
+//    }
 
     fun deleteAllTransactions() {
         transactionDao.deleteAllTransactions()
