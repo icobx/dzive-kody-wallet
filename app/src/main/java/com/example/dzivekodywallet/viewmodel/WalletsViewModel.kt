@@ -22,14 +22,17 @@ data class WalletsViewModel(private val walletRepository: WalletRepository): Vie
 //    }
     fun getWallets(): LiveData<List<Wallet>> {
         return walletRepository.getAllWallets()
-//        viewModelScope.launch {
-//            _allWallets.value = walletRepository.getAllWallets()?.value
-//        }
     }
 
     fun insertWallet(wallet: Wallet) {
         viewModelScope.launch(Dispatchers.IO) {
             walletRepository.insertWallet(wallet)
+        }
+    }
+
+    fun updateWalletStatus(walletId:Long) {
+        viewModelScope.launch {
+            walletRepository.syncBalancesFromNetwork(walletId)
         }
     }
 

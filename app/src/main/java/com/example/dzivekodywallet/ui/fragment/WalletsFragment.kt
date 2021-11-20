@@ -41,6 +41,7 @@ class WalletsFragment : Fragment() {
         viewModel.getWallets().observe(viewLifecycleOwner, Observer { wallets ->
             binding.walletsRecyclerView.adapter = WalletItemAdapter(wallets, WalletItemListener(
                 { walletId ->
+                    viewModel.updateWalletStatus(walletId)
                     findNavController().navigate(WalletsFragmentDirections.actionWalletsFragmentToWalletFragment(walletId))
                 },
                 { wallet ->
@@ -49,10 +50,6 @@ class WalletsFragment : Fragment() {
             )
         })
 
-//        binding.chooseWalletButton.setOnClickListener { view: View ->
-//            view.findNavController().navigate(R.id.action_walletsFragment_to_walletFragment)
-//        }
-
         return binding.root
     }
 
@@ -60,23 +57,8 @@ class WalletsFragment : Fragment() {
         findNavController().navigate(WalletsFragmentDirections.actionWalletsFragmentToAddWalletFragment2())
     }
 
-    private fun generateNewWallet() {
-        // TODO:
-        // get name of a wallet from UI
-//        viewModel.generateNewWallet("walletka", "testovacia fraza")
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("onViewCreated", "in wallets fragment")
-//        val nc = findNavController()
-//        val nc = activity?.findNavController(R.id.main_fragment_container)
-//        val button = binding.chooseWalletButton
-//
-//        button.setOnClickListener {
-//            nc?.navigate(R.id.action_walletsFragment_to_wallet_nav_graph)
-//        }
-
         val addExistingButton =binding.addWalletImageButton
 
         addExistingButton.setOnClickListener {

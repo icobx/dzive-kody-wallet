@@ -3,6 +3,7 @@ package com.example.dzivekodywallet.ui.fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -31,16 +32,6 @@ class WalletFragment : Fragment() {
             container,
             false
         )
-        // back button nav
-        // TODO: no anim on button press atm
-        binding.walletAppbar.setNavigationOnClickListener { view: View ->
-            view.findNavController().navigate(R.id.action_walletFragment_to_walletsFragment)
-        }
-
-        // bottom nav functionality
-        val navHostFragment = childFragmentManager
-            .findFragmentById(R.id.wallet_fragment_container) as NavHostFragment
-        binding.walletBottomNav.setupWithNavController(navHostFragment.findNavController())
 
         val args = WalletFragmentArgs.fromBundle(requireArguments())
 
@@ -50,9 +41,43 @@ class WalletFragment : Fragment() {
         )[WalletViewModel::class.java]
 
         viewModel.setWalletId(args.walletId)
+        viewModel.walletName.observe(viewLifecycleOwner, { name ->
+            binding.walletAppbar.title = name
+        })
 
-        viewModel.updateBalance()
+        viewModel.updateName()
+//        viewModel.updateBalance()
+
+        // back button nav
+        // TODO: no anim on button press atm
+        binding.walletAppbar.setNavigationOnClickListener { view: View ->
+            view.findNavController().navigate(R.id.action_walletFragment_to_walletsFragment)
+        }
+        binding.walletAppbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.wallet_appbar_sync -> {
+                    Log.d("PVALOG", "IN onOptionsItemSelected; viewModel.synchronise()")
+                    viewModel.synchronise()
+                    true
+                }
+                else -> false
+            }
+        }
+
+
+        // bottom nav functionality
+        val navHostFragment = childFragmentManager
+            .findFragmentById(R.id.wallet_fragment_container) as NavHostFragment
+        binding.walletBottomNav.setupWithNavController(navHostFragment.findNavController())
 
         return binding.root
     }
+
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        return when (item.itemId) {
+//
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
+
 }

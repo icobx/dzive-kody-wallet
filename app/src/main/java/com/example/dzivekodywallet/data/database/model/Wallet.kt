@@ -12,9 +12,6 @@ data class Wallet (
     @ColumnInfo(name = "name")
     var name: String = "",
 
-    @ColumnInfo(name = "balance")
-    var balance: Double = 0.0,
-
     @ColumnInfo(name = "public_key")
     var publicKey: String = "",
 
@@ -22,4 +19,3 @@ data class Wallet (
     var privateKey: String = "",
 
 )
-

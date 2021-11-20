@@ -14,9 +14,6 @@
         android:background="@android:color/holo_purple"
         tools:context=".ui.fragment.WalletsFragment">
 
-
-
-        <!-- TODO: Update blank fragment layout -->
         <TextView
             android:id="@+id/wallets_text_view"
             android:layout_width="wrap_content"
@@ -30,8 +27,6 @@
             app:layout_constraintTop_toTopOf="parent"
         />
 
-
-<!--         TODO-->
         <TextView
             android:id="@+id/textView_wallets"
             android:layout_width="match_parent"

@@ -2,17 +2,11 @@ package com.example.dzivekodywallet.ui.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dzivekodywallet.R
-import com.example.dzivekodywallet.data.WalletRepository
-import com.example.dzivekodywallet.data.database.AppDatabase
 import com.example.dzivekodywallet.data.database.model.Wallet
-import com.example.dzivekodywallet.viewmodel.WalletItemViewModel
 import com.example.dzivekodywallet.databinding.ItemWalletBinding
 
 class WalletItemAdapter(private val mList: List<Wallet>, private val clickListener: WalletItemListener) : ListAdapter<Wallet, WalletItemAdapter.ViewHolder>(WalletItemDiffCallback()) {

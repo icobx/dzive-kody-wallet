@@ -13,11 +13,12 @@ class AddWalletViewModel(private val walletRepository: WalletRepository): ViewMo
             if (isGeneratingEnabled) {
                 walletRepository.generateNewWallet(walletName, secretPhrase)
             } else {
-                walletRepository.addExistingWallet(
+                val newWalletId = walletRepository.addExistingWallet(
                     walletName,
                     walletSecretSeed,
                     secretPhrase
                 )
+                walletRepository.syncBalancesFromNetwork(newWalletId)
             }
         }
     }

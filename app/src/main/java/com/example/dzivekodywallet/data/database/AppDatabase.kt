@@ -8,17 +8,19 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.dzivekodywallet.data.database.model.Balance
 import com.example.dzivekodywallet.data.database.model.Transaction
 import com.example.dzivekodywallet.data.database.model.Wallet
 import com.example.dzivekodywallet.data.database.model.Contact
 
-@Database(entities = [Transaction::class, Wallet::class, Contact::class], version = 9, exportSchema = false)
+@Database(entities = [Transaction::class, Wallet::class, Contact::class, Balance::class], version = 22, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
 //    abstract val appDatabaseDao: AppDatabaseDao
     abstract val transactionDao: TransactionDao
     abstract val walletDao: WalletDao
     abstract val contactDao: ContactDao
+    abstract val balanceDao: BalanceDao
 
     companion object {
         @Volatile
@@ -34,9 +36,7 @@ abstract class AppDatabase : RoomDatabase() {
                         AppDatabase::class.java,
                         "app_database.sql"
                     )
-//                        .allowMainThreadQueries() // TODO remove
                         .fallbackToDestructiveMigration()
-//                        .addCallback(prepopulateDatabase())
                         .build()
 
                     INSTANCE = instance
