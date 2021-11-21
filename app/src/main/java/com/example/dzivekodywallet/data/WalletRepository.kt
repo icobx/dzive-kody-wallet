@@ -2,6 +2,7 @@ package com.example.dzivekodywallet.data
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.dzivekodywallet.data.blockchain.StellarService
 import com.example.dzivekodywallet.data.database.BalanceDao
 import com.example.dzivekodywallet.data.database.model.Wallet
@@ -120,8 +121,8 @@ class WalletRepository private constructor(
 //        return balances
 //    }
 
-    suspend fun generateNewWallet(walletName: String, secretPhrase: String) {
-        withContext(Dispatchers.IO) {
+    suspend fun generateNewWallet(walletName: String, secretPhrase: String): HashMap<String,String> {
+        return withContext(Dispatchers.IO) {
             val generatedKeyPair = stellarService.generateAccount()
             val wallet = Wallet()
             wallet.name = walletName
@@ -130,6 +131,10 @@ class WalletRepository private constructor(
                 .toString()
             wallet.publicKey = generatedKeyPair.accountId
             insertWallet(wallet)
+            val x = HashMap<String, String>()
+            x.put("public_key", wallet.publicKey)
+            x.put("private_key", String(generatedKeyPair.secretSeed))
+            return@withContext x
         }
     }
 
