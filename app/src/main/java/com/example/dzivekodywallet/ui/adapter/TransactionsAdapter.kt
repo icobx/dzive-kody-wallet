@@ -13,8 +13,14 @@ class TransactionsAdapter(
     private val mList: ArrayList<Transaction> = ArrayList()
 ): RecyclerView.Adapter<TransactionsAdapter.ViewHolder>() {
 
+    private lateinit var clickListener: TransactionItemListener
+
+    fun setClickListener(clickListener: TransactionItemListener) {
+        this.clickListener = clickListener
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(mList[position])
+        holder.bind(mList[position], clickListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,8 +41,9 @@ class TransactionsAdapter(
 
     // Holds the views for adding it to image and text
     class ViewHolder private constructor(val binding: ItemTransactionBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(transaction: Transaction)
+        fun bind(transaction: Transaction, clickListener: TransactionItemListener)
         {
+            binding.clickListener = clickListener
             binding.transaction = transaction
             Log.d("JFLOG", "IN transAdapter.bind: $transaction")
 
@@ -74,5 +81,14 @@ class TransactionDiffCallback(
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         return oldList[oldItemPosition] == newList[newItemPosition]
+    }
+}
+
+class TransactionItemListener(
+    val clickListener: (transactionId: String) -> Unit
+) {
+    fun onTransactionItemClick(transactionId: String) {
+        Log.d("PVALOG", "User clicked on a transaction $transactionId")
+        clickListener(transactionId)
     }
 }

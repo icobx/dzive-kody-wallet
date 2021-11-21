@@ -3,11 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-<!--        <variable-->
-<!--            name="clickListener"-->
-<!--            type="com.example.dzivekodywallet.ui.adapter.WalletItemListener"-->
-<!--            />-->
-<!--        <import type="android.s"-->
+        <variable
+            name="clickListener"
+            type="com.example.dzivekodywallet.ui.adapter.TransactionItemListener" />
         <variable
             name="transaction"
             type="com.example.dzivekodywallet.data.database.model.Transaction"
@@ -19,10 +17,8 @@
         android:orientation="vertical"
         android:paddingVertical="5dp"
         android:paddingHorizontal="10dp"
-
+        android:onClick="@{() -> clickListener.onTransactionItemClick(transaction.transactionId)}"
         >
-<!--        TODO: make transaction clickable-->
-<!--        android:onClick="@{() -> clickListener.onWalletItemClick(wallet)}"-->
 
         <LinearLayout
             android:id="@+id/transaction_item_lin_layout_upper"

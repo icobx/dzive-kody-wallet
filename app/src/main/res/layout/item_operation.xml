@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="operation"
+            type="com.example.dzivekodywallet.data.database.model.Operation" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="5dp" >
+
+        <TextView
+            android:id="@+id/operation_item_operation_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{operation.transactionId}" />
+        <TextView
+            android:id="@+id/operation_item_destination_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/operation_item_operation_type"
+            android:text="@{operation.destinationAccount}" />
+
+        <TextView
+            android:id="@+id/operation_item_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/operation_item_destination_account"
+            android:text="@{operation.amount}" />
+    </RelativeLayout>
+</layout>
