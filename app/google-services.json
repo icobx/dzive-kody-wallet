@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "531545262491",
+    "project_id": "dzivekodywallet",
+    "storage_bucket": "dzivekodywallet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531545262491:android:7348692da52a4b4967793e",
+        "android_client_info": {
+          "package_name": "com.example.dzivekodywallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "531545262491-88kt8ch8hnqmig0mbe3vve09hulm2b3l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0ZStjhxxl7MU-t82PDtZteRVuzeH1IR8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "531545262491-88kt8ch8hnqmig0mbe3vve09hulm2b3l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
