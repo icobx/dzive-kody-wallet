@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -14,9 +15,9 @@ import com.example.dzivekodywallet.data.database.model.Contact
 import com.example.dzivekodywallet.data.util.Injection
 import com.example.dzivekodywallet.databinding.FragmentAddWalletBinding
 import com.example.dzivekodywallet.viewmodel.AddWalletViewModel
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-// TODO: pri generovani novej wallet umoznit pouzivatelovi pozriet si public a secret key
 class AddWalletFragment : Fragment() {
     private lateinit var binding: FragmentAddWalletBinding
     private lateinit var viewModel: AddWalletViewModel
@@ -37,6 +38,7 @@ class AddWalletFragment : Fragment() {
         )[AddWalletViewModel::class.java]
 
         binding.buttonAddWallet.setOnClickListener {
+            Log.d("DSPLOG", "add new wallet")
             addWallet()
         }
 
@@ -46,6 +48,7 @@ class AddWalletFragment : Fragment() {
         binding.checkBoxGenerateNew.setOnClickListener { view ->
             val checkBox = (view as CheckBox)
             binding.isGeneratingEnabled = checkBox.isChecked
+            binding.textInputSecretSeed.visibility = if(checkBox.isChecked) View.INVISIBLE else View.VISIBLE
         }
 
         return binding.root
@@ -54,9 +57,7 @@ class AddWalletFragment : Fragment() {
     private fun addWallet() {
         // TODO: secretPhrase zmenit na ziskavanie PIN kodu z UI
         if (binding.walletName != null || binding.walletSecretSeed != null) {
-            binding.textInputWalletName.isEnabled = false
-            binding.textInputSecretSeed.isEnabled = false
-            binding.buttonAddWallet.setOnClickListener(null)
+            disableForm()
             binding.pBar.visibility = View.VISIBLE
             viewModel.addWallet(binding.walletName.toString(), binding.walletSecretSeed.toString(), "1234", binding.isGeneratingEnabled as Boolean, this::openModal)
             if (binding.isGeneratingEnabled == false) {
@@ -66,24 +67,41 @@ class AddWalletFragment : Fragment() {
         // TODO: check if addition succeeded
     }
 
+    private fun disableForm() {
+        binding.textInputWalletName.isEnabled = false
+        binding.textInputSecretSeed.isEnabled = false
+        binding.checkBoxGenerateNew.isEnabled = false
+
+        binding.buttonAddWallet.setOnClickListener(null)
+        binding.buttonAddWallet.isClickable = false
+        binding.buttonAddWallet.isEnabled = false
+    }
+
 
     fun openModal(publicKey: String, privateKey: String) {
         binding.pBar.visibility = View.GONE
         val dialog = BottomSheetDialog(requireContext())
         val dialogView = layoutInflater.inflate(R.layout.dialog_wallet_information,null)
         dialog.setContentView(dialogView)
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
 
-        // Buttons
-        val closeButton = dialogView.findViewById<ImageView>(R.id.dialog_wallet_information_close)
+//        dialog.setOnShowListener {
+//            val bottomSheetDialog = it as BottomSheetDialog
+//            val parentLayout =
+//                bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+//            parentLayout?.let { it ->
+//                val behaviour = BottomSheetBehavior.from(it)
+//                setupFullHeight(it)
+//                behaviour.state = BottomSheetBehavior.STATE_EXPANDED
+//            }
+//        }
+
         val privKey = dialogView.findViewById<TextView>(R.id.dialog_wallet_information_private_key)
         val pubKey = dialogView.findViewById<TextView>(R.id.dialog_wallet_information_pub_key)
 
-        privKey.setText(privateKey)
-        pubKey.setText(publicKey)
-
-        closeButton.setOnClickListener {
-            dialog.dismiss()
-        }
+        privKey.text = privateKey
+        pubKey.text = publicKey
 
         dialogView.findViewById<Button>(R.id.dialog_wallet_information_confirm_button).setOnClickListener {
             dialog.dismiss()
@@ -94,4 +112,9 @@ class AddWalletFragment : Fragment() {
     }
 
 
+//    private fun setupFullHeight(bottomSheet: View) {
+//        val layoutParams = bottomSheet.layoutParams
+//        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
+//        bottomSheet.layoutParams = layoutParams
+//    }
 }

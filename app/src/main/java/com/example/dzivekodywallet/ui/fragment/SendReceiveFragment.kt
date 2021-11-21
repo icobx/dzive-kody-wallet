@@ -66,23 +66,26 @@ class SendReceiveFragment : Fragment() {
             )
         }
 
+        wViewModel.updatePublicKey()
+
         val imageView = binding.qrCode
         val multiFormatWriter = MultiFormatWriter()
-        try {
-            val bitMatrix = multiFormatWriter.encode(
-                "Public key placeholder",
-                BarcodeFormat.QR_CODE,
-                500,
-                500
-            )
-            val barcodeEncoder = BarcodeEncoder()
-            val bitmap = barcodeEncoder.createBitmap(bitMatrix)
-            imageView.setImageBitmap(bitmap)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-
+        wViewModel.walletPublicKey.observe(viewLifecycleOwner, { publicKey ->
+            binding.receivePublicKeyTextView.text = publicKey
+            try {
+                val bitMatrix = multiFormatWriter.encode(
+                    publicKey,
+                    BarcodeFormat.QR_CODE,
+                    100,
+                    100
+                )
+                val barcodeEncoder = BarcodeEncoder()
+                val bitmap = barcodeEncoder.createBitmap(bitMatrix)
+                imageView.setImageBitmap(bitmap)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        })
 
         return binding.root
     }

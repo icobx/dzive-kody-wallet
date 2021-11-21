@@ -49,6 +49,7 @@
             android:inputType="textPersonName"
             android:minHeight="48dp"
             android:text="@={walletSecretSeed}"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/text_input_wallet_name"
             app:layout_constraintStart_toStartOf="@+id/text_input_wallet_name"

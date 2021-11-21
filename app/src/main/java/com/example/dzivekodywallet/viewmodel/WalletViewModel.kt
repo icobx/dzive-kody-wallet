@@ -21,6 +21,10 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
     val walletName: LiveData<String>
         get() = _walletName
 
+    private var _walletPublicKey = MutableLiveData<String>()
+    val walletPublicKey: LiveData<String>
+        get() = _walletPublicKey
+
     private var _wallet = MutableLiveData<Wallet>()
     val wallet: LiveData<Wallet>
         get() = _wallet
@@ -44,6 +48,12 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
     fun updateName() {
         viewModelScope.launch {
             _walletName.value = walletRepository.getWallet(walletId.value!!)?.name
+        }
+    }
+
+    fun updatePublicKey() {
+        viewModelScope.launch {
+            _walletPublicKey.value = walletRepository.getWallet(walletId.value!!)?.publicKey
         }
     }
 
