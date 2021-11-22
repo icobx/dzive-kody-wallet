@@ -92,7 +92,6 @@ class WalletRepository private constructor(
             val incomingBalances = stellarService.getBalance(accountId)
             incomingBalances?.forEach { new ->
                 val assetName = getAssetName(new)
-                Log.d("JFLOG", "IN syncBalance; balance: ${new.balance.toString()}")
                 val balance = balanceDao.findAssetForWallet(walletId, assetName)
                 if (null != balance) {
                     balance.amount = new.balance.toDouble()
@@ -118,11 +117,13 @@ class WalletRepository private constructor(
             val transactions: ArrayList<Transaction> = ArrayList()
 
             transactionResponses.forEach { tr ->
-                val t = Transaction(tr.hash)
-                t.createdAt = tr.createdAt
-                t.operationCount = tr.operationCount
-                t.sourceAccountId = tr.sourceAccount
-                t.successful = tr.isSuccessful
+                val t = Transaction(
+                    tr.hash, tr.isSuccessful, tr.sourceAccount, tr.operationCount, tr.createdAt
+                )
+//                t.createdAt = tr.createdAt
+//                t.operationCount = tr.operationCount
+//                t.sourceAccountId = tr.sourceAccount
+//                t.successful = tr.isSuccessful
 
                 transactions.add(t)
             }

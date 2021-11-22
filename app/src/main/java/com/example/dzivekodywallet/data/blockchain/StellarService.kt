@@ -97,6 +97,13 @@ class StellarService private constructor() {
             .limit(5)
             .execute()
 
+        val test: Page<OperationResponse> = blockchainServer
+            .operations()
+            .forTransaction(tsPage.records[0].hash)
+            .execute()
+
+        Log.d("JFLOG", "IN stellarService.getTransactions: ${test.records[0].id.toString()}")
+
         return tsPage.records
     }
 

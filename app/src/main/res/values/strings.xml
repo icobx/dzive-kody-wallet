@@ -14,6 +14,6 @@
     <string name="transactions">Transactions</string>
     <string name="transaction_id">Transaction: %s</string>
     <string name="transaction_created_at">Created at: %s</string>
-    <string name="transaction_operations_count">Operations count: %d</string>
+    <string name="transaction_operations_count">Number of associated operations: %d</string>
     <string name="is_transaction_successful">Is transaction successful?</string>
 </resources>

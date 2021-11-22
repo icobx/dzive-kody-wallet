@@ -7,7 +7,7 @@
 <!--            name="clickListener"-->
 <!--            type="com.example.dzivekodywallet.ui.adapter.WalletItemListener"-->
 <!--            />-->
-<!--        <import type="android.s"-->
+        <import type="com.example.dzivekodywallet.data.util.Formatting"/>
         <variable
             name="transaction"
             type="com.example.dzivekodywallet.data.database.model.Transaction"
@@ -59,13 +59,14 @@
             android:id="@+id/transaction_item_lin_layout_lower"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_below="@id/transaction_item_lin_layout_upper"
             >
             <TextView
+                android:id="@+id/transaction_item_op_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{@string/transaction_operations_count(transaction.operationCount)}"
+                android:text="@{@string/transaction_operations_count(transaction.operationsCount)}"
                 android:maxLines="1"
                 android:layout_weight="1"
                 android:textAlignment="viewStart"
@@ -76,11 +77,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginEnd="10dp"
-                android:text="@{@string/transaction_created_at(transaction.createdAt)}"
+                android:text="@{@string/transaction_created_at(Formatting.INSTANCE.formatDateTime(transaction.createdAt))}"
                 android:maxLines="1"
                 android:textAlignment="viewStart"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                 />
+
         </LinearLayout>
     </RelativeLayout>
 </layout>
