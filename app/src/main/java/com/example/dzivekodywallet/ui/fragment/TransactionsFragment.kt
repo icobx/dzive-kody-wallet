@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dzivekodywallet.data.util.Injection
 import com.example.dzivekodywallet.databinding.FragmentTransactionsBinding
+import com.example.dzivekodywallet.ui.adapter.TransactionItemListener
 import com.example.dzivekodywallet.ui.adapter.TransactionsAdapter
 import com.example.dzivekodywallet.viewmodel.WalletViewModel
 
@@ -42,17 +44,18 @@ class TransactionsFragment : Fragment() {
             if (transactions != null) {
                 (binding.transactionsRecyclerView.adapter as TransactionsAdapter)
                     .setTransactions(transactions)
-                Log.d("JFLOG", "transactions: ${transactions.toString()}")
+                (binding.transactionsRecyclerView.adapter as TransactionsAdapter)
+                    .setClickListener(
+                        TransactionItemListener { transaction ->
+                            findNavController()
+                                .navigate(
+                                    TransactionsFragmentDirections.actionWalletNavTransactionsToTransactionDetailsFragment(transaction.transactionId, transaction.sourceAccountId)
+                        )}
+                    )
             }
         })
 
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        Log.d("onViewCreated", "in transactions fragment")
     }
 
 }

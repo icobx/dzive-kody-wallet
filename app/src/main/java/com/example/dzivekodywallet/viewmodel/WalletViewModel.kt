@@ -1,12 +1,9 @@
 package com.example.dzivekodywallet.viewmodel
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.dzivekodywallet.data.WalletRepository
 import com.example.dzivekodywallet.data.database.model.Balance
+import com.example.dzivekodywallet.data.database.model.Operation
 import com.example.dzivekodywallet.data.database.model.Transaction
 import com.example.dzivekodywallet.data.database.model.Wallet
 import kotlinx.coroutines.launch
@@ -27,6 +24,12 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
     val wallet: LiveData<Wallet>
         get() = _wallet
 
+    private val selectedTransaction = MutableLiveData<Transaction>()
+
+    val operations: LiveData<List<Operation>> = selectedTransaction.switchMap { tr ->
+        walletRepository.getOperationsForTransaction(tr.transactionId)
+    }
+
     init {}
 
     fun setWalletId(walletId: Long) {
@@ -39,9 +42,7 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
     }
 
     fun updateBalance() {
-        Log.d("JFLOG", "IN updateBalance()")
         viewModelScope.launch {
-            Log.d("JFLOG", "walletRepository.syncBalancesFromNetwork(_walletId.value!!)")
             walletRepository.syncBalancesFromNetwork(walletId.value!!)
         }
     }
@@ -68,5 +69,9 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
         viewModelScope.launch {
             walletRepository.synchronise(walletId.value!!)
         }
+    }
+
+    fun setSelectedTransaction(transaction: Transaction) {
+        selectedTransaction.value = transaction
     }
 }

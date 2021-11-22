@@ -27,11 +27,11 @@ class StellarService private constructor() {
     fun generateAccount() : KeyPair {
         val pair = KeyPair.random()
 
-        val friendbotUrl = String.format(
+        val friendBotUrl = String.format(
             "https://friendbot.stellar.org/?addr=%s",
             pair.accountId
         )
-        val response: InputStream = URL(friendbotUrl).openStream()
+        val response: InputStream = URL(friendBotUrl).openStream()
         val body: String = Scanner(response, "UTF-8").useDelimiter("\\A").next()
         println("SUCCESS! You have a new account :)\n$body")
 
@@ -94,7 +94,7 @@ class StellarService private constructor() {
         val tsPage: Page<TransactionResponse> = blockchainServer
             .transactions()
             .forAccount(accountId)
-            .limit(5)
+            .limit(50)
             .execute()
 
         val test: Page<OperationResponse> = blockchainServer
@@ -105,6 +105,16 @@ class StellarService private constructor() {
         Log.d("JFLOG", "IN stellarService.getTransactions: ${test.records[0].id.toString()}")
 
         return tsPage.records
+    }
+
+    fun getOperations(transactionId: String): ArrayList<OperationResponse> {
+        val operationsPerTransaction = blockchainServer
+            .operations()
+            .forTransaction(transactionId)
+            .limit(50)
+            .execute()
+
+        return operationsPerTransaction.records
     }
 
     companion object {

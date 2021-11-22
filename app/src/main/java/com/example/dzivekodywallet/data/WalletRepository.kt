@@ -2,12 +2,16 @@ package com.example.dzivekodywallet.data
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
+import androidx.lifecycle.switchMap
 import com.example.dzivekodywallet.data.blockchain.StellarService
 import com.example.dzivekodywallet.data.database.BalanceDao
+import com.example.dzivekodywallet.data.database.OperationDao
 import com.example.dzivekodywallet.data.database.TransactionDao
 import com.example.dzivekodywallet.data.database.model.Wallet
 import com.example.dzivekodywallet.data.database.WalletDao
 import com.example.dzivekodywallet.data.database.model.Balance
+import com.example.dzivekodywallet.data.database.model.Operation
 import com.example.dzivekodywallet.data.database.model.Transaction
 import com.example.dzivekodywallet.data.util.Encryption
 import kotlinx.coroutines.Dispatchers
@@ -15,13 +19,24 @@ import kotlinx.coroutines.withContext
 import org.stellar.sdk.KeyPair
 import org.stellar.sdk.responses.AccountResponse
 import org.stellar.sdk.responses.TransactionResponse
+import org.stellar.sdk.responses.operations.CreateAccountOperationResponse
+import org.stellar.sdk.responses.operations.PaymentOperationResponse
 
 class WalletRepository private constructor(
     private val walletDao: WalletDao,
     private val balanceDao: BalanceDao,
     private val transactionDao: TransactionDao,
+    private val operationDao: OperationDao,
     private val stellarService: StellarService
 ) {
+
+    fun getOperationsForTransaction(transactionId: String)
+        = operationDao.getOperationsForTransaction(transactionId)
+            .switchMap { opList ->
+                liveData {
+                    emit(opList)
+                }
+            }
 
     fun insertWallet(wallet: Wallet): Long {
         return walletDao.insertWallet(wallet)
@@ -57,11 +72,6 @@ class WalletRepository private constructor(
         }
     }
 
-//    suspend fun getBalanceFromDatabase(walletId: Long): LiveData<List<Balance>> {
-//        return withContext(Dispatchers.IO) {
-//            return@withContext balanceDao.getBalancesForWallet(walletId)
-//        }
-//    }
     fun getBalances(walletId: Long): LiveData<List<Balance>> {
         return balanceDao.getBalances(walletId)
     }
@@ -108,6 +118,38 @@ class WalletRepository private constructor(
         }
     }
 
+    private suspend fun syncOperationsForTransaction(transactionId: String) {
+        withContext(Dispatchers.IO) {
+            val operations = mutableListOf<Operation>()
+            val operationResponses = stellarService.getOperations(transactionId)
+            operationResponses.forEach { op ->
+                val operation = Operation(
+                    operationId = op.id,
+                    transactionId = transactionId
+                )
+
+                operation.operationType = op.type
+                when (operation.operationType) {
+                    "payment" -> {
+                        op as PaymentOperationResponse
+                        operation.destinationAccount = op.to
+                        operation.amount = op.amount
+                        operations.add(operation)
+                    }
+                    "create_account" -> {
+                        op as CreateAccountOperationResponse
+                        operation.destinationAccount = op.account
+                        operation.amount = op.startingBalance
+                        operations.add(operation)
+                    }
+                    else -> { }
+                }
+            }
+
+            operationDao.insertOperations(*operations.toTypedArray())
+        }
+    }
+
     suspend fun syncTransactionsFromNetwork(walletId: Long) {
         val accountId = getAccountIdFromWalletId(walletId)
 
@@ -126,6 +168,7 @@ class WalletRepository private constructor(
 //                t.successful = tr.isSuccessful
 
                 transactions.add(t)
+                syncOperationsForTransaction(t.transactionId)
             }
 
             transactionDao.insertTransactions(*transactions.toTypedArray())
@@ -136,6 +179,7 @@ class WalletRepository private constructor(
         // TODO: call all sync methods for given wallet here
         // this will be called when user requests sync
         syncBalancesFromNetwork(walletId)
+        syncTransactionsFromNetwork(walletId)
     }
 
     private suspend fun getAccountIdFromWalletId(walletId: Long): String {
@@ -143,15 +187,6 @@ class WalletRepository private constructor(
             return@withContext getWallet(walletId)?.publicKey!!
         }
     }
-
-    // TODO: might not be needed
-//    suspend fun getBalances(walletId: Long): List<Balance> {
-//        val balances = getBalanceFromDatabase(walletId)
-//        if (balances.isEmpty()) {
-//            syncBalanceFromNetwork(walletId)
-//        }
-//        return balances
-//    }
 
     suspend fun generateNewWallet(walletName: String, secretPhrase: String) {
         withContext(Dispatchers.IO) {
@@ -187,13 +222,14 @@ class WalletRepository private constructor(
             walletDao: WalletDao,
             balanceDao: BalanceDao,
             transactionDao: TransactionDao,
+            operationDao: OperationDao,
             stellarService: StellarService
         ): WalletRepository {
             synchronized(this) {
                 var instance = INSTANCE
 
                 if (instance == null) {
-                    instance = WalletRepository(walletDao, balanceDao, transactionDao, stellarService)
+                    instance = WalletRepository(walletDao, balanceDao, transactionDao, operationDao, stellarService)
 
                     INSTANCE = instance
                 }
