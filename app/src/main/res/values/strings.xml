@@ -16,4 +16,11 @@
     <string name="transaction_created_at">Created at: %s</string>
     <string name="transaction_operations_count">Number of associated operations: %d</string>
     <string name="is_transaction_successful">Is transaction successful?</string>
+    <string name="operation_type">Operation of type: %s</string>
+    <string name="operation_id">%d</string>
+    <string name="operation_dest_acc">%s</string>
+    <string name="operation_amount_asset">%s %s</string>
+
+
+    <string name="copy_to_clipboard">Copy to clipboard</string>
 </resources>

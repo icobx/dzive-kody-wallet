@@ -12,4 +12,8 @@ object Formatting {
 
         return dateFormat.format(date!!)
     }
+
+    fun resolveAssetName(an: String): String {
+        return if (an != "") an else "of unknown asset type"
+    }
 }

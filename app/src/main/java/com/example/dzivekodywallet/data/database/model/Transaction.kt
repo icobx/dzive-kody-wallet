@@ -14,16 +14,16 @@ data class Transaction (
     var transactionId: String,
 
     @ColumnInfo(name = "successful")
-    var successful: Boolean,
+    var successful: Boolean = false,
 
     @ColumnInfo(name = "source_account_id")
-    var sourceAccountId: String,
+    var sourceAccountId: String = "",
 
     @ColumnInfo(name = "operations_count")
-    var operationsCount: Int,
+    var operationsCount: Int = -1,
 
     @ColumnInfo(name = "created_at")
-    var createdAt: String,
+    var createdAt: String = "",
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

@@ -30,13 +30,18 @@ class WalletRepository private constructor(
     private val stellarService: StellarService
 ) {
 
-    fun getOperationsForTransaction(transactionId: String)
-        = operationDao.getOperationsForTransaction(transactionId)
-            .switchMap { opList ->
-                liveData {
-                    emit(opList)
-                }
-            }
+//    fun getOperationsForTransaction(transactionId: String)
+//        = operationDao.getOperationsForTransaction(transactionId)
+//            .switchMap { opList ->
+//                liveData {
+//                    emit(opList)
+//                }
+//            }
+
+    fun getOperationsForTransaction(transactionId: String): LiveData<List<Operation>> {
+        return operationDao.getOperationsForTransaction(transactionId)
+    }
+
 
     fun insertWallet(wallet: Wallet): Long {
         return walletDao.insertWallet(wallet)
