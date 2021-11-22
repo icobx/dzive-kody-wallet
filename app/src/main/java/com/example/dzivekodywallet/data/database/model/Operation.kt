@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "operation_table")
 data class Operation (
     @PrimaryKey(autoGenerate = true)
-    var operationId: Long? = null,
+    var operationId: Long,
 
     @ColumnInfo(name = "operation_type")
     var operationType: String = "",
@@ -22,7 +22,7 @@ data class Operation (
     var assetName: String = "",
 
     @ColumnInfo(name = "transaction_id")
-    var transactionId: String = "",
+    var transactionId: String,
 
 ) {
     override fun equals(other: Any?): Boolean {

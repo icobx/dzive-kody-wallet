@@ -45,7 +45,6 @@ class TransactionsAdapter(
         {
             binding.clickListener = clickListener
             binding.transaction = transaction
-            Log.d("JFLOG", "IN transAdapter.bind: $transaction")
 
             val isSuccessfulResource = if (transaction.successful) R.drawable.ic_check_circle_outline_24 else R.drawable.ic_close_24
             binding.transactionItemIsSuccessfulImageView.setImageResource(isSuccessfulResource)
@@ -85,10 +84,9 @@ class TransactionDiffCallback(
 }
 
 class TransactionItemListener(
-    val clickListener: (transactionId: String) -> Unit
+    val clickListener: (transaction: Transaction) -> Unit
 ) {
-    fun onTransactionItemClick(transactionId: String) {
-        Log.d("PVALOG", "User clicked on a transaction $transactionId")
-        clickListener(transactionId)
+    fun onTransactionItemClick(transaction: Transaction) {
+        clickListener(transaction)
     }
 }

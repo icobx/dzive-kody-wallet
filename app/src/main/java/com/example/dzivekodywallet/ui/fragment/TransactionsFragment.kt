@@ -46,21 +46,16 @@ class TransactionsFragment : Fragment() {
                     .setTransactions(transactions)
                 (binding.transactionsRecyclerView.adapter as TransactionsAdapter)
                     .setClickListener(
-                        TransactionItemListener { transactionId ->
-                            findNavController().navigate(TransactionsFragmentDirections.actionWalletNavTransactionsToTransactionDetailsFragment(transactionId))
-                        }
+                        TransactionItemListener { transaction ->
+                            findNavController()
+                                .navigate(
+                                    TransactionsFragmentDirections.actionWalletNavTransactionsToTransactionDetailsFragment(transaction.transactionId, transaction.sourceAccountId)
+                        )}
                     )
-                Log.d("JFLOG", "transactions: ${transactions.toString()}")
             }
         })
 
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        Log.d("onViewCreated", "in transactions fragment")
     }
 
 }

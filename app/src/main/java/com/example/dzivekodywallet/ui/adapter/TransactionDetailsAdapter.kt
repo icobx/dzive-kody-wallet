@@ -4,10 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dzivekodywallet.data.database.model.Operation
 import com.example.dzivekodywallet.databinding.ItemOperationBinding
 
 class TransactionDetailsAdapter(
-    private val mList: ArrayList<String> = ArrayList()
+    private val mList: ArrayList<Operation> = ArrayList()
 ): RecyclerView.Adapter<TransactionDetailsAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -22,7 +23,7 @@ class TransactionDetailsAdapter(
         return mList.size
     }
 
-    fun setOperations(operations: List<String>) {
+    fun setOperations(operations: List<Operation>) {
         val diffResult = DiffUtil.calculateDiff(OperationDiffCallback(this.mList, operations))
         this.mList.clear()
         this.mList.addAll(operations)
@@ -30,10 +31,8 @@ class TransactionDetailsAdapter(
     }
 
     class ViewHolder private constructor(val binding: ItemOperationBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(something: String) {
-            binding.amount = 5000.0
-            binding.operationType = something
-            binding.destinationAccount = "Patrik"
+        fun bind(operation: Operation) {
+            binding.operation = operation
 
             binding.executePendingBindings()
         }
@@ -49,8 +48,8 @@ class TransactionDetailsAdapter(
 }
 
 class OperationDiffCallback(
-    private val oldList: List<String>,
-    private val newList: List<String>
+    private val oldList: List<Operation>,
+    private val newList: List<Operation>
 ): DiffUtil.Callback() {
     override fun getOldListSize(): Int {
         return oldList.size
@@ -61,7 +60,7 @@ class OperationDiffCallback(
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition] == newList[newItemPosition]
+        return oldList[oldItemPosition].operationId == newList[newItemPosition].operationId
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

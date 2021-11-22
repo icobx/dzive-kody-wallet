@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragment.TransactionDetailsFragment"
     >
     <data>
         <variable
             name="transaction"
             type="com.example.dzivekodywallet.data.database.model.Transaction" />
-
     </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        tools:context=".ui.fragment.TransactionDetailsFragment"
+        >
 
         <RelativeLayout
             android:id="@+id/operations_transaction_info_relative_layout"
@@ -33,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/transaction_info_1"
-                android:text="@{transaction.operationCount}" />
+                android:text="@{transaction.sourceAccountId}" />
         </RelativeLayout>
 
         <View
