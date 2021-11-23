@@ -1,18 +1,24 @@
 package com.example.dzivekodywallet.ui.adapter
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dzivekodywallet.data.database.model.Operation
+import com.example.dzivekodywallet.data.util.CopyOnClickListener
 import com.example.dzivekodywallet.databinding.ItemOperationBinding
 
 class TransactionDetailsAdapter(
-    private val mList: ArrayList<Operation> = ArrayList()
+    private val clipboard: ClipboardManager,
+    private val mList: ArrayList<Operation> = ArrayList(),
 ): RecyclerView.Adapter<TransactionDetailsAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(mList[position])
+        holder.bind(mList[position], clipboard)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,8 +37,19 @@ class TransactionDetailsAdapter(
     }
 
     class ViewHolder private constructor(val binding: ItemOperationBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(operation: Operation) {
+        fun bind(operation: Operation, clipboard: ClipboardManager) {
             binding.operation = operation
+
+            binding.operationItemOpIdButton.setOnClickListener(CopyOnClickListener(
+                clipboard,
+                "Operation ID",
+                operation.operationId.toString()
+            ))
+            binding.operationItemOpDstAccButton.setOnClickListener(CopyOnClickListener(
+                clipboard,
+                "Destination Account of Operation",
+                operation.destinationAccount
+            ))
 
             binding.executePendingBindings()
         }

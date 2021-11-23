@@ -23,4 +23,5 @@
 
 
     <string name="copy_to_clipboard">Copy to clipboard</string>
+    <string name="back_to_transactions_button">Back to Transactions</string>
 </resources>

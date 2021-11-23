@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <data>
+        <import type="com.example.dzivekodywallet.data.util.Formatting" />
         <variable
             name="transaction"
             type="com.example.dzivekodywallet.data.database.model.Transaction" />
@@ -12,25 +14,68 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".ui.fragment.TransactionDetailsFragment"
+        android:paddingBottom="15dp"
         >
 
         <RelativeLayout
             android:id="@+id/operations_transaction_info_relative_layout"
             android:layout_width="match_parent"
             android:layout_marginVertical="10dp"
+            android:paddingVertical="15dp"
+            android:paddingHorizontal="15dp"
             android:layout_height="wrap_content">
 
+            <LinearLayout
+                android:id="@+id/transaction_details_trans_id_lin_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp"
+                >
+                <TextView
+                    android:id="@+id/transaction_info_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="middle"
+                    android:singleLine="true"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                    android:text="Transaction"
+                    android:layout_marginEnd="5dp"
+                     />
+                <Button
+                    android:id="@+id/operation_item_op_id_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/button_cpc_background"
+                    android:contentDescription="@string/copy_to_clipboard"
+                    android:ellipsize="end"
+                    android:minHeight="30dp"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:singleLine="true"
+                    android:text="@{transaction.transactionId}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                    />
+            </LinearLayout>
+
             <TextView
-                android:id="@+id/transaction_info_1"
+                android:id="@+id/transaction_details_transaction_ts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{transaction.transactionId}" />
+                android:layout_below="@id/transaction_details_trans_id_lin_layout"
+                android:layout_centerHorizontal="true"
+                android:text="@{Formatting.INSTANCE.formatDateTime(transaction.createdAt)}"
+                />
+
 
             <TextView
                 android:id="@+id/transaction_info_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/transaction_info_1"
+                android:ellipsize="middle"
+                android:singleLine="true"
+                android:layout_below="@id/transaction_details_transaction_ts"
                 android:text="@{transaction.sourceAccountId}" />
         </RelativeLayout>
 
@@ -47,9 +92,24 @@
             android:id="@+id/transaction_details_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="30dp"
+            android:layout_marginVertical="15dp"
             android:layout_below="@id/operations_divider"
+            android:layout_above="@id/transaction_details_back_button"
             tools:listitem="@layout/item_operation"
             />
+
+        <Button
+            android:id="@+id/transaction_details_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxHeight="45dp"
+            android:text="@string/back_to_transactions_button"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/button_cpc_background"
+            android:layout_alignParentBottom="true"
+            app:icon="@drawable/ic_arrow_back_24"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            />
+
     </RelativeLayout>
 </layout>

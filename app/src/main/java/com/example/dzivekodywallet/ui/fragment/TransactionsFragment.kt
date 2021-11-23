@@ -47,10 +47,13 @@ class TransactionsFragment : Fragment() {
                 (binding.transactionsRecyclerView.adapter as TransactionsAdapter)
                     .setClickListener(
                         TransactionItemListener { transaction ->
+                            viewModel.setSelectedTransaction(transaction)
                             findNavController()
                                 .navigate(
-                                    TransactionsFragmentDirections.actionWalletNavTransactionsToTransactionDetailsFragment(transaction.transactionId, transaction.sourceAccountId)
-                        )}
+                                    TransactionsFragmentDirections
+                                        .actionWalletNavTransactionsToTransactionDetailsFragment()
+                                )
+                        }
                     )
             }
         })

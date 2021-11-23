@@ -1,10 +1,15 @@
 package com.example.dzivekodywallet.ui.fragment
 
+import android.annotation.SuppressLint
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Context.*
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dzivekodywallet.data.database.model.Transaction
@@ -19,6 +24,7 @@ class TransactionDetailsFragment : Fragment() {
 
     private lateinit var transaction: Transaction
 
+    @SuppressLint("ServiceCast")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,23 +40,29 @@ class TransactionDetailsFragment : Fragment() {
             Injection.provideWalletViewModelFactory(requireContext())
         )[WalletViewModel::class.java]
 
-        val args = TransactionDetailsFragmentArgs.fromBundle(requireArguments())
+//        val args = TransactionDetailsFragmentArgs.fromBundle(requireArguments())
+//
+//        transaction = Transaction(args.transactionId)
+//        transaction.sourceAccountId = args.sourceAccountId
 
-        transaction = Transaction(args.transactionId)
-        transaction.sourceAccountId = args.sourceAccountId
+//        binding.transaction = transaction
+//        viewModel.setSelectedTransaction(transaction)
 
-        binding.transaction = transaction
-        viewModel.setSelectedTransaction(transaction)
+        val clipboard = getSystemService(requireContext(), ClipboardManager::class.java)
 
         binding.transactionDetailsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.transactionDetailsRecyclerView.adapter = TransactionDetailsAdapter()
+        binding.transactionDetailsRecyclerView.adapter = TransactionDetailsAdapter(clipboard!!)
 
+        viewModel.selectedTransaction.observe(viewLifecycleOwner, { selectedTransaction ->
+            binding.transaction = selectedTransaction
+        })
         viewModel.operations.observe(viewLifecycleOwner, { ops ->
             ops?.let {
                 (binding.transactionDetailsRecyclerView.adapter as TransactionDetailsAdapter)
                     .setOperations(ops)
             }
         })
+
 
         return binding.root
     }

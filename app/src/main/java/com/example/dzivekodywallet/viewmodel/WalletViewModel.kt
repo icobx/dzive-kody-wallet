@@ -24,7 +24,9 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
     val wallet: LiveData<Wallet>
         get() = _wallet
 
-    private val selectedTransaction = MutableLiveData<Transaction>()
+    private val _selectedTransaction = MutableLiveData<Transaction>()
+    val selectedTransaction: LiveData<Transaction>
+        get() = _selectedTransaction
 
     val operations: LiveData<List<Operation>> = selectedTransaction.switchMap { tr ->
         walletRepository.getOperationsForTransaction(tr.transactionId)
@@ -39,6 +41,10 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
         viewModelScope.launch {
             transactions = walletRepository.getTransactions(walletId)
         }
+    }
+
+    fun setSelectedTransaction(transaction: Transaction) {
+        _selectedTransaction.value = transaction
     }
 
     fun updateBalance() {
@@ -71,7 +77,4 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
         }
     }
 
-    fun setSelectedTransaction(transaction: Transaction) {
-        selectedTransaction.value = transaction
-    }
 }
