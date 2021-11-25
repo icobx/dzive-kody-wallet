@@ -1,5 +1,6 @@
 package com.example.dzivekodywallet.ui.fragment
 
+import android.content.ClipboardManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,11 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dzivekodywallet.R
+import com.example.dzivekodywallet.data.util.CopyOnClickListener
 import com.example.dzivekodywallet.data.util.Injection
 import com.example.dzivekodywallet.databinding.FragmentSendReceiveBinding
 import com.example.dzivekodywallet.ui.adapter.ChooseContactItemAdapter
@@ -59,6 +63,7 @@ class SendReceiveFragment : Fragment() {
 //                }
 //            }
 //        )
+
         binding.sendReceiveSendButton.setOnClickListener {
             wViewModel.makeTransaction(
                 binding.sendRecEditTextPubk.text.toString(),
@@ -72,12 +77,16 @@ class SendReceiveFragment : Fragment() {
         val multiFormatWriter = MultiFormatWriter()
         wViewModel.walletPublicKey.observe(viewLifecycleOwner, { publicKey ->
             binding.receivePublicKeyTextView.text = publicKey
+            binding.receivePublicKeyTextView.setOnClickListener(
+                    CopyOnClickListener(requireContext(), "Public key", publicKey)
+            )
+
             try {
                 val bitMatrix = multiFormatWriter.encode(
                     publicKey,
                     BarcodeFormat.QR_CODE,
-                    100,
-                    100
+                    340,
+                    340
                 )
                 val barcodeEncoder = BarcodeEncoder()
                 val bitmap = barcodeEncoder.createBitmap(bitMatrix)

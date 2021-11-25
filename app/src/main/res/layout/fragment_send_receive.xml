@@ -124,20 +124,24 @@
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/qr_code"
-                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toTopOf="@id/receive_public_key_text_view"
+                android:layout_marginBottom="15dp"
             />
-<!--            TODO: fix layout-->
-            <TextView
+            <Button
                 android:id="@+id/receive_public_key_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/public_key"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                app:layout_constraintTop_toTopOf="@+id/receive_headline_text_view"
+                android:layout_gravity="bottom"
+                android:background="@drawable/button_cpc_background"
+                android:contentDescription="@string/copy_to_clipboard"
+                android:ellipsize="end"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:text=""
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                app:layout_constraintStart_toEndOf="@id/receive_headline_text_view"
                 app:layout_constraintBottom_toTopOf="@id/qr_code"
-                android:layout_marginBottom="10dp"
+                android:layout_marginHorizontal="20dp"
             />
 
             <ImageView
@@ -145,12 +149,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:minWidth="100dp"
-                android:maxWidth="100dp"
-                android:maxHeight="100dp"
-                android:minHeight="100dp"
-                app:layout_constraintTop_toBottomOf="@id/receive_headline_text_view"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:maxWidth="400dp"
+                android:maxHeight="400dp"
+                app:layout_constraintTop_toBottomOf="@id/receive_public_key_text_view"
+                android:layout_marginTop="15dp"
             />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
