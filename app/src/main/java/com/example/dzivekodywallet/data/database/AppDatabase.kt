@@ -10,7 +10,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.dzivekodywallet.data.database.model.*
 
-@Database(entities = [Transaction::class, Wallet::class, Contact::class, Balance::class, Operation::class], version = 26, exportSchema = false)
+@Database(entities = [Transaction::class, Wallet::class, Contact::class, Balance::class, Operation::class], version = 27, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
 //    abstract val appDatabaseDao: AppDatabaseDao
