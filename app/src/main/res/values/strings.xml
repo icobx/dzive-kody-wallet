@@ -3,7 +3,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="balance">Balance</string>
-    <string name="transactions">Transactions</string>
     <string name="send_receive">Send/Receive</string>
     <string name="your_wallets">Your wallets</string>
     <string name="input_wallet_name_title">New wallet name</string>
@@ -12,4 +11,17 @@
     <string name="your_contacts">Your contacts</string>
     <string name="send_payment">Send payment</string>
     <string name="receive_payment">Receive payment</string>
+    <string name="transactions">Transactions</string>
+    <string name="transaction_id">Transaction: %s</string>
+    <string name="transaction_created_at">Created at: %s</string>
+    <string name="transaction_operations_count">Number of associated operations: %d</string>
+    <string name="is_transaction_successful">Is transaction successful?</string>
+    <string name="operation_type">Operation of type: %s</string>
+    <string name="operation_id">%d</string>
+    <string name="operation_dest_acc">%s</string>
+    <string name="operation_amount_asset">%s %s</string>
+
+
+    <string name="copy_to_clipboard">Copy to clipboard</string>
+    <string name="back_to_transactions_button">Back to Transactions</string>
 </resources>
