@@ -33,17 +33,17 @@
                 android:layout_marginBottom="5dp"
                 >
                 <TextView
-                    android:id="@+id/transaction_info_1"
+                    android:id="@+id/transaction_details_trans_id_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="middle"
                     android:singleLine="true"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                     android:text="Transaction"
-                    android:layout_marginEnd="5dp"
+                    android:layout_marginEnd="20dp"
                      />
                 <Button
-                    android:id="@+id/operation_item_op_id_button"
+                    android:id="@+id/transaction_details_trans_id_copy_button"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:layout_gravity="bottom"
@@ -59,24 +59,78 @@
                     />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/transaction_details_transaction_ts"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/transaction_details_trans_created_at_lin_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/transaction_details_trans_id_lin_layout"
-                android:layout_centerHorizontal="true"
-                android:text="@{Formatting.INSTANCE.formatDateTime(transaction.createdAt)}"
-                />
+                android:layout_marginBottom="5dp"
+                >
+                <TextView
+                    android:id="@+id/transaction_details_transaction_ts_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Created at"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
+                <TextView
+                    android:id="@+id/transaction_details_transaction_ts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{Formatting.INSTANCE.formatDateTime(transaction.createdAt)}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/transaction_info_2"
-                android:layout_width="wrap_content"
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/transaction_details_trans_src_acc_lin_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="middle"
-                android:singleLine="true"
-                android:layout_below="@id/transaction_details_transaction_ts"
-                android:text="@{transaction.sourceAccountId}" />
+                android:orientation="horizontal"
+                android:layout_below="@id/transaction_details_trans_created_at_lin_layout"
+                android:layout_marginBottom="5dp"
+                >
+
+                <TextView
+                    android:id="@+id/transaction_details_trans_src_acc_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginEnd="20dp"
+                    android:ellipsize="middle"
+                    android:singleLine="true"
+                    android:text="Transaction Source Account"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+                <Button
+                    android:id="@+id/transaction_details_trans_src_acc_copy_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/button_cpc_background"
+                    android:contentDescription="@string/copy_to_clipboard"
+                    android:ellipsize="end"
+                    android:minHeight="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:singleLine="true"
+                    android:text="@{transaction.sourceAccountId}"
+                    android:textSize="8dp"
+ />
+            </LinearLayout>
+<!--            <TextView-->
+<!--                android:id="@+id/transaction_info_2"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:ellipsize="middle"-->
+<!--                android:singleLine="true"-->
+<!--                android:layout_below="@id/transaction_details_transaction_ts"-->
+<!--                android:text="@{transaction.sourceAccountId}" />-->
         </RelativeLayout>
 
         <View

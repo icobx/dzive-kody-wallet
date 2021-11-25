@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dzivekodywallet.data.database.model.Transaction
+import com.example.dzivekodywallet.data.util.CopyOnClickListener
 import com.example.dzivekodywallet.data.util.Injection
 import com.example.dzivekodywallet.databinding.FragmentTransactionDetailsBinding
 import com.example.dzivekodywallet.ui.adapter.TransactionDetailsAdapter
@@ -40,14 +41,6 @@ class TransactionDetailsFragment : Fragment() {
             Injection.provideWalletViewModelFactory(requireContext())
         )[WalletViewModel::class.java]
 
-//        val args = TransactionDetailsFragmentArgs.fromBundle(requireArguments())
-//
-//        transaction = Transaction(args.transactionId)
-//        transaction.sourceAccountId = args.sourceAccountId
-
-//        binding.transaction = transaction
-//        viewModel.setSelectedTransaction(transaction)
-
         val clipboard = getSystemService(requireContext(), ClipboardManager::class.java)
 
         binding.transactionDetailsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -55,7 +48,20 @@ class TransactionDetailsFragment : Fragment() {
 
         viewModel.selectedTransaction.observe(viewLifecycleOwner, { selectedTransaction ->
             binding.transaction = selectedTransaction
+
+            binding.transactionDetailsTransIdCopyButton.setOnClickListener(CopyOnClickListener(
+                clipboard,
+                "Transaction ID",
+                selectedTransaction.transactionId
+            ))
+
+            binding.transactionDetailsTransSrcAccCopyButton.setOnClickListener(CopyOnClickListener(
+                clipboard,
+                "Transaction Source Account ID",
+                selectedTransaction.sourceAccountId
+            ))
         })
+
         viewModel.operations.observe(viewLifecycleOwner, { ops ->
             ops?.let {
                 (binding.transactionDetailsRecyclerView.adapter as TransactionDetailsAdapter)
