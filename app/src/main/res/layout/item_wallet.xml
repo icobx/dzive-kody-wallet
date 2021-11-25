@@ -49,5 +49,18 @@
             android:onClick="@{() -> clickListener.onWalletItemDeleteClick(wallet)}"
             />
 
+        <ImageButton
+            android:id="@+id/wallet_item_image_button_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/wallet_item_image_button"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/wallet_item_text_view"
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="@{() -> clickListener.onWalletItemEditClick(wallet)}"
+            />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
