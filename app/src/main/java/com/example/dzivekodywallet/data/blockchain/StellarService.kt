@@ -3,10 +3,14 @@ package com.example.dzivekodywallet.data.blockchain
 import android.util.Log
 import org.stellar.sdk.*
 import org.stellar.sdk.responses.AccountResponse
+import org.stellar.sdk.responses.Page
 import org.stellar.sdk.responses.SubmitTransactionResponse
+import org.stellar.sdk.responses.TransactionResponse
+import org.stellar.sdk.responses.operations.OperationResponse
 import java.io.InputStream
 import java.net.URL
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class StellarService private constructor() {
@@ -23,11 +27,11 @@ class StellarService private constructor() {
     fun generateAccount() : KeyPair {
         val pair = KeyPair.random()
 
-        val friendbotUrl = String.format(
+        val friendBotUrl = String.format(
             "https://friendbot.stellar.org/?addr=%s",
             pair.accountId
         )
-        val response: InputStream = URL(friendbotUrl).openStream()
+        val response: InputStream = URL(friendBotUrl).openStream()
         val body: String = Scanner(response, "UTF-8").useDelimiter("\\A").next()
         println("SUCCESS! You have a new account :)\n$body")
 
@@ -84,6 +88,33 @@ class StellarService private constructor() {
             // already built transaction:
             // SubmitTransactionResponse response = blockchainServer.submitTransaction(transaction);
         }
+    }
+
+    fun getTransactions(accountId: String) : ArrayList<TransactionResponse> {
+        val tsPage: Page<TransactionResponse> = blockchainServer
+            .transactions()
+            .forAccount(accountId)
+            .limit(50)
+            .execute()
+
+        val test: Page<OperationResponse> = blockchainServer
+            .operations()
+            .forTransaction(tsPage.records[0].hash)
+            .execute()
+
+        Log.d("JFLOG", "IN stellarService.getTransactions: ${test.records[0].id.toString()}")
+
+        return tsPage.records
+    }
+
+    fun getOperations(transactionId: String): ArrayList<OperationResponse> {
+        val operationsPerTransaction = blockchainServer
+            .operations()
+            .forTransaction(transactionId)
+            .limit(50)
+            .execute()
+
+        return operationsPerTransaction.records
     }
 
     companion object {

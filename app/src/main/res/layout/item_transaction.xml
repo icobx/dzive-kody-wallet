@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="com.example.dzivekodywallet.data.util.Formatting"/>
+        <variable
+            name="clickListener"
+            type="com.example.dzivekodywallet.ui.adapter.TransactionItemListener" />
+        <variable
+            name="transaction"
+            type="com.example.dzivekodywallet.data.database.model.Transaction"
+            />
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingVertical="5dp"
+        android:paddingHorizontal="10dp"
+        android:onClick="@{() -> clickListener.onTransactionItemClick(transaction)}"
+        >
+
+        <LinearLayout
+            android:id="@+id/transaction_item_lin_layout_upper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentTop="true"
+            >
+            <TextView
+                android:id="@+id/transaction_item_transaction_id_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="10dp"
+                android:text="@{@string/transaction_id(transaction.transactionId)}"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAlignment="viewStart"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                />
+
+            <ImageView
+                android:id="@+id/transaction_item_is_successful_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_circle_outline_24"
+                android:layout_gravity="end"
+                android:contentDescription="@string/is_transaction_successful"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/transaction_item_lin_layout_lower"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/transaction_item_lin_layout_upper"
+            >
+            <TextView
+                android:id="@+id/transaction_item_op_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/transaction_operations_count(transaction.operationsCount)}"
+                android:maxLines="1"
+                android:layout_weight="1"
+                android:textAlignment="viewStart"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="10dp"
+                android:text="@{@string/transaction_created_at(Formatting.INSTANCE.formatDateTime(transaction.createdAt))}"
+                android:maxLines="1"
+                android:textAlignment="viewStart"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                />
+
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

@@ -1,17 +1,16 @@
 package com.example.dzivekodywallet.viewmodel
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.dzivekodywallet.data.WalletRepository
 import com.example.dzivekodywallet.data.database.model.Balance
+import com.example.dzivekodywallet.data.database.model.Operation
+import com.example.dzivekodywallet.data.database.model.Transaction
 import com.example.dzivekodywallet.data.database.model.Wallet
 import kotlinx.coroutines.launch
 
 class WalletViewModel(private val walletRepository: WalletRepository) : ViewModel() {
     lateinit var balances: LiveData<List<Balance>>
+    lateinit var transactions: LiveData<List<Transaction>>
 
     private var _walletId = MutableLiveData<Long>()
     val walletId: LiveData<Long>
@@ -29,19 +28,38 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
     val wallet: LiveData<Wallet>
         get() = _wallet
 
+    private val _selectedTransaction = MutableLiveData<Transaction>()
+    val selectedTransaction: LiveData<Transaction>
+        get() = _selectedTransaction
+
+    val operations: LiveData<List<Operation>> = selectedTransaction.switchMap { tr ->
+        walletRepository.getOperationsForTransaction(tr.transactionId)
+    }
+
     init {}
 
     fun setWalletId(walletId: Long) {
         _walletId.value = walletId
         // when WalletFragment sets walletId, get balances for given wallet
         balances = walletRepository.getBalances(walletId)
+        viewModelScope.launch {
+            transactions = walletRepository.getTransactions(walletId)
+        }
+    }
+
+    fun setSelectedTransaction(transaction: Transaction) {
+        _selectedTransaction.value = transaction
     }
 
     fun updateBalance() {
-        Log.d("JFLOG", "IN updateBalance()")
         viewModelScope.launch {
-            Log.d("JFLOG", "walletRepository.syncBalancesFromNetwork(_walletId.value!!)")
             walletRepository.syncBalancesFromNetwork(walletId.value!!)
+        }
+    }
+
+    fun updateTransactions() {
+        viewModelScope.launch {
+            walletRepository.syncTransactionsFromNetwork(walletId.value!!)
         }
     }
 
@@ -68,4 +86,5 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
             walletRepository.synchronise(walletId.value!!)
         }
     }
+
 }

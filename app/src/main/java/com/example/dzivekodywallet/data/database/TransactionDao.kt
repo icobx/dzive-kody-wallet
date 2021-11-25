@@ -1,16 +1,16 @@
 package com.example.dzivekodywallet.data.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.example.dzivekodywallet.data.database.model.Transaction
 
 @Dao
 interface TransactionDao {
     @Insert
     fun insertTransaction(transaction: Transaction)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertTransactions(vararg transaction: Transaction)
 
     // TODO: will we need modify transactions?
     @Update
@@ -19,8 +19,8 @@ interface TransactionDao {
     @Query("SELECT * from transaction_table WHERE transactionId = :key")
     fun getTransaction(key: Long): Transaction?
 
-    @Query("SELECT * FROM transaction_table ORDER BY transactionId DESC")
-    fun getAllTransactions(): LiveData<List<Transaction>>
+    @Query("SELECT * FROM transaction_table WHERE source_account_id = :sourceAccId")
+    fun getTransactions(sourceAccId: String): LiveData<List<Transaction>>
 
     @Query("DELETE FROM transaction_table")
     fun deleteAllTransactions()
