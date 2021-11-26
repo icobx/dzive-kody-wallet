@@ -1,6 +1,5 @@
 package com.example.dzivekodywallet.ui.fragment
 
-import android.content.ClipboardManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,10 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dzivekodywallet.R
@@ -69,6 +67,17 @@ class SendReceiveFragment : Fragment() {
                 binding.sendRecEditTextPubk.text.toString(),
                 binding.sendReceiveEditTextAmount.text.toString()
             )
+            Toast.makeText(context, "Transaction submitted!", Toast.LENGTH_SHORT).show();
+        }
+
+        arrayOf(binding.sendRecEditTextPubk, binding.sendReceiveEditTextAmount).forEach {
+            it.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    binding.receiveFragment.visibility = View.GONE
+                } else {
+                    binding.receiveFragment.visibility = View.VISIBLE
+                }
+            }
         }
 
         wViewModel.updatePublicKey()

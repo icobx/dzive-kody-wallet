@@ -4,11 +4,9 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.util.Log
-import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import android.widget.TextView
 
 class CopyOnClickListener(
     private val context: Context,
@@ -22,9 +20,6 @@ class CopyOnClickListener(
         Log.d("JFLOG", "IN ${javaClass.canonicalName}, copied text: ${clipboard.primaryClip.toString()}")
 
         val text = "$label copied to clipboard"
-        val toast: Toast = Toast.makeText(context, text, Toast.LENGTH_SHORT)
-        val v = toast.view!!.findViewById<View>(android.R.id.message) as TextView
-        v.gravity = Gravity.CENTER
-        toast.show()
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
     }
 }
