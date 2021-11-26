@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dzivekodywallet.R
+import com.example.dzivekodywallet.data.util.CopyOnClickListener
 import com.example.dzivekodywallet.data.util.Injection
 import com.example.dzivekodywallet.databinding.FragmentSendReceiveBinding
 import com.example.dzivekodywallet.ui.adapter.ChooseContactItemAdapter
@@ -59,30 +61,49 @@ class SendReceiveFragment : Fragment() {
 //                }
 //            }
 //        )
+
         binding.sendReceiveSendButton.setOnClickListener {
             wViewModel.makeTransaction(
                 binding.sendRecEditTextPubk.text.toString(),
                 binding.sendReceiveEditTextAmount.text.toString()
             )
+            Toast.makeText(context, "Transaction submitted!", Toast.LENGTH_SHORT).show();
         }
+
+        arrayOf(binding.sendRecEditTextPubk, binding.sendReceiveEditTextAmount).forEach {
+            it.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    binding.receiveFragment.visibility = View.GONE
+                } else {
+                    binding.receiveFragment.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        wViewModel.updatePublicKey()
 
         val imageView = binding.qrCode
         val multiFormatWriter = MultiFormatWriter()
-        try {
-            val bitMatrix = multiFormatWriter.encode(
-                "Public key placeholder",
-                BarcodeFormat.QR_CODE,
-                500,
-                500
+        wViewModel.walletPublicKey.observe(viewLifecycleOwner, { publicKey ->
+            binding.receivePublicKeyTextView.text = publicKey
+            binding.receivePublicKeyTextView.setOnClickListener(
+                    CopyOnClickListener(requireContext(), "Public key", publicKey)
             )
-            val barcodeEncoder = BarcodeEncoder()
-            val bitmap = barcodeEncoder.createBitmap(bitMatrix)
-            imageView.setImageBitmap(bitmap)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
 
-
+            try {
+                val bitMatrix = multiFormatWriter.encode(
+                    publicKey,
+                    BarcodeFormat.QR_CODE,
+                    340,
+                    340
+                )
+                val barcodeEncoder = BarcodeEncoder()
+                val bitmap = barcodeEncoder.createBitmap(bitMatrix)
+                imageView.setImageBitmap(bitmap)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        })
 
         return binding.root
     }

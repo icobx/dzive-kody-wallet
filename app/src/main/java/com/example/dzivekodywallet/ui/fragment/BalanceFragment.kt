@@ -55,7 +55,6 @@ class BalanceFragment : Fragment() {
             }
         })
 
-
         return binding.root
     }
 }

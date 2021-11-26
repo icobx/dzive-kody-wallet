@@ -13,12 +13,11 @@ import com.example.dzivekodywallet.data.util.CopyOnClickListener
 import com.example.dzivekodywallet.databinding.ItemOperationBinding
 
 class TransactionDetailsAdapter(
-    private val clipboard: ClipboardManager,
     private val mList: ArrayList<Operation> = ArrayList(),
 ): RecyclerView.Adapter<TransactionDetailsAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(mList[position], clipboard)
+        holder.bind(mList[position])
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,16 +36,16 @@ class TransactionDetailsAdapter(
     }
 
     class ViewHolder private constructor(val binding: ItemOperationBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(operation: Operation, clipboard: ClipboardManager) {
+        fun bind(operation: Operation) {
             binding.operation = operation
 
             binding.operationItemOpIdButton.setOnClickListener(CopyOnClickListener(
-                clipboard,
+                binding.root.context,
                 "Operation ID",
                 operation.operationId.toString()
             ))
             binding.operationItemOpDstAccButton.setOnClickListener(CopyOnClickListener(
-                clipboard,
+                binding.root.context,
                 "Destination Account of Operation",
                 operation.destinationAccount
             ))

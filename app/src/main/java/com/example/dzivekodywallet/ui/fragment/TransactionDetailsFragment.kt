@@ -44,7 +44,8 @@ class TransactionDetailsFragment : Fragment() {
         val clipboard = getSystemService(requireContext(), ClipboardManager::class.java)
 
         binding.transactionDetailsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.transactionDetailsRecyclerView.adapter = TransactionDetailsAdapter(clipboard!!)
+//        binding.transactionDetailsRecyclerView.adapter = TransactionDetailsAdapter(clipboard!!)
+        binding.transactionDetailsRecyclerView.adapter = TransactionDetailsAdapter()
 
         binding.transactionDetailsBackButton.setOnClickListener {
             findNavController().navigate(R.id.action_transactionDetailsFragment_to_wallet_nav_transactions)
@@ -54,13 +55,13 @@ class TransactionDetailsFragment : Fragment() {
             binding.transaction = selectedTransaction
 
             binding.transactionDetailsTransIdCopyButton.setOnClickListener(CopyOnClickListener(
-                clipboard,
+                requireContext(),
                 "Transaction ID",
                 selectedTransaction.transactionId
             ))
 
             binding.transactionDetailsTransSrcAccCopyButton.setOnClickListener(CopyOnClickListener(
-                clipboard,
+                requireContext(),
                 "Transaction Source Account ID",
                 selectedTransaction.sourceAccountId
             ))

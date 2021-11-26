@@ -55,7 +55,10 @@ class WalletItemDiffCallback : DiffUtil.ItemCallback<Wallet>() {
     }
 }
 
-class WalletItemListener(val clickListener: (walletId: Long) -> Unit, val deleteClickListener: (wallet: Wallet) -> Unit ) {
+class WalletItemListener(
+    val clickListener: (walletId: Long) -> Unit,
+    val deleteClickListener: (wallet: Wallet) -> Unit,
+    val editClickListener: (wallet: Wallet) -> Unit ) {
 
     fun onWalletItemClick(wallet: Wallet) {
         wallet.walletId?.let { clickListener(it) }
@@ -63,5 +66,9 @@ class WalletItemListener(val clickListener: (walletId: Long) -> Unit, val delete
 
     fun onWalletItemDeleteClick(wallet: Wallet) {
         deleteClickListener(wallet)
+    }
+
+    fun onWalletItemEditClick(wallet: Wallet) {
+        editClickListener(wallet)
     }
 }

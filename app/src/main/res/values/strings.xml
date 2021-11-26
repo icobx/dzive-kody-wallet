@@ -11,6 +11,12 @@
     <string name="your_contacts">Your contacts</string>
     <string name="send_payment">Send payment</string>
     <string name="receive_payment">Receive payment</string>
+    <string name="wallet_detail_confirm">Confirm</string>
+    <string name="wallet_detail_private_key">Private key</string>
+    <string name="wallet_detail_public_key">Public key</string>
+    <string name="wallet_detail_warning">Write down the private key of&#160;your new&#160;wallet.\n<b>Never digitize it.</b>\n The private key is&#160;required to re-renew the&#160;wallet, in&#160;case of&#160;loss it is&#160;not possible to re-renew the&#160;wallet.</string>
+    <string name="wallet_detail_headline">Wallet was created</string>
+    <string name="public_key">Public key</string>
     <string name="transactions">Transactions</string>
     <string name="transaction_id">Transaction: %s</string>
     <string name="transaction_created_at">Created at: %s</string>
@@ -20,7 +26,6 @@
     <string name="operation_id">%d</string>
     <string name="operation_dest_acc">%s</string>
     <string name="operation_amount_asset">%s %s</string>
-
 
     <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="back_to_transactions_button">Back to Transactions</string>

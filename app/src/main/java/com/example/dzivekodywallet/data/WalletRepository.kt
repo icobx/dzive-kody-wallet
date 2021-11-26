@@ -60,6 +60,10 @@ class WalletRepository private constructor(
         }
     }
 
+//    fun getWallet(key: Long): Wallet? {
+//        return walletDao.getWallet(key)
+//    }
+
     fun getAllWallets(): LiveData<List<Wallet>> {
         return walletDao.getAllWallets()
     }

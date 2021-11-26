@@ -3,79 +3,87 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="30dp"
+    android:paddingBottom="10dp"
     >
 
-    <ImageView
-        android:id="@+id/dialog_wallet_information_close"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_margin="10dp"
-        android:layout_gravity="end"
-        android:src="@android:drawable/ic_menu_close_clear_cancel"/>
+    <TextView
+        android:id="@+id/dialog_wallet_information_headline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wallet_detail_headline"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="15dp"
+    />
 
     <TextView
         android:id="@+id/dialog_wallet_information_warning"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc consectetur tristique commodo. Phasellus scelerisque non metus quis mollis. Phasellus aliquet."
+        android:text="@string/wallet_detail_warning"
+        android:textSize="16sp"
         android:textAlignment="center"
         android:textColor="@color/design_default_color_error"
         android:layout_marginHorizontal="15dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="20dp"
     />
 
     <TextView
         android:id="@+id/dialog_wallet_information_public_key_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Public key"
+        android:text="@string/wallet_detail_public_key"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         android:textColor="@color/black"
         android:layout_gravity="center"
         android:layout_marginHorizontal="10dp"
-        />
+        android:layout_marginBottom="5dp"
+    />
 
     <TextView
         android:id="@+id/dialog_wallet_information_pub_key"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:layout_marginVertical="5dp"
-        android:hint="Public key"
-        android:text=""
+        android:textSize="16sp"
+        android:hint="@string/wallet_detail_public_key"
         android:textAlignment="center"
-        android:textSize="21sp"/>
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginBottom="15dp"
+    />
 
     <TextView
         android:id="@+id/dialog_wallet_information_private_key_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Private key"
+        android:text="@string/wallet_detail_private_key"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         android:textColor="@color/black"
-        android:layout_marginHorizontal="10dp"
         android:layout_gravity="center"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="5dp"
     />
 
     <TextView
         android:id="@+id/dialog_wallet_information_private_key"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text=""
-        android:layout_marginVertical="5dp"
-        android:hint="Private key"
+        android:layout_marginHorizontal="15dp"
+        android:hint="@string/wallet_detail_private_key"
         android:textAlignment="center"
-        android:textSize="21sp"
+        android:textSize="16sp"
+        android:layout_marginBottom="15dp"
     />
 
     <Button
         android:id="@+id/dialog_wallet_information_confirm_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Confirm"
+        android:text="@string/wallet_detail_confirm"
         android:layout_gravity="center"
-        android:layout_marginVertical="5dp"
     />
 
 
