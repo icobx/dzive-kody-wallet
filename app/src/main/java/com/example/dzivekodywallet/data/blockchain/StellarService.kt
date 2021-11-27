@@ -42,33 +42,31 @@ class StellarService private constructor() {
         return getAccountInformation(accountId)?.balances
     }
 
-    fun makeTransaction(srcId: String, destId: String, amount: String) {
+    fun makeTransaction(srcId: String, destId: String, amount: String): Boolean {
         val source = KeyPair.fromSecretSeed(srcId)
-        val destination = KeyPair.fromAccountId(destId)
-        // First, check to make sure that the destination account exists.
-        // You could skip this, but if the account does not exist, you will be charged
-        // the transaction fee when the transaction fails.
-        // It will throw HttpResponseException if account does not exist or there was another error.
         try {
-            blockchainServer.accounts().account(destination.accountId)
+            blockchainServer.accounts().account(destId)
         } catch(e: Exception) {
-            Log.d("PVALOG", "Unable to get an account: ${e.message}")
-            return
+            Log.d("PVALOG", "Unable to get an account: $destId")
+            return false
         }
 
-        // If there was no error, load up-to-date information on your account.
-        val sourceAccount: AccountResponse = blockchainServer.accounts().account(source.accountId)
+        val sourceAccount: AccountResponse
+        try {
+            sourceAccount = blockchainServer.accounts().account(source.accountId)
+        } catch (e: Exception) {
+            Log.d("PVALOG", "Unable to get an account: ${source.accountId}")
+            return false
+        }
 
-        // Start building the transaction.
         val transaction: Transaction = Transaction.Builder(sourceAccount, Network.TESTNET)
             .addOperation(
                 PaymentOperation.Builder(
-                    destination.accountId,
+                    destId,
                     AssetTypeNative(),
                     amount
                 ).build()
-            ) // A memo allows you to add your own metadata to a transaction. It's
-            // optional and does not affect how Stellar treats the transaction.
+            )
             .addMemo(Memo.text("Test Transaction")) // Wait a maximum of three minutes for the transaction
             .setTimeout(180) // Set the amount of lumens you're willing to pay per operation to submit your transaction
             .setBaseFee(Transaction.MIN_BASE_FEE)
@@ -80,14 +78,11 @@ class StellarService private constructor() {
         try {
             val response: SubmitTransactionResponse = blockchainServer.submitTransaction(transaction)
             Log.d("transaction","Success!")
-//            println(response)
         } catch (e: java.lang.Exception) {
-            Log.d("transaction", e.message.toString())
-//            println(e.message)
-            // If the result is unknown (no response body, timeout etc.) we simply resubmit
-            // already built transaction:
-            // SubmitTransactionResponse response = blockchainServer.submitTransaction(transaction);
+            Log.d("Transaction Failed: ", e.message.toString())
+            return false
         }
+        return true
     }
 
     fun getTransactions(accountId: String) : ArrayList<TransactionResponse> {
