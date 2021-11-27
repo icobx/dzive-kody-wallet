@@ -16,9 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingVertical="5dp"
-        android:paddingHorizontal="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginHorizontal="10dp"
         android:onClick="@{() -> clickListener.onTransactionItemClick(transaction)}"
+        android:background="@drawable/item_background"
+
         >
 
         <LinearLayout

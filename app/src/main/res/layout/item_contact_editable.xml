@@ -18,6 +18,7 @@
         android:orientation="horizontal"
         android:paddingVertical="5dp"
         android:paddingHorizontal="10dp"
+        android:background="@drawable/item_background"
         >
 
         <TextView

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/wallets_fragment"
-        android:background="@android:color/holo_purple"
+        android:background="@color/main_background"
         tools:context=".ui.fragment.WalletsFragment">
 
         <TextView

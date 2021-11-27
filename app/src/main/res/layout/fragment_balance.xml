@@ -11,16 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/balance_fragment"
-        android:background="@android:color/holo_blue_light"
+        android:background="@color/main_background"
         tools:context=".ui.fragment.BalanceFragment">
 
         <TextView
             android:id="@+id/balances_your_balance_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-            android:text="Your balances"
+            android:layout_marginTop="30dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+            android:textStyle="bold"
+            android:text="Your Balances"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -31,15 +32,48 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginHorizontal="10dp"
             >
+
+            <LinearLayout
+                android:id="@+id/balances_recycler_view_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="10dp"
+                android:layout_marginBottom="20dp"
+                >
+
+            <TextView
+                android:id="@+id/single_balance_asset_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Asset"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                />
+
+            <TextView
+                android:id="@+id/single_balance_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Balance"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                />
+            </LinearLayout>
+
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/balances_recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/balances_your_balance_text"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp" />
+                android:layout_below="@+id/balances_recycler_view_header"
+                tools:listitem="@layout/item_balance"
+                />
 
         </RelativeLayout>
 

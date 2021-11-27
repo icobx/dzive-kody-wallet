@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="test">#FFD3D3D3</color>
     <color name="errorText">#FF0000</color>
+    <color name="main_background">#33D3D3D3</color>
 </resources>

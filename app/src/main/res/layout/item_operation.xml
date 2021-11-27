@@ -13,8 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="15dp"
-        android:paddingVertical="15dp" >
+        android:background="@drawable/item_background"
+        android:layout_marginBottom="10dp"
+        android:layout_marginHorizontal="10dp"
+        android:paddingBottom="15dp"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/operation_item_top_row"

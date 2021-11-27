@@ -7,6 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/balance_fragment"
+        android:background="@color/main_background"
         tools:context=".ui.fragment.SendReceiveFragment">
 
         <RelativeLayout
@@ -16,7 +17,10 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/send_receive_divider"
             tools:context=".ui.fragment.SendReceiveFragment"
-            android:layout_marginVertical="10dp">
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/item_background"
+            >
 
             <TextView
                 android:id="@+id/send_headline_text_view"
@@ -93,7 +97,6 @@
             android:id="@+id/send_receive_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginHorizontal="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -101,10 +104,13 @@
             android:id="@+id/receive_fragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginVertical="20dp"
+            android:layout_marginVertical="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/send_receive_divider"
-            tools:context=".ui.fragment.SendReceiveFragment">
+            tools:context=".ui.fragment.SendReceiveFragment"
+            android:background="@drawable/item_background"
+            android:layout_marginHorizontal="10dp"
+            >
 
             <TextView
                 android:id="@+id/receive_headline_text_view"
