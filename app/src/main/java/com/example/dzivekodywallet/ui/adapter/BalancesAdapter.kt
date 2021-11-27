@@ -41,7 +41,7 @@ class BalancesAdapter(
     class ViewHolder private constructor(val binding: ItemBalanceBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(balance: Balance)
         {
-            binding.singleBalanceAmount.text = balance.amount.toString()
+            binding.assetAmount = balance.amount.toString()
             binding.assetName = balance.assetName
             binding.executePendingBindings()
         }

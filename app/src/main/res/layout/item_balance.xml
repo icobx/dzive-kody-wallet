@@ -5,43 +5,62 @@
 
     <data>
         <variable name="assetName" type="String"/>
+        <variable name="assetAmount" type="String"/>
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingVertical="5dp"
-        android:paddingHorizontal="10dp"
-        >
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/single_balance_asset_name"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="16dp"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:text="@{assetName}"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.476" />
-
-        <TextView
-            android:id="@+id/single_balance_amount"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="0.0"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/single_balance_asset_name"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            android:orientation="vertical"
+            android:layout_weight="1"
+            >
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/single_balance_currency_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Currency"
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:id="@+id/single_balance_asset_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{assetName}"
+                android:layout_marginLeft="8dp"
+                tools:text="XLM"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/single_balance_amount_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Balance"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/single_balance_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="@{assetAmount}"
+                tools:text="1251.56"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                />
+        </LinearLayout>
+    </LinearLayout>
 </layout>
