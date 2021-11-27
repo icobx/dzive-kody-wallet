@@ -48,7 +48,6 @@ class AddWalletFragment : Fragment() {
         binding.checkBoxGenerateNew.setOnClickListener { view ->
             val checkBox = (view as CheckBox)
             binding.isGeneratingEnabled = checkBox.isChecked
-            binding.textInputSecretSeed.visibility = if(checkBox.isChecked) View.INVISIBLE else View.VISIBLE
         }
 
         return binding.root
@@ -59,7 +58,12 @@ class AddWalletFragment : Fragment() {
         if (binding.walletName != null || binding.walletSecretSeed != null) {
             disableForm()
             binding.pBar.visibility = View.VISIBLE
-            viewModel.addWallet(binding.walletName.toString(), binding.walletSecretSeed.toString(), "1234", binding.isGeneratingEnabled as Boolean, this::openModal)
+            viewModel.addWallet(
+                binding.walletName.toString(),
+                binding.walletSecretSeed.toString(),
+                binding.walletPin.toString(),
+                binding.isGeneratingEnabled as Boolean,
+                this::openModal)
             if (binding.isGeneratingEnabled == false) {
                 findNavController().navigate(AddWalletFragmentDirections.actionAddWalletFragment2ToWalletsFragment())
             }

@@ -14,16 +14,34 @@
         android:background="@android:color/holo_blue_light"
         tools:context=".ui.fragment.BalanceFragment">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/balances_recyclerView"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/balances_your_balance_text"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="30dp"
-            app:layout_constrainedHeight="true"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="20dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:text="Your balances"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <RelativeLayout
+            android:id="@+id/balances_your_balance_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/balances_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/balances_your_balance_text"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" />
+
+        </RelativeLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

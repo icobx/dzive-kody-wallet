@@ -36,6 +36,10 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
         walletRepository.getOperationsForTransaction(tr.transactionId)
     }
 
+    private var _error = MutableLiveData<String>()
+    val error: LiveData<String>
+        get() = _error
+
     init {}
 
     fun setWalletId(walletId: Long) {
@@ -75,9 +79,13 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
         }
     }
 
-    fun makeTransaction(destId: String, amount: String) {
+    fun makeTransaction(destId: String, amount: String, userInput: String) {
         viewModelScope.launch {
-            walletRepository.makeTransaction(walletId.value!!, destId, amount)
+            if (!walletRepository.makeTransaction(walletId.value!!, destId, amount, userInput)) {
+                _error.value = "TRANSACTION_ERROR"
+            } else {
+                _error.value = "TRANSACTION_SUCCEEDED"
+            }
         }
     }
 
@@ -87,4 +95,17 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
         }
     }
 
+    fun getErrorMessage(): String? {
+        return when {
+            _error.value != "NO_ERROR" -> {
+                null
+            }
+            _error.value == "TRANSACTION_SUCCEEDED" -> {
+                "Transaction succeeded!"
+            }
+            else -> {
+                "Operation failed"
+            }
+        }
+    }
 }

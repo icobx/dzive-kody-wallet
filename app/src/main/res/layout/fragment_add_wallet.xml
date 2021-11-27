@@ -14,6 +14,9 @@
             name="walletSecretSeed"
             type="String" />
         <variable
+            name="walletPin"
+            type="String" />
+        <variable
             name="isGeneratingEnabled"
             type="Boolean" />
     </data>
@@ -55,6 +58,18 @@
             app:layout_constraintStart_toStartOf="@+id/text_input_wallet_name"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <EditText
+            android:id="@+id/text_input_password"
+            android:layout_width="wrap_content"
+            android:hint="Wallet's PIN"
+            android:inputType="textPassword"
+            android:layout_height="wrap_content"
+            android:text="@={walletPin}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_input_secret_seed"
+            app:layout_constraintBottom_toTopOf="@+id/pBar"/>
+
         <Button
             android:id="@+id/button_add_wallet"
             android:layout_width="wrap_content"
@@ -83,7 +98,7 @@
             app:layout_constraintBottom_toTopOf="@+id/button_add_wallet"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_input_secret_seed" />
+            app:layout_constraintTop_toBottomOf="@+id/text_input_password" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

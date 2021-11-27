@@ -72,11 +72,14 @@ class WalletRepository private constructor(
         return KeyPair.fromSecretSeed(secretSeed).accountId
     }
 
-    suspend fun makeTransaction(srcId: Long, destId: String, amount: String) {
-        withContext(Dispatchers.IO) {
-        // TODO: FIX SECRET PHrase
-            val srcPk = Encryption.decrypt(getWallet(srcId)!!.privateKey, "1234")
-            stellarService.makeTransaction(srcPk!!, destId, amount)
+    suspend fun makeTransaction(sourceWalletId: Long, destId: String, amount: String, userInput: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            val wallet = getWallet(sourceWalletId) ?: return@withContext false
+            val srcPk = Encryption.decrypt(wallet.privateKey, userInput) ?: return@withContext false
+            if (getWallet(sourceWalletId)?.publicKey != KeyPair.fromSecretSeed(srcPk).accountId) {
+                return@withContext false
+            }
+            return@withContext stellarService.makeTransaction(srcPk, destId, amount)
         }
     }
 

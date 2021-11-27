@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import androidx.lifecycle.Observer
 import android.widget.ImageView
 import android.widget.Toast
@@ -63,11 +65,9 @@ class SendReceiveFragment : Fragment() {
 //        )
 
         binding.sendReceiveSendButton.setOnClickListener {
-            wViewModel.makeTransaction(
-                binding.sendRecEditTextPubk.text.toString(),
-                binding.sendReceiveEditTextAmount.text.toString()
-            )
-            Toast.makeText(context, "Transaction submitted!", Toast.LENGTH_SHORT).show();
+            val destinationAccount = binding.sendRecEditTextPubk.text.toString()
+            val amount = binding.sendReceiveEditTextAmount.text.toString()
+            makeTransactionWithAuthentication(destinationAccount, amount)
         }
 
         arrayOf(binding.sendRecEditTextPubk, binding.sendReceiveEditTextAmount).forEach {
@@ -105,6 +105,14 @@ class SendReceiveFragment : Fragment() {
             }
         })
 
+        // TODO: think about this approach for ERROR handling
+        wViewModel.error.observe(viewLifecycleOwner, {
+            val errorMessage = wViewModel.getErrorMessage()
+            if (!errorMessage.isNullOrEmpty()) {
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+            }
+        })
+
         return binding.root
     }
 
@@ -137,4 +145,20 @@ class SendReceiveFragment : Fragment() {
         Log.d("onViewCreated", "in send/receive fragment")
     }
 
+    private fun makeTransactionWithAuthentication(destinationAccount: String, amount: String) {
+        val dialog = BottomSheetDialog(requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.dialog_require_pin,null)
+        dialog.setContentView(dialogView)
+
+        // Buttons
+        val userInput = dialogView.findViewById<EditText>(R.id.dialog_pin_input)
+        val confirmButton = dialogView.findViewById<Button>(R.id.dialog_pin_confirm_button)
+
+        confirmButton.setOnClickListener {
+            wViewModel.makeTransaction(destinationAccount, amount, userInput.text.toString())
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
 }
