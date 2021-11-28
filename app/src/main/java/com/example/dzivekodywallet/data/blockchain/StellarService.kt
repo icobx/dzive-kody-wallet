@@ -8,6 +8,7 @@ import org.stellar.sdk.responses.SubmitTransactionResponse
 import org.stellar.sdk.responses.TransactionResponse
 import org.stellar.sdk.responses.operations.OperationResponse
 import java.io.InputStream
+import com.example.dzivekodywallet.data.util.Error
 import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
@@ -16,13 +17,12 @@ import kotlin.collections.ArrayList
 class StellarService private constructor() {
     private var blockchainServer: Server = Server("https://horizon-testnet.stellar.org")
 
-    fun getAccountInformation(accountId: String) : AccountResponse? {
-        return try {
-            blockchainServer.accounts().account(accountId)
-        } catch(e: Exception) {
-            null
-        }
-    }
+//    fun getAccountInformation(accountId: String) : AccountResponse? {
+//        return try {
+//        } catch(e: Exception) {
+//            null
+//        }
+//    }
 
     fun generateAccount() : KeyPair {
         val pair = KeyPair.random()
@@ -38,8 +38,15 @@ class StellarService private constructor() {
         return pair
     }
 
-    fun getBalance(accountId: String) : Array<out AccountResponse.Balance>? {
-        return getAccountInformation(accountId)?.balances
+    fun getBalance(accountId: String, out: MutableList<AccountResponse.Balance> ) : Error {
+        val temp: AccountResponse
+        return try{
+            temp = blockchainServer.accounts().account(accountId)
+            out.addAll(temp.balances)
+            Error.NO_ERROR
+        } catch (e: Exception) {
+            Error.ERROR_STELLAR
+        }
     }
 
     fun makeTransaction(srcId: String, destId: String, amount: String): Boolean {

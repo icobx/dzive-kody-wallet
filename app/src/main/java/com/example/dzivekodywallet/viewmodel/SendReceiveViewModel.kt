@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dzivekodywallet.data.ContactRepository
 import com.example.dzivekodywallet.data.database.model.Contact
+import com.example.dzivekodywallet.data.util.Error
 import kotlinx.coroutines.*
 
 data class SendReceiveViewModel(private val contactRepository: ContactRepository): ViewModel() {
+//    var error: LiveData<Error> = contactRepository.error
 
     private var _allContacts = MutableLiveData<List<Contact>>()
     val allContacts: LiveData<List<Contact>>

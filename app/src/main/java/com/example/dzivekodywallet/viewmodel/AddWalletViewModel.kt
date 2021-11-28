@@ -1,12 +1,10 @@
 package com.example.dzivekodywallet.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.dzivekodywallet.data.WalletRepository
 import com.example.dzivekodywallet.data.database.model.Contact
+import com.example.dzivekodywallet.data.util.Error
 import kotlinx.coroutines.CompletionHandlerException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -14,10 +12,16 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class AddWalletViewModel(private val walletRepository: WalletRepository): ViewModel() {
+    var error: LiveData<Error> = walletRepository.error
+    val errors: LiveData<String> = walletRepository.error.map { tr ->
+        tr.toString()
+    }
+
 
     fun addWallet(walletName: String, walletSecretSeed: String, secretPhrase: String,
                   isGeneratingEnabled: Boolean,
-                  handler: (publicKey: String, privateKey: String) -> Unit)
+                  handler: (publicKey: String, privateKey: String) -> Unit,
+                  callback: () -> Unit)
     {
         if (isGeneratingEnabled) {
             viewModelScope.launch {
@@ -33,7 +37,11 @@ class AddWalletViewModel(private val walletRepository: WalletRepository): ViewMo
                     walletSecretSeed,
                     secretPhrase
                 )
-                walletRepository.syncBalancesFromNetwork(newWalletId)
+
+                if (newWalletId > -1) {
+                    walletRepository.syncBalancesFromNetwork(newWalletId)
+                    callback()
+                }
             }
         }
     }

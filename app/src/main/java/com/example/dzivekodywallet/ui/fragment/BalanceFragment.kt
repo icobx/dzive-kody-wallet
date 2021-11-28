@@ -48,6 +48,14 @@ class BalanceFragment : Fragment() {
 
         viewModel.updateBalance()
 
+        viewModel.errors.observe(viewLifecycleOwner, { error ->
+            if (error != null) {
+                Log.d("ERROR", error.toString())
+//                (binding.balancesRecyclerView.adapter as BalancesAdapter)
+//                    .setBalances(walletBalances)
+            }
+        })
+
         viewModel.balances.observe(viewLifecycleOwner, { walletBalances ->
             if (walletBalances != null) {
                 (binding.balancesRecyclerView.adapter as BalancesAdapter)

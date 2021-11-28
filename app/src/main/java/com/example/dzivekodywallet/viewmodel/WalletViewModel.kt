@@ -6,11 +6,13 @@ import com.example.dzivekodywallet.data.database.model.Balance
 import com.example.dzivekodywallet.data.database.model.Operation
 import com.example.dzivekodywallet.data.database.model.Transaction
 import com.example.dzivekodywallet.data.database.model.Wallet
+import com.example.dzivekodywallet.data.util.Error
 import kotlinx.coroutines.launch
 
 class WalletViewModel(private val walletRepository: WalletRepository) : ViewModel() {
     lateinit var balances: LiveData<List<Balance>>
     lateinit var transactions: LiveData<List<Transaction>>
+    var error: LiveData<Error> = walletRepository.error
 
     private var _walletId = MutableLiveData<Long>()
     val walletId: LiveData<Long>
@@ -36,11 +38,9 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
         walletRepository.getOperationsForTransaction(tr.transactionId)
     }
 
-    private var _error = MutableLiveData<String>()
-    val error: LiveData<String>
-        get() = _error
-
-    init {}
+    val errors: LiveData<String> = walletRepository.error.map { tr ->
+        tr.toString()
+    }
 
     fun setWalletId(walletId: Long) {
         _walletId.value = walletId
@@ -81,11 +81,12 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
 
     fun makeTransaction(destId: String, amount: String, userInput: String) {
         viewModelScope.launch {
-            if (!walletRepository.makeTransaction(walletId.value!!, destId, amount, userInput)) {
-                _error.value = "TRANSACTION_ERROR"
-            } else {
-                _error.value = "TRANSACTION_SUCCEEDED"
-            }
+            walletRepository.makeTransaction(walletId.value!!, destId, amount, userInput)
+//            if (!walletRepository.makeTransaction(walletId.value!!, destId, amount, userInput)) {
+////                _error.value = "TRANSACTION_ERROR"
+//            } else {
+////                _error.value = "TRANSACTION_SUCCEEDED"
+//            }
         }
     }
 
@@ -95,17 +96,17 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
         }
     }
 
-    fun getErrorMessage(): String? {
-        return when {
-            _error.value != "NO_ERROR" -> {
-                null
-            }
-            _error.value == "TRANSACTION_SUCCEEDED" -> {
-                "Transaction succeeded!"
-            }
-            else -> {
-                "Operation failed"
-            }
-        }
-    }
+//    fun getErrorMessage(): String? {
+//        return when {
+//            _error.value != "NO_ERROR" -> {
+//                null
+//            }
+//            _error.value == "TRANSACTION_SUCCEEDED" -> {
+//                "Transaction succeeded!"
+//            }
+//            else -> {
+//                "Operation failed"
+//            }
+//        }
+//    }
 }

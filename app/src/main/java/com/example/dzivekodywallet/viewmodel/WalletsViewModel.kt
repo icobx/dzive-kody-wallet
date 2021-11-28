@@ -7,9 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.dzivekodywallet.data.WalletRepository
 import com.example.dzivekodywallet.data.blockchain.StellarService
 import com.example.dzivekodywallet.data.database.model.Wallet
+import com.example.dzivekodywallet.data.util.Error
 import kotlinx.coroutines.*
 
 data class WalletsViewModel(private val walletRepository: WalletRepository): ViewModel() {
+    var error: LiveData<Error> = walletRepository.error
 
     private var _allWallets = MutableLiveData<List<Wallet>>()
     val allWallets: LiveData<List<Wallet>>

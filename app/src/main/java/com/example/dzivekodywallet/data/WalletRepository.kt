@@ -2,6 +2,7 @@ package com.example.dzivekodywallet.data
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 
 import com.example.dzivekodywallet.data.blockchain.StellarService
 import com.example.dzivekodywallet.data.database.BalanceDao
@@ -13,6 +14,7 @@ import com.example.dzivekodywallet.data.database.model.Balance
 import com.example.dzivekodywallet.data.database.model.Operation
 import com.example.dzivekodywallet.data.database.model.Transaction
 import com.example.dzivekodywallet.data.util.Encryption
+import com.example.dzivekodywallet.data.util.Error
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.stellar.sdk.KeyPair
@@ -28,6 +30,9 @@ class WalletRepository private constructor(
     private val operationDao: OperationDao,
     private val stellarService: StellarService
 ) {
+    private var _error = MutableLiveData<Error>()
+    val error: LiveData<Error>
+        get() = _error
 
 //    fun getOperationsForTransaction(transactionId: String)
 //        = operationDao.getOperationsForTransaction(transactionId)
@@ -110,7 +115,9 @@ class WalletRepository private constructor(
         val accountId = getAccountIdFromWalletId(walletId)
 
         withContext(Dispatchers.IO) {
-            val incomingBalances = stellarService.getBalance(accountId)
+            val incomingBalances = mutableListOf<AccountResponse.Balance>()
+//            _error.value =
+            _error.postValue(stellarService.getBalance(accountId, incomingBalances))
             incomingBalances?.forEach { new ->
                 val assetName = getAssetName(new)
                 val balance = balanceDao.findAssetForWallet(walletId, assetName)
@@ -214,12 +221,19 @@ class WalletRepository private constructor(
 
     suspend fun addExistingWallet(walletName: String, walletSecretSeed: String, secretPhrase: String): Long {
         return withContext(Dispatchers.IO) {
+
             val wallet = Wallet()
             wallet.name = walletName
-            wallet.publicKey = pairSecretSeedWithPublicKey(walletSecretSeed)
+            try {
+                wallet.publicKey = pairSecretSeedWithPublicKey(walletSecretSeed)
+            } catch (e:Exception) {
+                _error.postValue(Error.ERROR_STELLAR)
+                return@withContext -1L
+            }
             wallet.privateKey = Encryption
                 .encrypt(walletSecretSeed, secretPhrase)
                 .toString()
+
             return@withContext insertWallet(wallet)
         }
     }

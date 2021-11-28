@@ -1,6 +1,7 @@
 package com.example.dzivekodywallet.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,6 +59,14 @@ class WalletsFragment : Fragment() {
                 }
             )
             )
+        })
+
+        viewModel.error.observe(viewLifecycleOwner, { error ->
+            if (error != null) {
+                Log.d("ERROR", error.toString())
+//                (binding.balancesRecyclerView.adapter as BalancesAdapter)
+//                    .setBalances(walletBalances)
+            }
         })
 
         return binding.root

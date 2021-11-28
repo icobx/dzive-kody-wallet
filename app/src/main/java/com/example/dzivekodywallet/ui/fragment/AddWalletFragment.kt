@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.dzivekodywallet.R
 import com.example.dzivekodywallet.data.database.model.Contact
+import com.example.dzivekodywallet.data.util.Error
 import com.example.dzivekodywallet.data.util.Injection
 import com.example.dzivekodywallet.databinding.FragmentAddWalletBinding
 import com.example.dzivekodywallet.viewmodel.AddWalletViewModel
@@ -38,7 +39,6 @@ class AddWalletFragment : Fragment() {
         )[AddWalletViewModel::class.java]
 
         binding.buttonAddWallet.setOnClickListener {
-            Log.d("DSPLOG", "add new wallet")
             addWallet()
         }
 
@@ -50,11 +50,19 @@ class AddWalletFragment : Fragment() {
             binding.isGeneratingEnabled = checkBox.isChecked
         }
 
+        viewModel.error.observe(viewLifecycleOwner, { error ->
+            if (error != Error.NO_ERROR) {
+                binding.errorText.visibility = View.VISIBLE
+                binding.errorText.text = error.toString()
+                binding.pBar.visibility = View.GONE
+                enableForm()
+            }
+        })
+
         return binding.root
     }
 
     private fun addWallet() {
-        // TODO: secretPhrase zmenit na ziskavanie PIN kodu z UI
         if (binding.walletName != null || binding.walletSecretSeed != null) {
             disableForm()
             binding.pBar.visibility = View.VISIBLE
@@ -63,22 +71,33 @@ class AddWalletFragment : Fragment() {
                 binding.walletSecretSeed.toString(),
                 binding.walletPin.toString(),
                 binding.isGeneratingEnabled as Boolean,
-                this::openModal)
-            if (binding.isGeneratingEnabled == false) {
-                findNavController().navigate(AddWalletFragmentDirections.actionAddWalletFragment2ToWalletsFragment())
-            }
+                this::openModal, this::callback)
         }
         // TODO: check if addition succeeded
     }
 
+    private fun callback() {
+        binding.errorText.visibility = View.GONE
+        findNavController().navigate(AddWalletFragmentDirections.actionAddWalletFragment2ToWalletsFragment())
+    }
+
     private fun disableForm() {
+        binding.errorText.visibility = View.GONE
         binding.textInputWalletName.isEnabled = false
         binding.textInputSecretSeed.isEnabled = false
         binding.checkBoxGenerateNew.isEnabled = false
 
-        binding.buttonAddWallet.setOnClickListener(null)
         binding.buttonAddWallet.isClickable = false
         binding.buttonAddWallet.isEnabled = false
+    }
+
+    private fun enableForm() {
+        binding.textInputWalletName.isEnabled = true
+        binding.textInputSecretSeed.isEnabled = true
+        binding.checkBoxGenerateNew.isEnabled = true
+
+        binding.buttonAddWallet.isClickable = true
+        binding.buttonAddWallet.isEnabled = true
     }
 
 

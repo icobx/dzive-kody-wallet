@@ -106,12 +106,12 @@ class SendReceiveFragment : Fragment() {
         })
 
         // TODO: think about this approach for ERROR handling
-        wViewModel.error.observe(viewLifecycleOwner, {
-            val errorMessage = wViewModel.getErrorMessage()
-            if (!errorMessage.isNullOrEmpty()) {
-                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
-            }
-        })
+//        wViewModel.error.observe(viewLifecycleOwner, {
+//            val errorMessage = wViewModel.getErrorMessage()
+//            if (!errorMessage.isNullOrEmpty()) {
+//                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+//            }
+//        })
 
         return binding.root
     }
