@@ -17,5 +17,11 @@ enum class Error {
         override fun toString(): String {
             return "No internet connection"
         }
+    },
+
+    ERROR_CUSTOM {
+        override fun toString(): String {
+            return "Custom error for development purposes"
+        }
     }
 }
