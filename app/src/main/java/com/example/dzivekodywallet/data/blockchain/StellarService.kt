@@ -43,63 +43,54 @@ class StellarService private constructor() {
     }
 
     fun makeTransaction(srcId: String, destId: String, amount: String): Boolean {
-        val source = KeyPair.fromSecretSeed(srcId)
+        val source: KeyPair
+        val sourceAccount: AccountResponse
+        val destinationAccount: AccountResponse
         try {
-            blockchainServer.accounts().account(destId)
+            source  = KeyPair.fromSecretSeed(srcId)
+            sourceAccount = blockchainServer.accounts().account(source.accountId)
+            destinationAccount = blockchainServer.accounts().account(destId)
         } catch(e: Exception) {
             Log.d("PVALOG", "Unable to get an account: $destId")
-            return false
-        }
-
-        val sourceAccount: AccountResponse
-        try {
-            sourceAccount = blockchainServer.accounts().account(source.accountId)
-        } catch (e: Exception) {
-            Log.d("PVALOG", "Unable to get an account: ${source.accountId}")
             return false
         }
 
         val transaction: Transaction = Transaction.Builder(sourceAccount, Network.TESTNET)
             .addOperation(
                 PaymentOperation.Builder(
-                    destId,
+                    destinationAccount.accountId,
                     AssetTypeNative(),
                     amount
                 ).build()
             )
-            .addMemo(Memo.text("Test Transaction")) // Wait a maximum of three minutes for the transaction
             .setTimeout(180) // Set the amount of lumens you're willing to pay per operation to submit your transaction
             .setBaseFee(Transaction.MIN_BASE_FEE)
             .build()
-        // Sign the transaction to prove you are actually the person sending it.
+
         transaction.sign(source)
 
-        // And finally, send it off to Stellar!
-        try {
+        return try {
             val response: SubmitTransactionResponse = blockchainServer.submitTransaction(transaction)
-            Log.d("transaction","Success!")
+            Log.d("transaction","Success: ${response.isSuccess}")
+            response.isSuccess
         } catch (e: java.lang.Exception) {
             Log.d("Transaction Failed: ", e.message.toString())
-            return false
+            false
         }
-        return true
     }
 
     fun getTransactions(accountId: String) : ArrayList<TransactionResponse> {
-        val tsPage: Page<TransactionResponse> = blockchainServer
-            .transactions()
-            .forAccount(accountId)
-            .limit(50)
-            .execute()
+        return try {
+            val tsPage: Page<TransactionResponse> = blockchainServer
+                .transactions()
+                .forAccount(accountId)
+                .limit(50)
+                .execute()
 
-        val test: Page<OperationResponse> = blockchainServer
-            .operations()
-            .forTransaction(tsPage.records[0].hash)
-            .execute()
-
-        Log.d("JFLOG", "IN stellarService.getTransactions: ${test.records[0].id.toString()}")
-
-        return tsPage.records
+            tsPage.records
+        } catch (e: Exception) {
+            ArrayList()
+        }
     }
 
     fun getOperations(transactionId: String): ArrayList<OperationResponse> {

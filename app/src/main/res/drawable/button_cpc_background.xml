@@ -1,45 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--  Non focused states
-          -->
-<!--    <item android:state_pressed="true" >-->
-<!--        <shape android:shape="rectangle" >-->
-<!--            <corners android:radius="12dip" />-->
-<!--            <size android:height="2dp" />-->
-
-<!--            &lt;!&ndash;            <stroke android:width="1dip" android:color="#5e7974" />&ndash;&gt;-->
-<!--&lt;!&ndash;            <gradient android:angle="-90" android:startColor="#345953" android:endColor="#689a92" />&ndash;&gt;-->
-<!--        </shape>-->
-<!--    </item>-->
-<!--    <item android:state_focused="true">-->
-<!--        <shape android:shape="rectangle" >-->
-<!--            <corners android:radius="12dip" />-->
-<!--            <size android:height="2dp" />-->
-
-<!--            &lt;!&ndash;            <stroke android:width="1dip" android:color="#5e7974" />&ndash;&gt;-->
-<!--&lt;!&ndash;            <solid android:color="#58857e"/>&ndash;&gt;-->
-<!--        </shape>-->
-<!--    </item>-->
-    <item >
-        <shape android:shape="rectangle" >
-            <corners android:radius="30dip" />
-            <padding
-                android:right="1dp"
-                android:left="1dp"
-                android:bottom="1dp"
-                android:top="1dp"
-                />
-            <solid
-                android:color="@color/test"
-                />
-            <stroke
-                android:width="1pt"
-                android:color="@color/black"/>
-
-
-
-<!--            <stroke android:width="1dip" android:color="#5e7974" />-->
-<!--            <gradient android:angle="-90" android:startColor="#8dbab3" android:endColor="#58857e" />-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/copyButtonBackgroundBorder" />
+            <corners android:radius="@dimen/copy_button_corner_radius" />
         </shape>
     </item>
-</selector>
+
+    <item
+        android:bottom="2dp"
+        android:left="0dp"
+        android:right="0dp"
+        android:top="0dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/copyButtonBackground" />
+            <corners android:radius="@dimen/copy_button_corner_radius" />
+        </shape>
+    </item>
+
+</layer-list>

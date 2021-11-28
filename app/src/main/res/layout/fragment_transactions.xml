@@ -6,15 +6,14 @@
         android:id="@+id/transactions_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/main_background"
         tools:context=".ui.fragment.TransactionsFragment"
         >
         <TextView
             android:id="@+id/transactions_text_view"
+            style="@style/FragmentTitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:text="@string/transactions"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

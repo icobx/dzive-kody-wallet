@@ -32,6 +32,7 @@
             >
             <TextView
                 android:id="@+id/transaction_item_transaction_id_text_view"
+                style="@style/SubtitleText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -63,6 +64,7 @@
             >
             <TextView
                 android:id="@+id/transaction_item_op_count"
+                style="@style/RegularText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{@string/transaction_operations_count(transaction.operationsCount)}"
@@ -72,6 +74,8 @@
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                 />
             <TextView
+                android:id="@+id/transaction_item_date_created"
+                style="@style/RegularText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

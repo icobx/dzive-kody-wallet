@@ -11,17 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/contactsFragment"
-        android:background="@color/main_background"
         tools:context=".ui.fragment.ContactsFragment">
 
         <TextView
             android:id="@+id/contacts_text_view"
+            style="@style/FragmentTitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/your_contacts"
             android:layout_marginTop="30dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -51,6 +49,7 @@
         >
             <TextView
                 android:id="@+id/add_contact_text_view"
+                style="@style/SubtitleText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Add contact"
@@ -69,21 +68,6 @@
                 android:src="@drawable/ic_add_48" />
 
         </RelativeLayout>
-
-
-
-
-<!--        <Button-->
-<!--            android:id="@+id/choose_wallet_button"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="choose wallet"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/wallets_text_view" />-->
-
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -36,8 +36,6 @@ class AuthFragment : Fragment() {
             false
         )
 
-        binding.textView = "tu sa bude davat pin"
-
 
         executor = ContextCompat.getMainExecutor(this.requireContext())
         biometricPrompt = BiometricPrompt(this, executor,

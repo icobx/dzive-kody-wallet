@@ -11,16 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/balance_fragment"
-        android:background="@color/main_background"
         tools:context=".ui.fragment.BalanceFragment">
 
         <TextView
             android:id="@+id/balances_your_balance_text"
+            style="@style/FragmentTitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-            android:textStyle="bold"
             android:text="Your Balances"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,26 +44,24 @@
 
             <TextView
                 android:id="@+id/single_balance_asset_name"
+                style="@style/SubtitleText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Asset"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                 android:textStyle="bold"
                 android:layout_weight="1"
                 />
 
             <TextView
                 android:id="@+id/single_balance_amount"
+                style="@style/SubtitleText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Balance"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                 android:textStyle="bold"
                 android:layout_weight="1"
                 />
             </LinearLayout>
-
-
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/balances_recyclerView"

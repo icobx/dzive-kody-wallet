@@ -11,40 +11,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/wallets_fragment"
-        android:background="@color/main_background"
         tools:context=".ui.fragment.WalletsFragment">
 
         <TextView
             android:id="@+id/wallets_text_view"
+            style="@style/FragmentTitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/your_wallets"
             android:layout_marginTop="30dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
         />
-
-        <TextView
-            android:id="@+id/textView_wallets"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.55"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:scrollbars="vertical"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            tools:text=""
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/wallets_recycler_view"
@@ -65,7 +44,6 @@
             android:id="@+id/add_wallet_relative_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="30dp"
         >
@@ -78,7 +56,8 @@
                 android:layout_centerHorizontal="true" >
                 <TextView
                     android:id="@+id/add_wallet_text_view"
-                    android:layout_width="match_parent"
+                    style="@style/SubtitleText"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
                     android:textAlignment="center"
@@ -86,27 +65,13 @@
 
                 <ImageButton
                     android:id="@+id/add_wallet_image_button"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="@null"
+                    android:textAlignment="center"
                     android:src="@drawable/ic_add_48" />
             </LinearLayout>
         </RelativeLayout>
-
-
-
-
-<!--        <Button-->
-<!--            android:id="@+id/choose_wallet_button"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="choose wallet"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/wallets_text_view" />-->
-
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

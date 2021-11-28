@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dialog_title_top_margin">10dp</dimen>
+    <!--    regular button-->
+    <dimen name="button_font_size">18sp</dimen>
+    <dimen name="button_corner_radius">8dp</dimen>
+    <dimen name="button_min_width">120dp</dimen>
+    <dimen name="button_min_height">48dp</dimen>
+    <dimen name="button_letter_spacing">0.15</dimen>
+    <!--copy button-->
+    <dimen name="copy_button_corner_radius">16dp</dimen>
+    <dimen name="copy_button_font_size">15sp</dimen>
+    <!--    text-->
+    <dimen name="regular_text_size">14sp</dimen>
+    <dimen name="subtitle_text_size">20sp</dimen>
+    <dimen name="fragment_title_text_size">26sp</dimen>
+<!--    item-->
+    <dimen name="item_corner_radius">10dp</dimen>
+    <dimen name="item_padding">10dp</dimen>
+</resources>

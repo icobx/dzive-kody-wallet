@@ -25,15 +25,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/wallets_fragment"
-        android:background="@color/main_background"
         tools:context=".ui.fragment.WalletsFragment">
+
+        <TextView
+            android:id="@+id/auth_unlock_wallet_title"
+            style="@style/FragmentTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Add Wallet"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/text_input_wallet_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="New Wallet name"
+            android:hint="Wallet's name"
             android:inputType="textPersonName"
             android:minHeight="48dp"
             android:text="@={walletName}"
@@ -65,6 +75,7 @@
             android:inputType="textPassword"
             android:layout_height="wrap_content"
             android:text="@={walletPin}"
+            android:maxLength="4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_input_secret_seed"
@@ -72,6 +83,7 @@
 
         <Button
             android:id="@+id/button_add_wallet"
+            style="@style/ButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_wallet_title_button"

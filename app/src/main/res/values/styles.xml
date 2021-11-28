@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+    </style>
+
+    <style name="ButtonStyle">
+        <item name="android:background">@drawable/basic_button_background</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">@dimen/button_font_size</item>
+        <item name="android:textColor">@color/colorButtonText</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="CopyButtonStyle">
+        <item name="android:background">@drawable/button_cpc_background</item>
+        <item name="android:textSize">@dimen/copy_button_font_size</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="RegularText">
+        <item name="android:textSize">@dimen/regular_text_size</item>
+        <item name="android:textColor">@color/colorRegularText</item>
+    </style>
+
+    <style name="FragmentTitleText">
+        <item name="android:textSize">@dimen/fragment_title_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorRegularText</item>
+    </style>
+
+    <style name="SubtitleText">
+        <item name="android:textSize">@dimen/subtitle_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorRegularText</item>
+    </style>
+</resources>
