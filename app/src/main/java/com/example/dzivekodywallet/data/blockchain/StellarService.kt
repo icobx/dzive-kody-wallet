@@ -12,6 +12,7 @@ import com.example.dzivekodywallet.data.util.Error
 import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.properties.ReadWriteProperty
 
 
 class StellarService private constructor() {
@@ -24,18 +25,21 @@ class StellarService private constructor() {
 //        }
 //    }
 
-    fun generateAccount() : KeyPair {
-        val pair = KeyPair.random()
+    fun generateAccount() : Pair<Error, KeyPair> {
+        val newKeyPair = KeyPair.random()
 
         val friendBotUrl = String.format(
             "https://friendbot.stellar.org/?addr=%s",
-            pair.accountId
+            newKeyPair.accountId
         )
-        val response: InputStream = URL(friendBotUrl).openStream()
-        val body: String = Scanner(response, "UTF-8").useDelimiter("\\A").next()
-        println("SUCCESS! You have a new account :)\n$body")
 
-        return pair
+        try {
+            URL(friendBotUrl).openStream()
+        } catch(e: Exception) {
+            return Pair(Error.ERROR_GENERATING_ACCOUNT, newKeyPair)
+        }
+
+        return Pair(Error.NO_ERROR, newKeyPair)
     }
 
     fun getBalance(accountId: String, out: MutableList<AccountResponse.Balance> ) : Error {

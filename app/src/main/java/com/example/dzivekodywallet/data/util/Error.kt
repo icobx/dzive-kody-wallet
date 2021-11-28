@@ -19,6 +19,12 @@ enum class Error {
         }
     },
 
+    ERROR_GENERATING_ACCOUNT {
+        override fun toString(): String {
+            return "Unable to generate an account"
+        }
+    },
+
     ERROR_CUSTOM {
         override fun toString(): String {
             return "Custom error for development purposes"

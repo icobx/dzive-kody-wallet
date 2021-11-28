@@ -204,7 +204,13 @@ class WalletRepository private constructor(
 
     suspend fun generateNewWallet(walletName: String, secretPhrase: String): HashMap<String,String> {
         return withContext(Dispatchers.IO) {
-            val generatedKeyPair = stellarService.generateAccount()
+            val ret = stellarService.generateAccount()
+            val error = ret.first
+            if (error != Error.NO_ERROR) {
+                _error.postValue(error)
+                return@withContext HashMap()
+            }
+            val generatedKeyPair = ret.second
             val wallet = Wallet()
             wallet.name = walletName
             wallet.privateKey = Encryption
