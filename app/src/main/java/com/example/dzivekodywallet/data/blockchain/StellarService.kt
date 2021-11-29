@@ -9,6 +9,7 @@ import org.stellar.sdk.responses.TransactionResponse
 import org.stellar.sdk.responses.operations.OperationResponse
 import java.io.InputStream
 import com.example.dzivekodywallet.data.util.Error
+import org.stellar.sdk.requests.RequestBuilder
 import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
@@ -16,14 +17,8 @@ import kotlin.properties.ReadWriteProperty
 
 
 class StellarService private constructor() {
-    private var blockchainServer: Server = Server("https://horizon-testnet.stellar.org")
+    private val blockchainServer: Server = Server("https://horizon-testnet.stellar.org")
 
-//    fun getAccountInformation(accountId: String) : AccountResponse? {
-//        return try {
-//        } catch(e: Exception) {
-//            null
-//        }
-//    }
 
     fun generateAccount() : Pair<Error, KeyPair> {
         val newKeyPair = KeyPair.random()
@@ -99,13 +94,19 @@ class StellarService private constructor() {
 
     fun getTransactions(accountId: String, transactions: MutableList<TransactionResponse>) : Error {
         return try {
-            val tsPage: Page<TransactionResponse> = blockchainServer
+            var tsPage: Page<TransactionResponse> = blockchainServer
                 .transactions()
                 .forAccount(accountId)
+                .includeFailed(true)
                 .limit(50)
+                .order(RequestBuilder.Order.DESC)
                 .execute()
 
-            transactions.addAll(tsPage.records)
+            while (tsPage.records.size > 0) {
+                transactions.addAll(tsPage.records)
+                tsPage = tsPage.getNextPage(blockchainServer.httpClient)
+            }
+
             Error.NO_ERROR
         } catch (e: Exception) {
             Error.ERROR_STELLAR
@@ -114,13 +115,19 @@ class StellarService private constructor() {
 
     fun getOperations(transactionId: String, operations: MutableList<OperationResponse>): Error {
         return try {
-            val operationsPerTransaction = blockchainServer
+            var operationsPerTransaction = blockchainServer
                 .operations()
                 .forTransaction(transactionId)
                 .limit(50)
+                .order(RequestBuilder.Order.DESC)
                 .execute()
 
-            operations.addAll(operationsPerTransaction.records)
+            while (operationsPerTransaction.records.size > 0) {
+                operations.addAll(operationsPerTransaction.records)
+                operationsPerTransaction = operationsPerTransaction
+                    .getNextPage(blockchainServer.httpClient)
+            }
+
             Error.NO_ERROR
         } catch (e: Exception) {
             Error.ERROR_STELLAR
