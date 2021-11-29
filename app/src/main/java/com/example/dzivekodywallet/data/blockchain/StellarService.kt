@@ -43,27 +43,31 @@ class StellarService private constructor() {
     }
 
     fun getBalance(accountId: String, out: MutableList<AccountResponse.Balance> ) : Error {
-        val temp: AccountResponse
+        val accountInfo: AccountResponse
         return try{
-            temp = blockchainServer.accounts().account(accountId)
-            out.addAll(temp.balances)
+            accountInfo = blockchainServer.accounts().account(accountId)
+            out.addAll(accountInfo.balances)
             Error.NO_ERROR
         } catch (e: Exception) {
             Error.ERROR_STELLAR
         }
     }
 
-    fun makeTransaction(srcId: String, destId: String, amount: String): Boolean {
+    fun makeTransaction(srcId: String, destId: String, amount: String): Error {
         val source: KeyPair
         val sourceAccount: AccountResponse
         val destinationAccount: AccountResponse
         try {
             source  = KeyPair.fromSecretSeed(srcId)
             sourceAccount = blockchainServer.accounts().account(source.accountId)
+        } catch(e: Exception) {
+            return Error.ERROR_INVALID_SOURCE_ACCOUNT
+        }
+
+        try {
             destinationAccount = blockchainServer.accounts().account(destId)
         } catch(e: Exception) {
-            Log.d("PVALOG", "Unable to get an account: $destId")
-            return false
+            return Error.ERROR_INVALID_DESTINATION_ACCOUNT
         }
 
         val transaction: Transaction = Transaction.Builder(sourceAccount, Network.TESTNET)
@@ -83,14 +87,17 @@ class StellarService private constructor() {
         return try {
             val response: SubmitTransactionResponse = blockchainServer.submitTransaction(transaction)
             Log.d("transaction","Success: ${response.isSuccess}")
-            response.isSuccess
+            if (response.isSuccess) {
+                Error.NO_ERROR
+            } else {
+                throw Exception()
+            }
         } catch (e: java.lang.Exception) {
-            Log.d("Transaction Failed: ", e.message.toString())
-            false
+            Error.ERROR_TRANSACTION_SUBMIT
         }
     }
 
-    fun getTransactions(accountId: String) : ArrayList<TransactionResponse> {
+    fun getTransactions(accountId: String, transactions: MutableList<TransactionResponse>) : Error {
         return try {
             val tsPage: Page<TransactionResponse> = blockchainServer
                 .transactions()
@@ -98,20 +105,26 @@ class StellarService private constructor() {
                 .limit(50)
                 .execute()
 
-            tsPage.records
+            transactions.addAll(tsPage.records)
+            Error.NO_ERROR
         } catch (e: Exception) {
-            ArrayList()
+            Error.ERROR_STELLAR
         }
     }
 
-    fun getOperations(transactionId: String): ArrayList<OperationResponse> {
-        val operationsPerTransaction = blockchainServer
-            .operations()
-            .forTransaction(transactionId)
-            .limit(50)
-            .execute()
+    fun getOperations(transactionId: String, operations: MutableList<OperationResponse>): Error {
+        return try {
+            val operationsPerTransaction = blockchainServer
+                .operations()
+                .forTransaction(transactionId)
+                .limit(50)
+                .execute()
 
-        return operationsPerTransaction.records
+            operations.addAll(operationsPerTransaction.records)
+            Error.NO_ERROR
+        } catch (e: Exception) {
+            Error.ERROR_STELLAR
+        }
     }
 
     companion object {

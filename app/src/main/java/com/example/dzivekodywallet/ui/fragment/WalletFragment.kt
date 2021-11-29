@@ -76,4 +76,10 @@ class WalletFragment : Fragment() {
 
         return binding.root
     }
+
+    override fun onResume() {
+        super.onResume()
+        binding.walletErrorBar.visibility = View.GONE
+        binding.walletErrorBar.text = ""
+    }
 }
