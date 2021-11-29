@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.EditText
 import androidx.lifecycle.Observer
@@ -27,7 +28,6 @@ import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import java.lang.Exception
-
 
 class SendReceiveFragment : Fragment() {
     private lateinit var binding: FragmentSendReceiveBinding
@@ -64,20 +64,11 @@ class SendReceiveFragment : Fragment() {
 //            }
 //        )
 
+
         binding.sendReceiveSendButton.setOnClickListener {
             val destinationAccount = binding.sendRecEditTextPubk.text.toString()
             val amount = binding.sendReceiveEditTextAmount.text.toString()
             makeTransactionWithAuthentication(destinationAccount, amount)
-        }
-
-        arrayOf(binding.sendRecEditTextPubk, binding.sendReceiveEditTextAmount).forEach {
-            it.setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) {
-                    binding.receiveFragment.visibility = View.GONE
-                } else {
-                    binding.receiveFragment.visibility = View.VISIBLE
-                }
-            }
         }
 
         wViewModel.updatePublicKey()
@@ -118,6 +109,7 @@ class SendReceiveFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.sendReceiveContactButton.setOnClickListener {
             val dialog = BottomSheetDialog(requireContext())
             val dialogView = layoutInflater.inflate(R.layout.dialog_choose_contact,null)
