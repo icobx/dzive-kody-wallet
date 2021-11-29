@@ -67,7 +67,7 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
         }
     }
 
-    private fun updateName() {
+    fun updateName() {
         viewModelScope.launch {
             _walletName.value = walletRepository.getWallet(walletId.value!!)?.name
         }
@@ -87,7 +87,6 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
 
     fun synchronise() {
         viewModelScope.launch {
-            updateName()
             walletRepository.synchronise(walletId.value!!)
         }
     }

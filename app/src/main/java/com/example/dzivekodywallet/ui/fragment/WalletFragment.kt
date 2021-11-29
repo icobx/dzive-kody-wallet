@@ -43,6 +43,8 @@ class WalletFragment : Fragment() {
             binding.walletAppbar.title = name
         })
 
+        viewModel.updateName()
+
         // back button nav
         // TODO: no anim on button press atm
         binding.walletAppbar.setNavigationOnClickListener { view: View ->
