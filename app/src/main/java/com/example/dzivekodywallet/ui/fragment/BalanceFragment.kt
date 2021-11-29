@@ -1,14 +1,10 @@
 package com.example.dzivekodywallet.ui.fragment
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dzivekodywallet.databinding.FragmentBalanceBinding
@@ -31,30 +27,12 @@ class BalanceFragment : Fragment() {
             false
         )
 
-//        requireActivity().onBackPressedDispatcher.addCallback(
-//            object : OnBackPressedCallback(true) {
-//                override fun handleOnBackPressed() {
-//                    Log.d("in callback", "in callback")
-//                    Navigation.findNavController(binding.root)
-//                        .popBackStack(R.id.wallet_man_activity, false)
-//                }
-//            }
-//        )
-
         viewModel = ViewModelProvider(requireActivity())[WalletViewModel::class.java]
 
         binding.balancesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.balancesRecyclerView.adapter = BalancesAdapter()
 
         viewModel.updateBalance()
-
-        viewModel.errors.observe(viewLifecycleOwner, { error ->
-            if (error != null) {
-                Log.d("ERROR", error.toString())
-//                (binding.balancesRecyclerView.adapter as BalancesAdapter)
-//                    .setBalances(walletBalances)
-            }
-        })
 
         viewModel.balances.observe(viewLifecycleOwner, { walletBalances ->
             if (walletBalances != null) {

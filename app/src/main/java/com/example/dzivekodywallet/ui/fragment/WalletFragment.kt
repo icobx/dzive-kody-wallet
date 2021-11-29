@@ -1,19 +1,17 @@
 package com.example.dzivekodywallet.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.dzivekodywallet.R
+import com.example.dzivekodywallet.data.util.Error
 import com.example.dzivekodywallet.data.util.Injection
 import com.example.dzivekodywallet.databinding.FragmentWalletBinding
 import com.example.dzivekodywallet.viewmodel.WalletViewModel
@@ -45,9 +43,6 @@ class WalletFragment : Fragment() {
             binding.walletAppbar.title = name
         })
 
-        viewModel.updateName()
-//        viewModel.updateBalance()
-
         // back button nav
         // TODO: no anim on button press atm
         binding.walletAppbar.setNavigationOnClickListener { view: View ->
@@ -56,7 +51,6 @@ class WalletFragment : Fragment() {
         binding.walletAppbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.wallet_appbar_sync -> {
-                    Log.d("PVALOG", "IN onOptionsItemSelected; viewModel.synchronise()")
                     viewModel.synchronise()
                     true
                 }
@@ -64,6 +58,16 @@ class WalletFragment : Fragment() {
             }
         }
 
+        // Display error in ErrorBar, otherwise reset to defaults
+        viewModel.error.observe(viewLifecycleOwner, { error ->
+            if (error == Error.NO_ERROR) {
+                binding.walletErrorBar.visibility = View.GONE
+                binding.walletErrorBar.text = ""
+            } else {
+                binding.walletErrorBar.visibility = View.VISIBLE
+                binding.walletErrorBar.text = error.toString()
+            }
+        })
 
         // bottom nav functionality
         val navHostFragment = childFragmentManager
@@ -73,11 +77,9 @@ class WalletFragment : Fragment() {
         return binding.root
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return when (item.itemId) {
-//
-//            else -> super.onOptionsItemSelected(item)
-//        }
-//    }
-
+    override fun onResume() {
+        super.onResume()
+        binding.walletErrorBar.visibility = View.GONE
+        binding.walletErrorBar.text = ""
+    }
 }

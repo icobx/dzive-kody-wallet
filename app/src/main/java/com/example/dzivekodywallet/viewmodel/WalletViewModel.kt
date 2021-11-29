@@ -67,7 +67,7 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
         }
     }
 
-    fun updateName() {
+    private fun updateName() {
         viewModelScope.launch {
             _walletName.value = walletRepository.getWallet(walletId.value!!)?.name
         }
@@ -82,31 +82,13 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
     fun makeTransaction(destId: String, amount: String, userInput: String) {
         viewModelScope.launch {
             walletRepository.makeTransaction(walletId.value!!, destId, amount, userInput)
-//            if (!walletRepository.makeTransaction(walletId.value!!, destId, amount, userInput)) {
-////                _error.value = "TRANSACTION_ERROR"
-//            } else {
-////                _error.value = "TRANSACTION_SUCCEEDED"
-//            }
         }
     }
 
     fun synchronise() {
         viewModelScope.launch {
+            updateName()
             walletRepository.synchronise(walletId.value!!)
         }
     }
-
-//    fun getErrorMessage(): String? {
-//        return when {
-//            _error.value != "NO_ERROR" -> {
-//                null
-//            }
-//            _error.value == "TRANSACTION_SUCCEEDED" -> {
-//                "Transaction succeeded!"
-//            }
-//            else -> {
-//                "Operation failed"
-//            }
-//        }
-//    }
 }

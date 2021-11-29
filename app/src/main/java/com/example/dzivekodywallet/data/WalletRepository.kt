@@ -21,6 +21,7 @@ import org.stellar.sdk.KeyPair
 import org.stellar.sdk.responses.AccountResponse
 import org.stellar.sdk.responses.TransactionResponse
 import org.stellar.sdk.responses.operations.CreateAccountOperationResponse
+import org.stellar.sdk.responses.operations.OperationResponse
 import org.stellar.sdk.responses.operations.PaymentOperationResponse
 
 class WalletRepository private constructor(
@@ -77,14 +78,23 @@ class WalletRepository private constructor(
         return KeyPair.fromSecretSeed(secretSeed).accountId
     }
 
-    suspend fun makeTransaction(sourceWalletId: Long, destId: String, amount: String, userInput: String): Boolean {
-        return withContext(Dispatchers.IO) {
-            val wallet = getWallet(sourceWalletId) ?: return@withContext false
-            val srcPk = Encryption.decrypt(wallet.privateKey, userInput) ?: return@withContext false
-            if (getWallet(sourceWalletId)?.publicKey != KeyPair.fromSecretSeed(srcPk).accountId) {
-                return@withContext false
+    suspend fun makeTransaction(sourceWalletId: Long, destId: String, amount: String, userInput: String) {
+        withContext(Dispatchers.IO) {
+            val wallet = getWallet(sourceWalletId)
+            if (wallet == null) {
+                _error.postValue(Error.ERROR_WALLET_NOT_FOUND)
+                return@withContext
             }
-            return@withContext stellarService.makeTransaction(srcPk, destId, amount)
+            val srcPk = Encryption.decrypt(wallet.privateKey, userInput)
+            if (srcPk == null) {
+                _error.postValue(Error.ERROR_SECRET_KEY_DECRYPT)
+                return@withContext
+            }
+            if (wallet.publicKey != KeyPair.fromSecretSeed(srcPk).accountId) {
+                _error.postValue(Error.ERROR_BAD_PIN)
+                return@withContext
+            }
+            _error.postValue(stellarService.makeTransaction(srcPk, destId, amount))
         }
     }
 
@@ -116,9 +126,8 @@ class WalletRepository private constructor(
 
         withContext(Dispatchers.IO) {
             val incomingBalances = mutableListOf<AccountResponse.Balance>()
-//            _error.value =
             _error.postValue(stellarService.getBalance(accountId, incomingBalances))
-            incomingBalances?.forEach { new ->
+            incomingBalances.forEach { new ->
                 val assetName = getAssetName(new)
                 val balance = balanceDao.findAssetForWallet(walletId, assetName)
                 if (null != balance) {
@@ -139,7 +148,8 @@ class WalletRepository private constructor(
     private suspend fun syncOperationsForTransaction(transactionId: String) {
         withContext(Dispatchers.IO) {
             val operations = mutableListOf<Operation>()
-            val operationResponses = stellarService.getOperations(transactionId)
+            val operationResponses = mutableListOf<OperationResponse>()
+            _error.postValue(stellarService.getOperations(transactionId, operationResponses))
             operationResponses.forEach { op ->
                 val operation = Operation(
                     operationId = op.id,
@@ -159,8 +169,14 @@ class WalletRepository private constructor(
                         operation.destinationAccount = op.account
                         operation.amount = op.startingBalance
                         operations.add(operation)
-                    }
-                    else -> { }
+                    } // TODO: decide change trust
+//                    "change_trust" -> {
+//                        op as ChangeTrustOperation
+//                        operation.destinationAccount = op.
+//                        operation.amount = op.limit
+//                        operations.add(operation)
+//                    }
+                    else -> {}
                 }
             }
 
@@ -172,8 +188,8 @@ class WalletRepository private constructor(
         val accountId = getAccountIdFromWalletId(walletId)
 
         withContext(Dispatchers.IO) {
-            val transactionResponses: ArrayList<TransactionResponse> = stellarService
-                .getTransactions(accountId)
+            val transactionResponses = mutableListOf<TransactionResponse>()
+            _error.postValue(stellarService.getTransactions(accountId, transactionResponses))
             val transactions: ArrayList<Transaction> = ArrayList()
 
             transactionResponses.forEach { tr ->
@@ -204,7 +220,13 @@ class WalletRepository private constructor(
 
     suspend fun generateNewWallet(walletName: String, secretPhrase: String): HashMap<String,String> {
         return withContext(Dispatchers.IO) {
-            val generatedKeyPair = stellarService.generateAccount()
+            val ret = stellarService.generateAccount()
+            val error = ret.first
+            if (error != Error.NO_ERROR) {
+                _error.postValue(error)
+                return@withContext HashMap()
+            }
+            val generatedKeyPair = ret.second
             val wallet = Wallet()
             wallet.name = walletName
             wallet.privateKey = Encryption
@@ -212,10 +234,10 @@ class WalletRepository private constructor(
                 .toString()
             wallet.publicKey = generatedKeyPair.accountId
             insertWallet(wallet)
-            val x = HashMap<String, String>()
-            x.put("public_key", wallet.publicKey)
-            x.put("private_key", String(generatedKeyPair.secretSeed))
-            return@withContext x
+            val newKeypair = HashMap<String, String>()
+            newKeypair["public_key"] = wallet.publicKey
+            newKeypair["private_key"] = String(generatedKeyPair.secretSeed)
+            return@withContext newKeypair
         }
     }
 

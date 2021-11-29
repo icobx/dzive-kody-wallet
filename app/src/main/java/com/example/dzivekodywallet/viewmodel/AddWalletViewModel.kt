@@ -26,9 +26,11 @@ class AddWalletViewModel(private val walletRepository: WalletRepository): ViewMo
         if (isGeneratingEnabled) {
             viewModelScope.launch {
                 val newAccount = walletRepository.generateNewWallet(walletName, secretPhrase)
-                val public = newAccount.getValue("public_key")
-                val private = newAccount.getValue("private_key")
-                handler(public, private)
+                if (!newAccount.isNullOrEmpty()) {
+                    val public = newAccount.getValue("public_key")
+                    val private = newAccount.getValue("private_key")
+                    handler(public, private)
+                }
             }
         } else {
             viewModelScope.launch {
