@@ -157,7 +157,9 @@ class StellarService private constructor() {
                 }
 
             Error.NO_ERROR
-        } catch (e: Exception) {
+        } catch (e: TooManyRequestsException) {
+            Error.NO_ERROR
+        }catch (e: Exception) {
             Error.ERROR_STELLAR
         }
     }
