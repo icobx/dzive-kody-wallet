@@ -30,4 +30,6 @@ interface OperationDao {
     @Query("SELECT DISTINCT transaction_id FROM operation_table WHERE destination_account = :destinationAccount")
     fun getReceivedPayments(destinationAccount: String): LiveData<List<String>>
 
+    @Query("SELECT * FROM operation_table WHERE operation_type = :operationType AND wallet_id = :walletId")
+    fun getPayments(walletId: Long, operationType: String = "payment"): LiveData<List<Operation>>
 }

@@ -40,5 +40,9 @@
 <!--            android:name="sourceAccountId"-->
 <!--            app:argType="string" />-->
     </fragment>
+    <fragment
+        android:id="@+id/wallet_nav_payments"
+        android:name="com.example.dzivekodywallet.ui.fragment.PaymentsFragment"
+        android:label="PaymentsFragment" />
 
 </navigation>

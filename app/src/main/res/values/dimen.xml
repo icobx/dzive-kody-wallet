@@ -9,7 +9,7 @@
     <dimen name="button_letter_spacing">0.15</dimen>
     <!--copy button-->
     <dimen name="copy_button_corner_radius">16dp</dimen>
-    <dimen name="copy_button_font_size">15sp</dimen>
+    <dimen name="copy_button_font_size">10sp</dimen>
     <!--    text-->
     <dimen name="regular_text_size">14sp</dimen>
     <dimen name="subtitle_text_size">20sp</dimen>

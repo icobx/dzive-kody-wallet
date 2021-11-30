@@ -18,4 +18,6 @@
     <color name="colorItemBackground">#ffffff</color>
     <color name="colorItemShadow">#385E72</color>
     <color name="colorRegularText">#385E72</color>
+    <color name="colorButtonSent">#16326B</color>
+    <color name="colorButtonReceived">#166B24</color>
 </resources>

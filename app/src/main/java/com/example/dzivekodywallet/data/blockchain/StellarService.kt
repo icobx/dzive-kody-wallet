@@ -10,6 +10,7 @@ import org.stellar.sdk.responses.operations.OperationResponse
 import java.io.InputStream
 import com.example.dzivekodywallet.data.util.Error
 import org.stellar.sdk.requests.RequestBuilder
+import org.stellar.sdk.responses.operations.PaymentOperationResponse
 import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
@@ -113,7 +114,7 @@ class StellarService private constructor() {
         }
     }
 
-    fun getOperations(transactionId: String, operations: MutableList<OperationResponse>): Error {
+    fun getOperationsForTransaction(transactionId: String, operations: MutableList<OperationResponse>): Error {
         return try {
             var operationsPerTransaction = blockchainServer
                 .operations()
@@ -127,6 +128,26 @@ class StellarService private constructor() {
                 operationsPerTransaction = operationsPerTransaction
                     .getNextPage(blockchainServer.httpClient)
             }
+
+            Error.NO_ERROR
+        } catch (e: Exception) {
+            Error.ERROR_STELLAR
+        }
+    }
+
+    fun getOperations(accountId: String, operations: MutableList<OperationResponse>): Error {
+        return try {
+            var paymentsPage = blockchainServer
+                .payments()
+                .forAccount(accountId)
+                .limit(50)
+                .order(RequestBuilder.Order.DESC)
+                .execute()
+
+                while (paymentsPage.records.size > 0) {
+                    operations.addAll(paymentsPage.records)
+                    paymentsPage = paymentsPage.getNextPage(blockchainServer.httpClient)
+                }
 
             Error.NO_ERROR
         } catch (e: Exception) {

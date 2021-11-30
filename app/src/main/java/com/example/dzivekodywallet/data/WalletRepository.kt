@@ -1,6 +1,5 @@
 package com.example.dzivekodywallet.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
@@ -35,18 +34,14 @@ class WalletRepository private constructor(
     val error: LiveData<Error>
         get() = _error
 
-//    fun getOperationsForTransaction(transactionId: String)
-//        = operationDao.getOperationsForTransaction(transactionId)
-//            .switchMap { opList ->
-//                liveData {
-//                    emit(opList)
-//                }
-//            }
 
     fun getOperationsForTransaction(transactionId: String): LiveData<List<Operation>> {
         return operationDao.getOperationsForTransaction(transactionId)
     }
 
+    fun getPayments(walletId: Long): LiveData<List<Operation>> {
+        return operationDao.getPayments(walletId)
+    }
 
     fun insertWallet(wallet: Wallet): Long {
         return walletDao.insertWallet(wallet)
@@ -65,10 +60,6 @@ class WalletRepository private constructor(
             return@withContext walletDao.getWallet(key)
         }
     }
-
-//    fun getWallet(key: Long): Wallet? {
-//        return walletDao.getWallet(key)
-//    }
 
     fun getAllWallets(): LiveData<List<Wallet>> {
         return walletDao.getAllWallets()
@@ -109,11 +100,9 @@ class WalletRepository private constructor(
 
     private fun getAssetName(accountBalance: AccountResponse.Balance): String {
         return if (accountBalance.assetType.equals("native")) {
-            Log.d("JFLOG", "NATIVE")
             "XLM"
         } else {
             if (accountBalance.assetCode.isPresent) {
-                Log.d("JFLOG", accountBalance.assetCode.get().toString())
                 accountBalance.assetCode.get().toString()
             } else {
                 "-" // TODO: rozhodnut, co s neznamym assetom
@@ -145,29 +134,85 @@ class WalletRepository private constructor(
         }
     }
 
-    private suspend fun syncOperationsForTransaction(transactionId: String) {
+    // TODO: original
+//    private suspend fun syncOperationsForTransaction(transactionId: String) {
+//        withContext(Dispatchers.IO) {
+//            val operations = mutableListOf<Operation>()
+//            val operationResponses = mutableListOf<OperationResponse>()
+//            _error.postValue(stellarService.getOperationsForTransaction(transactionId, operationResponses))
+//            operationResponses.forEach { op ->
+////                op as PaymentOperationResponse
+//                val operation = Operation(
+//                    operationId = op.id,
+//                    transactionId = transactionId
+//                )
+//
+//                operation.operationType = op.type
+//                when (operation.operationType) {
+//                    "payment" -> {
+//                        op as PaymentOperationResponse
+//                        operation.destinationAccount = op.to
+//                        operation.amount = op.amount
+//                        operations.add(operation)
+//                    }
+//                    "create_account" -> {
+//                        op as CreateAccountOperationResponse
+//                        operation.destinationAccount = op.account
+//                        operation.amount = op.startingBalance
+//                        operations.add(operation)
+//                    } // TODO: decide change trust
+////                    "change_trust" -> {
+////                        op as ChangeTrustOperation
+////                        operation.destinationAccount = op.
+////                        operation.amount = op.limit
+////                        operations.add(operation)
+////                    }
+//                    else -> {}
+//                }
+//            }
+//
+//            operationDao.insertOperations(*operations.toTypedArray())
+//        }
+//    }
+
+    suspend fun syncOperations(walletId: Long) {
+        val accountId = getAccountIdFromWalletId(walletId)
+
         withContext(Dispatchers.IO) {
             val operations = mutableListOf<Operation>()
             val operationResponses = mutableListOf<OperationResponse>()
-            _error.postValue(stellarService.getOperations(transactionId, operationResponses))
+
+            _error.postValue(stellarService.getOperations(accountId, operationResponses))
+
             operationResponses.forEach { op ->
                 val operation = Operation(
                     operationId = op.id,
-                    transactionId = transactionId
+                    walletId = walletId,
+                    transactionId = op.transactionHash,
+                    operationType = op.type,
+                    createdAt = op.createdAt,
                 )
 
-                operation.operationType = op.type
                 when (operation.operationType) {
                     "payment" -> {
                         op as PaymentOperationResponse
+
+                        operation.sourceAccount = op.from
                         operation.destinationAccount = op.to
+                        operation.assetName = op.asset.type
                         operation.amount = op.amount
+
+                        operation.isReceived = accountId == op.to
+
                         operations.add(operation)
                     }
                     "create_account" -> {
                         op as CreateAccountOperationResponse
+
                         operation.destinationAccount = op.account
+                        operation.sourceAccount = op.funder
                         operation.amount = op.startingBalance
+
                         operations.add(operation)
                     } // TODO: decide change trust
 //                    "change_trust" -> {
@@ -198,7 +243,7 @@ class WalletRepository private constructor(
                 )
 
                 transactions.add(t)
-                syncOperationsForTransaction(t.transactionId)
+                syncOperations(walletId)
             }
 
             transactionDao.insertTransactions(*transactions.toTypedArray())

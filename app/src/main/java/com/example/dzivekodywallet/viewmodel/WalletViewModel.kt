@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 class WalletViewModel(private val walletRepository: WalletRepository) : ViewModel() {
     lateinit var balances: LiveData<List<Balance>>
     lateinit var transactions: LiveData<List<Transaction>>
+    lateinit var payments: LiveData<List<Operation>>
     var error: LiveData<Error> = walletRepository.error
 
     private var _walletId = MutableLiveData<Long>()
@@ -48,6 +49,7 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
         balances = walletRepository.getBalances(walletId)
         viewModelScope.launch {
             transactions = walletRepository.getTransactions(walletId)
+            payments = walletRepository.getPayments(walletId)
         }
     }
 
@@ -64,6 +66,12 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
     fun updateTransactions() {
         viewModelScope.launch {
             walletRepository.syncTransactionsFromNetwork(walletId.value!!)
+        }
+    }
+
+    fun updatePayments() {
+        viewModelScope.launch {
+            walletRepository.syncOperations(walletId.value!!)
         }
     }
 

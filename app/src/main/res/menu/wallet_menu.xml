@@ -8,6 +8,10 @@
         android:title="@string/transactions"
         android:icon="@drawable/ic_format_list_bulleted_24"
         />
+    <item android:id="@+id/wallet_nav_payments"
+        android:title="@string/payments"
+        android:icon="@drawable/ic_payments_24"
+        />
     <item android:id="@+id/wallet_nav_send_rec"
         android:title="@string/send_receive"
         android:icon="@drawable/ic_currency_exchange_24"
