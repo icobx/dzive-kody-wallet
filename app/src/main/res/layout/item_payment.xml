@@ -94,7 +94,8 @@
 
             </LinearLayout>
 
-            <Button
+            // only a background color of AppCompatButton can be changed
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/payment_id_dst_src_button"
                 style="@style/CopyButtonStyle"
                 android:layout_width="match_parent"
