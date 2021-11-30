@@ -87,9 +87,11 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
         }
     }
 
-    fun makeTransaction(destId: String, amount: String, userInput: String) {
+    fun makeTransaction(destId: String, amount: String, userInput: String, callback: () -> Unit) {
         viewModelScope.launch {
             walletRepository.makeTransaction(walletId.value!!, destId, amount, userInput)
+            if (error.value == Error.NO_ERROR)
+                callback()
         }
     }
 
