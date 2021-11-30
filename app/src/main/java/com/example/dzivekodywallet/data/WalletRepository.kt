@@ -199,7 +199,7 @@ class WalletRepository private constructor(
 
                         operation.sourceAccount = op.from
                         operation.destinationAccount = op.to
-                        operation.assetName = op.asset.type
+                        operation.assetName = if (op.asset.type == "native") "XLM" else op.asset.type
                         operation.amount = op.amount
 
                         operation.isReceived = accountId == op.to

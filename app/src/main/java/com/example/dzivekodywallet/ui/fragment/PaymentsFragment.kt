@@ -40,7 +40,7 @@ class PaymentsFragment : Fragment() {
         binding.paymentsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.paymentsRecyclerView.adapter = PaymentsAdapter()
 
-        viewModel.updateTransactions()
+        viewModel.updatePayments()
 
         viewModel.payments.observe(viewLifecycleOwner, { payments ->
             if (payments != null) {
@@ -48,23 +48,6 @@ class PaymentsFragment : Fragment() {
                     .setPayments(payments)
             }
         })
-//        viewModel.transactions.observe(viewLifecycleOwner, { transactions ->
-//            if (transactions != null) {
-//                (binding.paymentsRecyclerView.adapter as TransactionsAdapter)
-//                    .setTransactions(transactions)
-//                (binding.paymentsRecyclerView.adapter as TransactionsAdapter)
-//                    .setClickListener(
-//                        TransactionItemListener { transaction ->
-//                            viewModel.setSelectedTransaction(transaction)
-//                            findNavController()
-//                                .navigate(
-//                                    TransactionsFragmentDirections
-//                                        .actionWalletNavTransactionsToTransactionDetailsFragment()
-//                                )
-//                        }
-//                    )
-//            }
-//        })
 
         return binding.root
     }
