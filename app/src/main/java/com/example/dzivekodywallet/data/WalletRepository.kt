@@ -78,10 +78,6 @@ class WalletRepository private constructor(
             }
             val srcPk = Encryption.decrypt(wallet.privateKey, userInput)
             if (srcPk == null) {
-                _error.postValue(Error.ERROR_SECRET_KEY_DECRYPT)
-                return@withContext
-            }
-            if (wallet.publicKey != KeyPair.fromSecretSeed(srcPk).accountId) {
                 _error.postValue(Error.ERROR_BAD_PIN)
                 return@withContext
             }
