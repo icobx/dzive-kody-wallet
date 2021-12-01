@@ -51,11 +51,6 @@ abstract class AppDatabase : RoomDatabase() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
 
-                    Log.d("app database", "prepopulateDatabase()")
-
-//                    val wallet = Wallet()
-//                    wallet.name = "Test wallet"
-//                    wallet.balance = 121.5
 
                     val wallet = ContentValues()
                     wallet.put("walletId", 1)

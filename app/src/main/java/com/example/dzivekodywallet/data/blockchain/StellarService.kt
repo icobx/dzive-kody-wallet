@@ -85,7 +85,6 @@ class StellarService private constructor() {
 
         return try {
             val response: SubmitTransactionResponse = blockchainServer.submitTransaction(transaction)
-            Log.d("transaction","Success: ${response.isSuccess}")
             if (response.isSuccess) {
                 Error.NO_ERROR
             } else {

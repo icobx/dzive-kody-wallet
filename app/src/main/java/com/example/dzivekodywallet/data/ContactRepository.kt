@@ -10,7 +10,6 @@ import kotlinx.coroutines.withContext
 class ContactRepository private constructor(private val contactDao: ContactDao) {
 
     fun insertContact(wallet: Contact) {
-        Log.d("Contact repository", "insert Contact")
         contactDao.insertContact(wallet)
     }
 
