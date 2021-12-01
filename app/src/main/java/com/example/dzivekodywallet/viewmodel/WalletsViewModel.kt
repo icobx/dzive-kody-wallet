@@ -17,11 +17,7 @@ data class WalletsViewModel(private val walletRepository: WalletRepository): Vie
     val allWallets: LiveData<List<Wallet>>
         get() = _allWallets
 
-//    fun getWallets() {
-//        (viewModelScope as CoroutineScope).launch {
-//            _allWallets.value = walletRepository.getAllWallets().value
-//        }
-//    }
+
     fun getWallets(): LiveData<List<Wallet>> {
         return walletRepository.getAllWallets()
     }

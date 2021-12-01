@@ -57,7 +57,7 @@ class StellarService private constructor() {
         val sourceAccount: AccountResponse
         val destinationAccount: AccountResponse
         try {
-            source  = KeyPair.fromSecretSeed(srcId)
+            source = KeyPair.fromSecretSeed(srcId)
             sourceAccount = blockchainServer.accounts().account(source.accountId)
         } catch(e: Exception) {
             return Error.ERROR_INVALID_SOURCE_ACCOUNT
@@ -144,7 +144,7 @@ class StellarService private constructor() {
     fun getOperations(accountId: String, operations: MutableList<OperationResponse>): Error {
         return try {
             var paymentsPage = blockchainServer
-                .payments()
+                .operations()
                 .forAccount(accountId)
                 .limit(50)
                 .order(RequestBuilder.Order.DESC)

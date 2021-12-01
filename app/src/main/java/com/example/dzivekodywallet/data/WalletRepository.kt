@@ -101,7 +101,7 @@ class WalletRepository private constructor(
             if (accountBalance.assetCode.isPresent) {
                 accountBalance.assetCode.get().toString()
             } else {
-                "-" // TODO: rozhodnut, co s neznamym assetom
+                "Unknown"
             }
         }
     }
@@ -129,47 +129,6 @@ class WalletRepository private constructor(
             }
         }
     }
-
-    // TODO: original
-//    private suspend fun syncOperationsForTransaction(transactionId: String) {
-//        withContext(Dispatchers.IO) {
-//            val operations = mutableListOf<Operation>()
-//            val operationResponses = mutableListOf<OperationResponse>()
-//            _error.postValue(stellarService.getOperationsForTransaction(transactionId, operationResponses))
-//            operationResponses.forEach { op ->
-////                op as PaymentOperationResponse
-//                val operation = Operation(
-//                    operationId = op.id,
-//                    transactionId = transactionId
-//                )
-//
-//                operation.operationType = op.type
-//                when (operation.operationType) {
-//                    "payment" -> {
-//                        op as PaymentOperationResponse
-//                        operation.destinationAccount = op.to
-//                        operation.amount = op.amount
-//                        operations.add(operation)
-//                    }
-//                    "create_account" -> {
-//                        op as CreateAccountOperationResponse
-//                        operation.destinationAccount = op.account
-//                        operation.amount = op.startingBalance
-//                        operations.add(operation)
-//                    } // TODO: decide change trust
-////                    "change_trust" -> {
-////                        op as ChangeTrustOperation
-////                        operation.destinationAccount = op.
-////                        operation.amount = op.limit
-////                        operations.add(operation)
-////                    }
-//                    else -> {}
-//                }
-//            }
-//
-//            operationDao.insertOperations(*operations.toTypedArray())
-//        }
-//    }
 
     suspend fun syncOperations(walletId: Long) {
         val accountId = getAccountIdFromWalletId(walletId)
@@ -210,13 +169,7 @@ class WalletRepository private constructor(
                         operation.amount = op.startingBalance
 
                         operations.add(operation)
-                    } // TODO: decide change trust
-//                    "change_trust" -> {
-//                        op as ChangeTrustOperation
-//                        operation.destinationAccount = op.
-//                        operation.amount = op.limit
-//                        operations.add(operation)
-//                    }
+                    }
                     else -> {}
                 }
             }
@@ -247,10 +200,10 @@ class WalletRepository private constructor(
     }
 
     suspend fun synchronise(walletId: Long) {
-        // TODO: call all sync methods for given wallet here
         // this will be called when user requests sync
         syncBalancesFromNetwork(walletId)
         syncTransactionsFromNetwork(walletId)
+        syncOperations(walletId)
     }
 
     private suspend fun getAccountIdFromWalletId(walletId: Long): String {

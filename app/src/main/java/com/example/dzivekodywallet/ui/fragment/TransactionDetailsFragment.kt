@@ -41,10 +41,8 @@ class TransactionDetailsFragment : Fragment() {
             Injection.provideWalletViewModelFactory(requireContext())
         )[WalletViewModel::class.java]
 
-        val clipboard = getSystemService(requireContext(), ClipboardManager::class.java)
-
         binding.transactionDetailsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-//        binding.transactionDetailsRecyclerView.adapter = TransactionDetailsAdapter(clipboard!!)
+
         binding.transactionDetailsRecyclerView.adapter = TransactionDetailsAdapter()
 
         binding.transactionDetailsBackButton.setOnClickListener {

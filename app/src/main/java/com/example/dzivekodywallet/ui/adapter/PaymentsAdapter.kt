@@ -30,10 +30,10 @@ class PaymentsAdapter(
         return payments.size
     }
 
-    fun setPayments(operations: List<Operation>) {
-        val diffResult = DiffUtil.calculateDiff(OperationDiffCallback(this.payments, operations))
+    fun setPayments(payments: List<Operation>) {
+        val diffResult = DiffUtil.calculateDiff(OperationDiffCallback(this.payments, payments))
         this.payments.clear()
-        this.payments.addAll(operations)
+        this.payments.addAll(payments)
         diffResult.dispatchUpdatesTo(this)
     }
 

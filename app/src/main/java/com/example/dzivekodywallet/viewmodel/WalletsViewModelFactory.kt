@@ -9,6 +9,5 @@ class WalletsViewModelFactory(private val walletRepository: WalletRepository)
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return WalletsViewModel(walletRepository) as T
-//        return super.create(modelClass)
     }
 }

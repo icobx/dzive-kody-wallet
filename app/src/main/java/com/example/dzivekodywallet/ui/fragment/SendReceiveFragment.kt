@@ -52,16 +52,6 @@ class SendReceiveFragment : Fragment() {
             requireActivity()
         )[WalletViewModel::class.java]
 
-//        requireActivity().onBackPressedDispatcher.addCallback(
-//            object : OnBackPressedCallback(true) {
-//                override fun handleOnBackPressed() {
-//                    Log.d("in callback", "in callback")
-//                    Navigation.findNavController(binding.root)
-//                        .popBackStack(R.id.wallet_man_activity, false)
-//                }
-//            }
-//        )
-
 
         binding.sendReceiveSendButton.setOnClickListener {
             val destinationAccount = binding.sendRecEditTextPubk.text.toString()
@@ -93,14 +83,6 @@ class SendReceiveFragment : Fragment() {
                 e.printStackTrace()
             }
         })
-
-        // TODO: think about this approach for ERROR handling
-//        wViewModel.error.observe(viewLifecycleOwner, {
-//            val errorMessage = wViewModel.getErrorMessage()
-//            if (!errorMessage.isNullOrEmpty()) {
-//                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
-//            }
-//        })
 
         return binding.root
     }

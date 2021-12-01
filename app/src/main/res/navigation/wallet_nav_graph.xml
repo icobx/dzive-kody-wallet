@@ -33,12 +33,6 @@
         <action
             android:id="@+id/action_transactionDetailsFragment_to_wallet_nav_transactions"
             app:destination="@id/wallet_nav_transactions" />
-<!--        <argument-->
-<!--            android:name="transactionId"-->
-<!--            app:argType="string" />-->
-<!--        <argument-->
-<!--            android:name="sourceAccountId"-->
-<!--            app:argType="string" />-->
     </fragment>
     <fragment
         android:id="@+id/wallet_nav_payments"

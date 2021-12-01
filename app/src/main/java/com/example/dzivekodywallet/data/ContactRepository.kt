@@ -21,10 +21,6 @@ class ContactRepository private constructor(private val contactDao: ContactDao) 
         contactDao.deleteContact(wallet)
     }
 
-    fun getContact(key: Long): Contact? {
-        return contactDao.getContact(key)
-    }
-
     fun getAllContacts(): LiveData<List<Contact>> {
         return contactDao.getAllContacts()
     }

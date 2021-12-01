@@ -73,7 +73,6 @@ class AddWalletFragment : Fragment() {
                 binding.isGeneratingEnabled as Boolean,
                 this::openModal, this::callback)
         }
-        // TODO: check if addition succeeded
     }
 
     private fun callback() {

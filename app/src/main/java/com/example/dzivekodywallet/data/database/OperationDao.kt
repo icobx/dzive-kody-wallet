@@ -24,12 +24,12 @@ interface OperationDao {
     @Query("SELECT * from operation_table WHERE operationId = :operationId")
     fun getOperation(operationId: Long): List<Operation>
 
-    @Query("SELECT * from operation_table WHERE transaction_id = :transactionId")
+    @Query("SELECT * from operation_table WHERE transaction_id = :transactionId ORDER BY created_at DESC")
     fun getOperationsForTransaction(transactionId: String): LiveData<List<Operation>>
 
     @Query("SELECT DISTINCT transaction_id FROM operation_table WHERE destination_account = :destinationAccount")
     fun getReceivedPayments(destinationAccount: String): LiveData<List<String>>
 
-    @Query("SELECT * FROM operation_table WHERE operation_type = :operationType AND wallet_id = :walletId")
+    @Query("SELECT * FROM operation_table WHERE operation_type = :operationType AND wallet_id = :walletId ORDER BY created_at DESC")
     fun getPayments(walletId: Long, operationType: String = "payment"): LiveData<List<Operation>>
 }

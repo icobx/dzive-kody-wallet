@@ -23,8 +23,6 @@ class AuthFragment : Fragment() {
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
 
-    // Leave empty for now.
-    // View initialization logic
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

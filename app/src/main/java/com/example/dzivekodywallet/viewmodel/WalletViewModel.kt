@@ -39,10 +39,6 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
         walletRepository.getOperationsForTransaction(tr.transactionId)
     }
 
-    val errors: LiveData<String> = walletRepository.error.map { tr ->
-        tr.toString()
-    }
-
     fun setWalletId(walletId: Long) {
         _walletId.value = walletId
         // when WalletFragment sets walletId, get balances for given wallet

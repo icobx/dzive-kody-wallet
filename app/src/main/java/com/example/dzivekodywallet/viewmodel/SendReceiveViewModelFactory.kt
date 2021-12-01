@@ -9,6 +9,5 @@ class SendReceiveViewModelFactory(private val contactRepository: ContactReposito
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return SendReceiveViewModel(contactRepository) as T
-//        return super.create(modelClass)
     }
 }

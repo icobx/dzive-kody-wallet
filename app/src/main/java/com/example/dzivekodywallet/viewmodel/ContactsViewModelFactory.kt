@@ -9,6 +9,5 @@ class ContactsViewModelFactory(private val contactRepository: ContactRepository)
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return ContactsViewModel(contactRepository) as T
-//        return super.create(modelClass)
     }
 }

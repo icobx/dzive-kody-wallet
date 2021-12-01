@@ -17,9 +17,9 @@ object Encryption {
         {
             val ivParameterSpec = IvParameterSpec(Base64.decode(iv, Base64.DEFAULT))
             val factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
-            val spec =  PBEKeySpec(secretPhrase.toCharArray(), Base64.decode(salt, Base64.DEFAULT), 10000, 256)
+            val spec = PBEKeySpec(secretPhrase.toCharArray(), Base64.decode(salt, Base64.DEFAULT), 10000, 256)
             val tmp = factory.generateSecret(spec)
-            val secretKey =  SecretKeySpec(tmp.encoded, "AES")
+            val secretKey = SecretKeySpec(tmp.encoded, "AES")
 
             val cipher = Cipher.getInstance("AES/CBC/PKCS7Padding")
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec)

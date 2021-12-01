@@ -103,7 +103,6 @@ class ContactsFragment : Fragment() {
         }
 
         dialogView.findViewById<Button>(R.id.dialog_add_contact_save_button).setOnClickListener {
-//            val contact = Contact()
             contact.name = name.text.toString()
             contact.pubKey = pubKey.text.toString()
 
