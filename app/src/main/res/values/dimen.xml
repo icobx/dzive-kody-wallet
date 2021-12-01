@@ -17,4 +17,6 @@
 <!--    item-->
     <dimen name="item_corner_radius">10dp</dimen>
     <dimen name="item_padding">10dp</dimen>
+
+    <dimen name="sent_received_buttons_padding">8dp</dimen>
 </resources>

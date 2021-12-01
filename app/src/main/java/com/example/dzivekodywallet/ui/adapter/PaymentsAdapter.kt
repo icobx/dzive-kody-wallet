@@ -50,14 +50,14 @@ class PaymentsAdapter(
 
             binding.paymentIdDstSrcButton.setOnClickListener(CopyOnClickListener(
                 binding.root.context,
-                "Operation ID",
+                "Account ID",
                 if (payment.isReceived!!) payment.sourceAccount  else payment.destinationAccount
             ))
-            val buttonColor = binding.root.context.resources.getColor(
-                if (payment.isReceived!!) R.color.colorButtonReceived else R.color.colorButtonSent,
-                null
-            )
-            binding.paymentIdDstSrcButton.setBackgroundColor(buttonColor)
+            if (payment.isReceived!!) {
+                binding.paymentIdDstSrcButton.setBackgroundResource(R.drawable.button_received_payment)
+            } else {
+                binding.paymentIdDstSrcButton.setBackgroundResource(R.drawable.button_sent_payment)
+            }
 
             binding.executePendingBindings()
         }

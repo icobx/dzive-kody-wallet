@@ -11,6 +11,7 @@ import java.io.InputStream
 import com.example.dzivekodywallet.data.util.Error
 import org.stellar.sdk.requests.RequestBuilder
 import org.stellar.sdk.responses.operations.PaymentOperationResponse
+import org.stellar.sdk.requests.TooManyRequestsException
 import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
@@ -43,6 +44,8 @@ class StellarService private constructor() {
         return try{
             accountInfo = blockchainServer.accounts().account(accountId)
             out.addAll(accountInfo.balances)
+            Error.NO_ERROR
+        }  catch (e: TooManyRequestsException) {
             Error.NO_ERROR
         } catch (e: Exception) {
             Error.ERROR_STELLAR
@@ -82,13 +85,12 @@ class StellarService private constructor() {
 
         return try {
             val response: SubmitTransactionResponse = blockchainServer.submitTransaction(transaction)
-            Log.d("transaction","Success: ${response.isSuccess}")
             if (response.isSuccess) {
                 Error.NO_ERROR
             } else {
                 throw Exception()
             }
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
             Error.ERROR_TRANSACTION_SUBMIT
         }
     }
@@ -108,6 +110,8 @@ class StellarService private constructor() {
                 tsPage = tsPage.getNextPage(blockchainServer.httpClient)
             }
 
+            Error.NO_ERROR
+        }  catch (e: TooManyRequestsException) {
             Error.NO_ERROR
         } catch (e: Exception) {
             Error.ERROR_STELLAR
@@ -130,6 +134,8 @@ class StellarService private constructor() {
             }
 
             Error.NO_ERROR
+        } catch (e: TooManyRequestsException) {
+            Error.NO_ERROR
         } catch (e: Exception) {
             Error.ERROR_STELLAR
         }
@@ -150,7 +156,9 @@ class StellarService private constructor() {
                 }
 
             Error.NO_ERROR
-        } catch (e: Exception) {
+        } catch (e: TooManyRequestsException) {
+            Error.NO_ERROR
+        }catch (e: Exception) {
             Error.ERROR_STELLAR
         }
     }

@@ -61,14 +61,6 @@ class WalletsFragment : Fragment() {
             )
         })
 
-        viewModel.error.observe(viewLifecycleOwner, { error ->
-            if (error != null) {
-                Log.d("ERROR", error.toString())
-//                (binding.balancesRecyclerView.adapter as BalancesAdapter)
-//                    .setBalances(walletBalances)
-            }
-        })
-
         return binding.root
     }
 

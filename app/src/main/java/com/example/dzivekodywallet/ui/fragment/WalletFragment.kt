@@ -62,12 +62,14 @@ class WalletFragment : Fragment() {
 
         // Display error in ErrorBar, otherwise reset to defaults
         viewModel.error.observe(viewLifecycleOwner, { error ->
-            if (error == Error.NO_ERROR) {
-                binding.walletErrorBar.visibility = View.GONE
-                binding.walletErrorBar.text = ""
-            } else {
+            if (error != Error.NO_ERROR) {
                 binding.walletErrorBar.visibility = View.VISIBLE
                 binding.walletErrorBar.text = error.toString()
+
+                binding.walletErrorBar.postDelayed({
+                    binding.walletErrorBar.visibility = View.GONE
+                    binding.walletErrorBar.text = ""
+                }, 2000)
             }
         })
 
@@ -77,11 +79,5 @@ class WalletFragment : Fragment() {
         binding.walletBottomNav.setupWithNavController(navHostFragment.findNavController())
 
         return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
-        binding.walletErrorBar.visibility = View.GONE
-        binding.walletErrorBar.text = ""
     }
 }

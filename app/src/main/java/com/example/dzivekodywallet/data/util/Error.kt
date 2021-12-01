@@ -49,12 +49,6 @@ enum class Error {
         }
     },
 
-    ERROR_SECRET_KEY_DECRYPT {
-        override fun toString(): String {
-            return "Unable to decrypt a secret key"
-        }
-    },
-
     ERROR_BAD_PIN {
         override fun toString(): String {
             return "Bad PIN for secret key"

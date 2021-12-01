@@ -32,7 +32,6 @@ package com.example.dzivekodywallet.data
 //                "https://friendbot.stellar.org/?addr=${pair.accountId}"
 //            ).awaitStringResponseResult()
 //
-//            Log.d("FUND", "SUCCES! $response")
 //        }
 //
 //
@@ -42,7 +41,6 @@ package com.example.dzivekodywallet.data
 //        runBlocking {
 //            var pubK = "GDMUYFD7G3TUG7MJD5NZQ2Q7J3K6XYEDUEUYYENHHOMUZSEVMPQLF3NP"
 //            var url = "https://horizon-testnet.stellar.org/accounts/${pubK}"
-//            Log.d("URL", url)
 //            val (request, response, result) = Fuel.get(url).awaitStringResponseResult()
 //
 //            Log.d("TEST REQUEST RESPONSE", "$request")

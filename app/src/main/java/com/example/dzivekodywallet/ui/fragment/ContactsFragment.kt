@@ -62,7 +62,6 @@ class ContactsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("onViewCreated", "in wallets fragment")
 
         val button = binding.addContactImageButton
 

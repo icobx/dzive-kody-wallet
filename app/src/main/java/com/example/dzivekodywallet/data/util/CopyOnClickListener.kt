@@ -17,7 +17,6 @@ class CopyOnClickListener(
         val clipboard = ContextCompat.getSystemService(context, ClipboardManager::class.java)
 
         clipboard!!.setPrimaryClip(ClipData.newPlainText(label, content))
-        Log.d("JFLOG", "IN ${javaClass.canonicalName}, copied text: ${clipboard.primaryClip.toString()}")
 
         val text = "$label copied to clipboard"
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
