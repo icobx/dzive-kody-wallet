@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.Fragment
-//import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.dzivekodywallet.R
@@ -65,24 +65,16 @@ class AuthFragment : Fragment() {
                 }
             })
 
-//        promptInfo = BiometricPrompt.PromptInfo.Builder()
-//            .setAllowedAuthenticators(BiometricManager.Authenticators.DEVICE_CREDENTIAL or BiometricManager.Authenticators.BIOMETRIC_STRONG)
-//            .setTitle("Biometric login for my app")
-//            .setSubtitle("Log in using your biometric credential")
-//            .build()
+        promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setAllowedAuthenticators(BiometricManager.Authenticators.DEVICE_CREDENTIAL or BiometricManager.Authenticators.BIOMETRIC_STRONG)
+            .setTitle("Biometric login for my app")
+            .setSubtitle("Log in using your biometric credential")
+            .build()
 
         binding.correctPinButton.setOnClickListener {
-//            biometricPrompt.authenticate(promptInfo)
-            findNavController().navigate(R.id.action_authFragment_to_walletsFragment)
+            biometricPrompt.authenticate(promptInfo)
         }
 
         return binding.root
     }
-
-    // Post view initialization logic
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("onViewCreated", "ANO")
-        // ...and so on
-    }
-
 }
